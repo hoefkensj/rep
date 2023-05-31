@@ -24,11 +24,12 @@ ARGS:\n\
 \n\
 EXAMPLES:\n\
 \n\
-  <exe> <string>    <int>    <start>    <sep>    <end>    Result:\n\
-%s     '#'         5                                      #####\n\
-%s     '----'      2        '#'        '+'     '#\\n'   #----+----#\n\n\
-%s     '-'         5        '|'        ''      '>'        |----->\n\
-printf \"$(%s '\x1b[5A|' 2)\"                          |     |      \n\
+Result:                  Command: <exe> <string> <int> <start> <sep> <end>\n\
+\n\
+    ###########              %s '#' 11\n\
+    #----+----#\\n           %s '----' 2 '#' '+' '#\\n'\
+    |=========>              %s '=' 9 '|' '' '>'\n\
+    |     |                  printf \"$( %s '\x1b[5C|' 2)\"\n\
 "
 
 void print_usage(char* name) {

@@ -1,2 +1,5 @@
+[MakeBuilder]
+Install As Root=true
+
 [Project]
 VersionControlSupport=kdevgit

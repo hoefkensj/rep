@@ -7,3 +7,5 @@ stable:clean
 	$(CC) $(CFLAGS) -o rep main.c
 clean:
 	rm -vfr *~ rep
+install:
+	install rep /usr/bin/rep
