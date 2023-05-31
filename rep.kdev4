@@ -1,0 +1,4 @@
+[Project]
+Name=rep
+Manager=KDevCustomMakeManager
+VersionControl=kdevgit
