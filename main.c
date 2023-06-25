@@ -1,75 +1,75 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#define HELP (char *)"\
-USAGE: %s <string> <int> [<start> <sep> <end>]\n\
-       Prints <string> ,<int> times to stdout\n\
-\n\
-DOCS:  Strings are printed literally in order for the string to be interpreted\n\
-       by the shell or the terminal eg for \\n=newline,\\t=tab,ANSI escapes)\n\
-       run inside a subshell,and print using a native function like printf,...\n\
-       SHELL variables however are expanded beforehand by the shell and are as\n\
-       such passed to the program. SEE Examples for more info\n\
-\n\
-ARGS:\n\
-    <STRING>          String to repeat.\n\
-\n\
-    <INT>             Number of times to repeat the <STRING>.\n\
-\n\
-    OPTIONAL:         If one is suplied all 3 are required !\n\
-\n\
-        <start>           String to print before the repeated series (will be printed only once).\n\
-        <sep>             String to use as separator inbetween repeats.\n\
-        <end>             String to print after the repeated series (will be printed only once).\n\
-\n\
-EXAMPLES:\n\
-\n\
-Result:                  Command: <exe> <string> <int> <start> <sep> <end>\n\
-\n\
-    ###########              %s '#' 11\n\
-    #----+----#\\n           %s '----' 2 '#' '+' '#\\n'\
-    |=========>              %s '=' 9 '|' '' '>'\n\
-    |     |                  printf \"$( %s '\x1b[5C|' 2)\"\n\
-"
+#include "main.h"
 
-void print_usage(char* name) {
-	printf(HELP,name,name,name,name,name);
-}
-
-void rep( char* str,	char* strn ){
-	unsigned long int n = atoll(strn);
-	for (int i = 0; i < n; i++) {
-		printf("%s", str);
-  }
-}
-void wrapstr( char* argv[] ){
-	char *string  = argv[1];
-	char *sep     = argv[4];
-	int sstring   = strlen(string);
-	int ssep      = strlen(sep);
-	int sstr      = sstring+ssep;
-	char str[sstr];
-	sprintf(str,"%s%s",string,sep);
-	argv[1]= str;
-	printf("%s",argv[3]);
-	rep(str,argv[2]);
-	printf("%s",string);
-	printf("%s",argv[5]);
-}
-
-int main(int argc, char* argv[]) {
-	int return_code = 0;
-	if (!((argc == 3) | (argc == 6))){
-		return_code= 1;
-	} else if (argc == 3){
-		rep(argv[1],argv[2]);
-	} else if (argc == 6){
-		wrapstr(argv);
+void rep(ARGS *args){
+	unsigned long int n = args->n;
+	char *string        = args->string;
+	char *cat           = args->cat;
+	if (n<2){
+				printf("%s",string);
 	} else {
-		printf("%s\n","something went terribly wrong, or faulty arguments supplied");
+		for (int i = 0; i < n; i++) {
+			printf("%s",translate(string));
+			if (i < (n-1)) {
+				printf("%s", translate(cat));
+			} // fi
+		} // for
+	} //fi
+}
+
+void print(ARGS *args){
+	printf("%s",translate(args->pfx));
+	rep(args);
+	printf("%s",translate(args->sfx));
+}
+
+int parseArguments(int argc, char *argv[], ARGS *args) {
+		int return_code = 0;
+    args->string = NULL;
+    args->pfx = "";
+    args->sfx = "";
+    args->cat = "";
+    args->n = 0;
+
+    int i;
+    for (i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "--pfx") == 0) {
+            args->pfx = argv[++i];
+        } else if (strcmp(argv[i], "--sfx") == 0) {
+            args->sfx = argv[++i];
+        } else if (strcmp(argv[i], "--cat") == 0) {
+            args->cat = argv[++i];
+        } else {
+            if (args->string == NULL) {
+                args->string = argv[i];
+            } else {
+                args->n = strtoul(argv[i], NULL, 10);
+            }
+        }
+    }
+	if ( args->n == 0){
 		return_code=1;
 	}
+	return return_code;
+}
 
+// int main(int argc, char *argv[]) {
+//     ARGS args;
+//     return_code=parseArguments(argc, argv, &args);
+//
+//     printf("String: %s\n", args.string);
+//     printf("n: %lu\n", args.n);
+//     printf("pfx: %s\n", args.pfx);
+//     printf("sfx: %s\n", args.sfx);
+//     printf("cat: %s\n", args.cat);
+//
+//     return 0;
+// }
+
+int main(int argc, char **argv) {
+	int return_code = 0;
+	ARGS args;
+  return_code=parseArguments(argc, argv, &args);
+	print(&args);
 	if (return_code == 1)	print_usage(argv[0]);
 	return return_code;
 }

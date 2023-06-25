@@ -1,3 +1,20 @@
+[Buildset]
+BuildItems=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x01\x00\x00\x00\x0b\x00\x00\x00\x00\x01\x00\x00\x00\x06\x00r\x00e\x00p)
+
+[ClangTidy]
+CheckSystemHeaders=true
+
+[Cppcheck]
+checkConfig=true
+checkInformation=true
+checkMissingInclude=true
+checkPerformance=true
+checkPortability=true
+checkStyle=true
+checkUnusedFunction=true
+inconclusiveAnalysis=true
+useSystemIncludes=true
+
 [MakeBuilder]
 Install As Root=true
 

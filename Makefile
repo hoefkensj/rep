@@ -2,9 +2,9 @@ CC=gcc
 CFLAGS="-Wall"
 
 debug:clean
-	$(CC) $(CFLAGS) -g -o rep main.c
+	$(CC) $(CFLAGS) -g -o rep main.c help.c translate.c
 stable:clean
-	$(CC) $(CFLAGS) -o rep main.c
+	$(CC) $(CFLAGS) -o rep main.c help.c translate.c
 clean:
 	rm -vfr *~ rep
 install:
