@@ -14,11 +14,10 @@ void repeat(){
 }
 
 void printseq(ARGS args){
-
-	printf("%s",escape(args.pfx,args.pfx));
+	printf("%s",args.pfx);
 	repeat();
-	printf("%s",escape(args.sfx,args.sfx));
-}
+	printf("%s",args.sfx);
+}//printseq
 
 
 void parseArguments(int argc, char **argv) {
@@ -36,23 +35,17 @@ void parseArguments(int argc, char **argv) {
 			return_code=3;
 			break;
 		} else if ( (strcmp(argv[i], "--pfx") == 0) | (strcmp(argv[i], "-p") ==0) ) {
-			args.pfx = argv[++i];
-				// args.a |=  ( 1 << 2 );
-
+			args.pfx = escape(argv[++i],args.pfx);
 		} else if ( (strcmp(argv[i], "--sfx") == 0) | (strcmp(argv[i], "-s") ==0) ) {
-			args.sfx = argv[++i];
-				// args.a |=  ( 1 << 3 );
+			args.sfx = escape(argv[++i],args.sfx);
 		} else if ( (strcmp(argv[i], "--cat") == 0) | (strcmp(argv[i], "-c") ==0) )  {
-			args.cat = argv[++i];
-				// args.a |=  ( 1 << 4 );
+			args.cat = escape(argv[++i],args.cat);
 		} else {
 			if (args.rep == NULL) {
-				// args.a |=  ( 1 << 0 );
-				args.rep = argv[i];
+				args.rep = escape(argv[i],args.rep);
 				return_code--;
 			} else {
 				args.n = atol(argv[i]);
-				// args.a |=  ( 1 << 1 );
 				return_code--;
 			} //fi
 		} //fi
@@ -62,7 +55,6 @@ void parseArguments(int argc, char **argv) {
 
 int main(int argc, char *argv[]) {
 	parseArguments(argc, argv);
-	args.rep=escape(args.rep,args.rep);
 	printseq(args);
 	if (return_code == 1)	print_usage(argv[0]);
 	return return_code;
