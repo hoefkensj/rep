@@ -6,12 +6,23 @@
 #include "help.h"
 #include "translate.h"
 
+typedef char B;
+typedef unsigned int UI32;
+
+
+typedef struct ARR{
+	UI32 ln;
+	char arr[];
+	}ARR;
+
+
 typedef struct ARGS{
-	unsigned long int n ;
-	char *string;
-	char *pfx;
-	char *sfx;
-	char *cat;
+	char a;
+	UI32 n;
+	B *rep;
+	B *pfx;
+	B *sfx;
+	B *cat;
+
 	}ARGS;
 
-#define DASH

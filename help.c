@@ -1,4 +1,9 @@
 #include "help.h"
+#define USAGE (char *) "\
+USAGE: %s <string> <int> (-[p|c|s] --[pfx|cat|sfx]] <string> )\n\
+USE -h or --help for more info"
+
+
 #define HELP (char *)"\
 USAGE: %s <string> <int> [<start> <sep> <end>]\n\
        Prints <string> ,<int> times to stdout\n\
@@ -30,5 +35,8 @@ Result:                  Command: <exe> <string> <int> <start> <sep> <end>\n\
     |     |                  printf \"$( %s '\x1b[5C|' 2)\"\n\
 "
 void print_usage(char* name) {
+	printf(USAGE,name);
+}
+void print_help(char* name) {
 	printf(HELP,name,name,name,name,name);
 }
