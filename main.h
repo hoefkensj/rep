@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "help.h"
-#include "translate.h"
+#include "escape.h"
 
 typedef char B;
 typedef unsigned int UI32;
@@ -17,7 +17,6 @@ typedef struct ARR{
 
 
 typedef struct ARGS{
-	char a;
 	UI32 n;
 	B *rep;
 	B *pfx;
