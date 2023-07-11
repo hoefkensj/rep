@@ -36,8 +36,9 @@ EXAMPLES:
 	$./rep '#' 11
 	$./rep '----' 2 -p 't1  #' -c '+' -s '#'
 
+META:
 
-AUTHOR:               Hoefkens Jeroen                      MAIL:                Hoefkens.J@Gmail.com
-VERSION:              0.0.1                                DATE:                2023.07.11
-GITHUB:               github.com/hoefkensj                 REPO:                rep
-LICENSE:              MIT
+	AUTHOR:               Hoefkens Jeroen                      MAIL:                Hoefkens.J@Gmail.com
+	VERSION:              0.0.1                                DATE:                2023.07.11
+	GITHUB:               github.com/hoefkensj                 REPO:                rep
+	LICENSE:              MIT
