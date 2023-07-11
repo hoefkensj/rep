@@ -31,14 +31,14 @@ void parseArguments(int argc, char **argv) {
 	int i =  0;
 
 	for (i=1 ; i < argc; i++) {
-		if  ( (strcmp(argv[i], "--help") == 0) | (strcmp(argv[i], "-h") ==0) ) {
+		if  ( (strcmp(argv[i], "--help") == 0) + (strcmp(argv[i], "-h") ==0) ) {
 			return_code=3;
 			break;
-		} else if ( (strcmp(argv[i], "--pfx") == 0) | (strcmp(argv[i], "-p") ==0) ) {
+		} else if ( (strcmp(argv[i], "--pfx") == 0) + (strcmp(argv[i], "-p") ==0) ) {
 			args.pfx = escape(argv[++i],args.pfx);
-		} else if ( (strcmp(argv[i], "--sfx") == 0) | (strcmp(argv[i], "-s") ==0) ) {
+		} else if ( (strcmp(argv[i], "--sfx") == 0) + (strcmp(argv[i], "-s") ==0) ) {
 			args.sfx = escape(argv[++i],args.sfx);
-		} else if ( (strcmp(argv[i], "--cat") == 0) | (strcmp(argv[i], "-c") ==0) )  {
+		} else if ( (strcmp(argv[i], "--cat") == 0) + (strcmp(argv[i], "-c") ==0) )  {
 			args.cat = escape(argv[++i],args.cat);
 		} else {
 			if (args.rep == NULL) {
