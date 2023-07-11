@@ -1,5 +1,4 @@
 #include "escape.h"
-
 char *escape(char *str,char arstr[]){
 	UI32 lnstr  = strlen(str)+1;
 	UI32 lnzstr =	lnstr*2;

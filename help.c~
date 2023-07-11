@@ -10,9 +10,7 @@ USAGE: %s <string> <int> [-o,--option] <string>\n\
 \n\
 DOCS:  The stings can contain escape's : \\[r|n|t|v|a|0-9|x[0-F][0-F]'\n\
        these will be converted to their respective byte values and printed as such\n\
-       the string and int are mandatory but can be 0(int), ""(string):not printed,for\
-       int=1 the --cat string will not be printed. should be compatible to use within\
-			 bash  printf, and supports recursing or nesting subshells.
+       the \
 \n\
 ARGS:\n\
     <STRING>          String to repeat.\n\

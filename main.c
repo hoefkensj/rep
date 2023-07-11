@@ -56,6 +56,10 @@ void parseArguments(int argc, char **argv) {
 int main(int argc, char *argv[]) {
 	parseArguments(argc, argv);
 	printseq(args);
-	if (return_code == 1)	print_usage(argv[0]);
+	if (return_code == 1){
+		print_usage(argv[0]);
+	}	else if (return_code == 3) {
+		print_help(argv[0]);
+	}
 	return return_code;
 }
