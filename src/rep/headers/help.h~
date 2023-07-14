@@ -1,0 +1,7 @@
+#pragma once
+#include "globals.h"
+
+char *about(char *strAbout);
+char *help(char *strHelp,char *exeName);
+char *use(char *strHelp,char *exeName);
+char *test();

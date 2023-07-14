@@ -1,4 +1,4 @@
-#include "escape.h"
+#include "headers/escape.h"
 
 char *escape(char *str,char arstr[]){
 	UI32 lnstr  = strlen(str)+1;
@@ -12,7 +12,7 @@ char *escape(char *str,char arstr[]){
 	UI32 z[16];
 	UI32 x[16];
 
-	UI32 i,j;
+	UI32 i,j,k;
 	UI32 o0,o1,o2;
 	UI32 xval;
 

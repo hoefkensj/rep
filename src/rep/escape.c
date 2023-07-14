@@ -1,0 +1,186 @@
+#include "headers/escape.h"
+
+char *escape(char *str,char arstr[]){
+	UI32 lnstr  = strlen(str)+1;
+	UI32 lnzstr =	lnstr*2;
+
+	char *pstr[lnstr];
+	char zstr[lnzstr];
+
+	char val;
+	UI32 a[16];
+	UI32 z[16];
+	UI32 x[16];
+
+	UI32 i,j;
+	UI32 o0,o1,o2;
+	UI32 xval;
+
+	for (int i = 0; i < lnstr; i++) {
+		zstr[i*2] = str[i];
+		zstr[(i*2)+1] = Z0;
+		pstr[i]   = &zstr[i*2];
+	}
+
+
+	for (i = 0; i < lnstr; i++) {
+		for (int b = 0; b < 16; b++) {
+			a[b]=i+b;
+			z[b]=2*a[b];
+		}
+
+		if (zstr[z[0]] == '\\'){
+			switch (str[a[1]]){
+				case '\\':
+				break;
+				case 'r':
+					zstr[z[0]] = '\r';
+					zstr[z[1]] = Z0;
+					break;
+				case 'n':
+					zstr[z[0]] = '\n';
+					zstr[z[1]] = Z0;
+					break;
+				case 't':
+					zstr[z[0]] = '\t';
+					zstr[z[1]] = Z0;
+					break;
+				case 'v':
+					zstr[z[0]] = '\v';
+					zstr[z[1]] = Z0;
+					break;
+				case 'a':
+					zstr[z[0]] = '\a';
+					zstr[z[1]] = Z0;
+					break;
+				case '0':
+				case '1':
+				case '2':
+				case '3':
+				case '4':
+				case '5':
+				case '6':
+				case '7':
+					if (sscanf(&zstr[z[1]],"%o",&o0) == 1){
+						val=o0;
+						if (sscanf(&zstr[z[2]],"%o",&o1) == 1){
+							val=(o0*8)+o1;
+							if ( (0 <= o0) && (o0 < 4) ){
+								if ( sscanf(&zstr[z[3]], "%o", &o2) == 1 ){
+									val=(o0*8*8)+(o1*8)+o2;
+									zstr[z[3]] = Z0;
+								} //fi
+								zstr[z[2]] = Z0;
+							} //fi
+							zstr[z[1]] = Z0;
+						} //fi
+						zstr[z[0]]=val;
+					} //fi
+					break;
+				case 'x':
+				case 'X':
+					if (
+						( sscanf(&zstr[z[2]],"%x",&x[0]) == 1) &&
+						( sscanf(&zstr[z[3]],"%x",&x[1]) == 1 )
+					){
+						zstr[z[1]]=Z0;
+						zstr[z[2]]=Z0;
+						zstr[z[3]]=Z0;
+						zstr[z[0]]=(x[0] << 4)+x[1];
+					} //fi
+					break;
+				case 'u':
+					if (
+						sscanf(&zstr[z[2]],"%x",&x[0]) &&
+						sscanf(&zstr[z[3]],"%x",&x[1]) &&
+						sscanf(&zstr[z[4]],"%x",&x[2]) &&
+						sscanf(&zstr[z[5]],"%x",&x[3])
+						) {
+						zstr[z[0]] = Z0;
+						zstr[z[1]] = Z0;
+						zstr[z[2]] = Z0;
+						zstr[z[3]] = Z0;
+						zstr[z[4]] = Z0;
+						zstr[z[5]] = Z0;
+						xval = 	( x[0] << 12 ) +
+										( x[1] <<  8 ) +
+										( x[2] <<  4 ) +
+										x[3];
+						if (xval <= 0x7F) {
+							zstr[z[0]] = xval;
+						} else if (xval <= 0x7FF) {
+							zstr[z[0]] = 0xC0 | (xval >> 6);
+							zstr[z[1]] = 0x80 | (xval & 0x3F);
+						} else if (xval <= 0xFFFF) {
+							zstr[z[0]] = 0xE0 | (xval >> 12);
+							zstr[z[1]] = 0x80 | ((xval >> 6) & 0x3F);
+							zstr[z[2]] = 0x80 | (xval & 0x3F);
+						} else if (xval <= 0x10FFFF) {
+							zstr[z[0]] = 0xF0 | (xval >> 18);
+							zstr[z[1]] = 0x80 | ((xval >> 12) & 0x3F);
+							zstr[z[2]] = 0x80 | ((xval >> 6) & 0x3F);
+							zstr[z[3]] = 0x80 | (xval & 0x3F);
+						} //fi
+					} //fi
+					break;
+				case 'U':
+					if (
+						sscanf(&zstr[z[2]],"%x",&x[0]) &&
+						sscanf(&zstr[z[3]],"%x",&x[1]) &&
+						sscanf(&zstr[z[4]],"%x",&x[2]) &&
+						sscanf(&zstr[z[5]],"%x",&x[3]) &&
+						sscanf(&zstr[z[6]],"%x",&x[4]) &&
+						sscanf(&zstr[z[7]],"%x",&x[5]) &&
+						sscanf(&zstr[z[8]],"%x",&x[6]) &&
+						sscanf(&zstr[z[9]],"%x",&x[7])
+						) {
+						zstr[z[0]] = Z0;
+						zstr[z[1]] = Z0;
+						zstr[z[2]] = Z0;
+						zstr[z[3]] = Z0;
+						zstr[z[4]] = Z0;
+						zstr[z[5]] = Z0;
+						zstr[z[6]] = Z0;
+						zstr[z[7]] = Z0;
+						zstr[z[8]] = Z0;
+						zstr[z[9]] = Z0;
+						xval = 	( x[0] << 28 ) +
+										( x[1] << 24 ) +
+										( x[2] << 20 ) +
+										( x[3] << 16 ) +
+										( x[4] << 12 ) +
+										( x[5] <<  8 ) +
+										( x[6] <<  4 ) +
+											x[7];
+						if (xval <= 0x7F) {
+							zstr[z[0]] = xval;
+						} else if (xval <= 0x7FF) {
+							zstr[z[0]] = 0xC0 | (xval >> 6);
+							zstr[z[1]] = 0x80 | (xval & 0x3F);
+						} else if (xval <= 0xFFFF) {
+							zstr[z[0]] = 0xE0 | (xval >> 12);
+							zstr[z[1]] = 0x80 | ((xval >> 6) & 0x3F);
+							zstr[z[2]] = 0x80 | (xval & 0x3F);
+						} else if (xval <= 0x10FFFF) {
+							zstr[z[0]] = 0xF0 | (xval >> 18);
+							zstr[z[1]] = 0x80 | ((xval >> 12) & 0x3F);
+							zstr[z[2]] = 0x80 | ((xval >> 6) & 0x3F);
+							zstr[z[3]] = 0x80 | (xval & 0x3F);
+						}//fi
+					}//fi
+					break;
+			}//switch
+		}//fi
+	}//done
+
+	for (i=0,j=0; i < lnstr; i++) {
+		if (*pstr[i] != Z0){
+			str[j] = *pstr[i];
+			j++;
+		}
+	}
+	str[j]=Z0;
+	return str;
+}
+
+
