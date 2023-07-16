@@ -1,5 +1,9 @@
 #include "headers/escape.h"
 
+
+
+
+
 char *escape(char *str,char arstr[]){
 	UI32 lnstr  = strlen(str)+1;
 	UI32 lnzstr =	lnstr*2;
@@ -12,10 +16,10 @@ char *escape(char *str,char arstr[]){
 	UI32 z[16];
 	UI32 x[16];
 
-	UI32 i,j,k;
+	UI32 i,j;
 	UI32 o0,o1,o2;
 	UI32 xval;
-
+	// char *eval[]={'a','b','f',nNtvr01234567suUvxX'""'};
 	for (int i = 0; i < lnstr; i++) {
 		zstr[i*2] = str[i];
 		zstr[(i*2)+1] = Z0;
@@ -31,28 +35,16 @@ char *escape(char *str,char arstr[]){
 
 		if (zstr[z[0]] == '\\'){
 			switch (str[a[1]]){
-				case '\\':
-				break;
-				case 'r':
-					zstr[z[0]] = '\r';
-					zstr[z[1]] = Z0;
-					break;
-				case 'n':
-					zstr[z[0]] = '\n';
-					zstr[z[1]] = Z0;
-					break;
-				case 't':
-					zstr[z[0]] = '\t';
-					zstr[z[1]] = Z0;
-					break;
-				case 'v':
-					zstr[z[0]] = '\v';
-					zstr[z[1]] = Z0;
-					break;
-				case 'a':
-					zstr[z[0]] = '\a';
-					zstr[z[1]] = Z0;
-					break;
+				case '\\':					break;
+				case '\'':					zstr[z[0]] = '\'';					zstr[z[1]] = Z0;					break;
+				case '\"':					zstr[z[0]] = '\"';					zstr[z[1]] = Z0;					break;
+				case 'a':					zstr[z[0]] = '\a';					zstr[z[1]] = Z0;					break;
+				case 'b':					zstr[z[0]] = '\b';					zstr[z[1]] = Z0;					break;
+				case 'f':					zstr[z[0]] = '\f';					zstr[z[1]] = Z0;					break;
+				case 'n':					zstr[z[0]] = '\n';					zstr[z[1]] = Z0;					break;
+				case 't':					zstr[z[0]] = '\t';					zstr[z[1]] = Z0;					break;
+				case 'v':					zstr[z[0]] = '\v';					zstr[z[1]] = Z0;					break;
+				case 'r':					zstr[z[0]] = '\r';					zstr[z[1]] = Z0;					break;
 				case '0':
 				case '1':
 				case '2':
@@ -96,12 +88,9 @@ char *escape(char *str,char arstr[]){
 						sscanf(&zstr[z[4]],"%x",&x[2]) &&
 						sscanf(&zstr[z[5]],"%x",&x[3])
 						) {
-						zstr[z[0]] = Z0;
-						zstr[z[1]] = Z0;
-						zstr[z[2]] = Z0;
-						zstr[z[3]] = Z0;
-						zstr[z[4]] = Z0;
-						zstr[z[5]] = Z0;
+						for (int k=0; k<6;k++){
+							zstr[z[k]] = Z0;
+						}
 						xval = 	( x[0] << 12 ) +
 										( x[1] <<  8 ) +
 										( x[2] <<  4 ) +
@@ -124,56 +113,40 @@ char *escape(char *str,char arstr[]){
 					} //fi
 					break;
 				case 'U':
-					if (
-						sscanf(&zstr[z[2]],"%x",&x[0]) &&
-						sscanf(&zstr[z[3]],"%x",&x[1]) &&
-						sscanf(&zstr[z[4]],"%x",&x[2]) &&
-						sscanf(&zstr[z[5]],"%x",&x[3]) &&
-						sscanf(&zstr[z[6]],"%x",&x[4]) &&
-						sscanf(&zstr[z[7]],"%x",&x[5]) &&
-						sscanf(&zstr[z[8]],"%x",&x[6]) &&
-						sscanf(&zstr[z[9]],"%x",&x[7])
-						) {
-						zstr[z[0]] = Z0;
-						zstr[z[1]] = Z0;
-						zstr[z[2]] = Z0;
-						zstr[z[3]] = Z0;
-						zstr[z[4]] = Z0;
-						zstr[z[5]] = Z0;
-						zstr[z[6]] = Z0;
-						zstr[z[7]] = Z0;
-						zstr[z[8]] = Z0;
-						zstr[z[9]] = Z0;
-						xval = 	( x[0] << 28 ) +
-										( x[1] << 24 ) +
-										( x[2] << 20 ) +
-										( x[3] << 16 ) +
-										( x[4] << 12 ) +
-										( x[5] <<  8 ) +
-										( x[6] <<  4 ) +
-											x[7];
-						if (xval <= 0x7F) {
+					for (int k=2; k<9 ; k++){
+						if ((zstr[z[k]] = Z0) || !sscanf(&zstr[z[k]],"%x",&x[k-2]) ){
+							break;
+						}//fi
+						zstr[z[k]] = Z0;
+					}//done
+					xval = 	( x[0] << 28 ) +
+									( x[1] << 24 ) +
+									( x[2] << 20 ) +
+									( x[3] << 16 ) +
+									( x[4] << 12 ) +
+									( x[5] <<  8 ) +
+									( x[6] <<  4 ) +
+										x[7];
+					if (xval <= 0x7F) {
 							zstr[z[0]] = xval;
-						} else if (xval <= 0x7FF) {
+					} else if (xval <= 0x7FF) {
 							zstr[z[0]] = 0xC0 | (xval >> 6);
 							zstr[z[1]] = 0x80 | (xval & 0x3F);
-						} else if (xval <= 0xFFFF) {
+					} else if (xval <= 0xFFFF) {
 							zstr[z[0]] = 0xE0 | (xval >> 12);
 							zstr[z[1]] = 0x80 | ((xval >> 6) & 0x3F);
 							zstr[z[2]] = 0x80 | (xval & 0x3F);
-						} else if (xval <= 0x10FFFF) {
+					} else if (xval <= 0x10FFFF) {
 							zstr[z[0]] = 0xF0 | (xval >> 18);
 							zstr[z[1]] = 0x80 | ((xval >> 12) & 0x3F);
 							zstr[z[2]] = 0x80 | ((xval >> 6) & 0x3F);
 							zstr[z[3]] = 0x80 | (xval & 0x3F);
-						}//fi
 					}//fi
 					break;
 			}//switch
 		}//fi
 	}//done
-
-	for (i=0,j=0; i < lnstr; i++) {
+	for (i=0,j=0 ; i < lnstr; i++) {
 		if (*pstr[i] != Z0){
 			str[j] = *pstr[i];
 			j++;
@@ -182,5 +155,6 @@ char *escape(char *str,char arstr[]){
 	str[j]=Z0;
 	return str;
 }
+
 
 

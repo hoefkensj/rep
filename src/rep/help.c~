@@ -23,24 +23,24 @@ OPTIONS:\n\
     -v, --version     Show Version,About\n\
 \n\
 DOCS:\n\
-    <rep> and <str> may contain the following escape codes:\n\
-      \\                       Backslash\n\
-      \\a                      Alarm,Terminal Bell\n\
-      \\b                      Backspace\n\
-      \\f                      FormFeed\n\
-      \\n                      NewLine\n\
-      \\t                      Horizontal TAB\n\
-      \\v                      Vertical TAB\n\
-      \\r                      Carriage Return\n\
-      \\[0-7]{1,2,3}           Octal value (0-377)\n\
-      \\x[0-F]{2}              Hexadecimal value (BYTE)\n\
-      \\u                      Unicode (0000-FFFF)\n\
-      \\U                      Unicode (00000000-FFFFFFFF)\n\
+  Strings in arguments or options may contain the following escape codes:\n\
+  \\                       Backslash\n\
+  \\a                      Alarm,Terminal Bell\n\
+  \\b                      Backspace\n\
+  \\f                      FormFeed\n\
+  \\n                      NewLine\n\
+  \\t                      Horizontal TAB\n\
+  \\v                      Vertical TAB\n\
+  \\r                      Carriage Return\n\
+  \\[0-7]{1,2,3}           Octal value (0-377)\n\
+  \\x[0-F]{2}              Hexadecimal value (BYTE)\n\
+  \\u                      Unicode (0000-FFFF)\n\
+  \\U                      Unicode (00000000-FFFFFFFF)\n\
 \n\
-     This includes ANSI escape codes wich can be included using Octal(\\033) or Hexadecimal (\\x1b) escape codes.\n\
-     All Arguments support output from a subshell and the program can be run in one.\n\
-     This supports outputting to arguments of printf, or to the programs own arguments.\n\
-      \n\
+  This includes ANSI escape codes wich can be included using Octal(\\033) or Hexadecimal (\\x1b) escape codes.\n\
+  All Arguments support output from a subshell and the program can be run in one.\n\
+  This supports outputting to arguments of printf, or to the programs own arguments.\n\
+  \n\
 \n\
 "
 char *strUsage=USAGE;
@@ -53,12 +53,12 @@ char *about(char *strAbout){
 	char *kv[32];
 	char *aAb[6]={*kv,*kv,*kv,*kv,*kv,*kv};
 
-	printf(mask,0  ,"VERSION:" ,12 ,VERSION,"");
-	printf(mask,42 ,"DATE:   " ,54 ,DATE   ,"\n");
-	printf(mask,0  ,"GIT:    " ,12 ,GITHUB,"");
-	printf(mask,42 ,"REPO:   " ,54 ,REPO   ,"\n");
-	printf(mask,0  ,"AUTHORS:" ,12 ,AUTHOR,"");
-	printf(mask,42 ,"LICENSE:" ,54 ,LICENSE   ,"\n");
+	printf(mask,0  ,"VERSION" ,12 ,VERSION,"");
+	printf(mask,42 ,"DATE   " ,54 ,DATE   ,"\n");
+	printf(mask,0  ,"GIT    " ,12 ,GITHUB,"");
+	printf(mask,42 ,"REPO   " ,54 ,REPO   ,"\n");
+	printf(mask,0  ,"AUTHORS" ,12 ,AUTHOR,"");
+	printf(mask,42 ,"LICENSE" ,54 ,LICENSE   ,"\n");
 	printf(strAbout,"%s%s%s%s%s%s",aAb[0],aAb[1],aAb[2],aAb[3],aAb[4],aAb[5]);
 	// printf("%i",(int) strlen(strAbout));
 	return strAbout;
