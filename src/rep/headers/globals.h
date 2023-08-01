@@ -1,7 +1,9 @@
 #pragma once
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #define AUTHOR  "Hoefkens Jeroen      "
 #define EMAIL   "Hoefkens.J@gmail.com "
@@ -17,9 +19,12 @@
 typedef unsigned int UI32;
 typedef struct ARGS{
 	UI32 n;
-	char *rep;
+	UI32 w;
+	char *bgn;
 	char *pfx;
+	char *rep;
 	char *sfx;
 	char *cat;
+	char *end;
 }ARGS;
 
