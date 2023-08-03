@@ -96,7 +96,8 @@
 // 						}
 // 						xval = 	( x[0] << 12 ) +
 // 										( x[1] <<  8 ) +
-// 										( x[2] <<  4 ) +
+// 										( x[2] <<  4 ) +#!/usr/bin/env bash
+
 // 										x[3];
 // 						if (xval <= 0x7F) {
 // 							zstr[z[0]] = xval;
@@ -161,35 +162,32 @@
 
 
 char *escape(char *str){
-	printf("pointer: %p\tInt: %d\tchar: %c\tstring: %s\n",str,(int)str[0],str[0],str);
+	// printf("pointer: %p\tInt: %d\tchar: %c\tstring: %s\n",str,(int)str[0],str[0],str);
 	UI32 lnstr  = strlen(str);
-	char *pstr[lnstr];
+	char nstr[lnstr];
 	char O[6] = {Z0,Z0,Z0,Z0,Z0,Z0};
 	char X[8] = {Z0,Z0,Z0,Z0,Z0,Z0,Z0,Z0};
 	UI32 o[3];
 	UI32 x[8];
 	UI32 i,j,idx ;
-
-	for (idx=0,i=0,j=0;lnstr+1;idx++){
-		if (str[idx] == '\\'){
-		// printf("i: %d\tJ: %d\tpointer: %p\tchar: %c\tstring: %s\n",i,j,pstr[i],str[i],str);
-			switch (str[idx++]){
-					case 'n':
-						str[j] = '\n';
-						pstr[++i]=&str[j];
-						j++;
-						break;
-			}
-		}else{
-		pstr[i]=&str[j];
-		}
-		j++;i++;
-
-		printf("i: %d\tJ: %d\tpointer: %p\tchar: %c\tstring: %s\n",i,j,pstr[i],str[i],str);
+	i=0;j=0;
+	for (idx=0;idx<(lnstr+1);idx++){
+		nstr[idx]=str[idx];
+		printf("%d", idx);
+		// if (str[i] == '\\'){
+			// switch (str[i+1]){
+					// case 'n':
+						// nstr[j++] = '\n';
+						// break;
+			// }
+		// }else{
+		// nstr[j++]=str[i];
+		// }
+	}
+	// printf("i: %d\tJ: %d\tnew %s\tchar: %s\tstring: %s\n",i,j,&nstr[i],&str[i],str);
 		// if (*pstr[i] == '\\'){
-	lnstr--;
 
-	}//done
+	//done
 
 	// char *eval[]={'a','b','f',ntvr01234567suUvxX'""'};
 	// for (i = 0; i < lnstr; i++) pstr[i]  = &str[i];

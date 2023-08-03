@@ -7,7 +7,7 @@ extern char *strUsage;
 extern char *strAbout;
 extern char *strHelp;
 int main(int argc, char *argv[]);
-UI32 readPipe(ARGS *args);
+char *readPipe(char *rep);
 UI32 Option(char *sopt,char *lopt ,char *arg );
 
 UI32 parseArgs(UI32 argc, char **argv,ARGS *args);

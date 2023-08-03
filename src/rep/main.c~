@@ -14,16 +14,12 @@ int main(int argc, char *argv[]) {
 	args.cat = "";
 	args.end = "";
 	if (!isatty(fileno(stdin))){
-		ret_code+=readPipe(&args);
+		args.rep=readPipe(args.rep);
 	}
-	// ret_code+=parseArgs(argc, argv , &args);
-
-	// repeat(args);
-	// returnCode(ret_code,argv[0]);
 	return return_code;
 }//main
 
-UI32 readPipe(ARGS *args){
+char *readPipe(char* rep){
 	UI32 ret_code = 0;
   ssize_t sRead = 0;
 	char *pipe =	malloc(0);
@@ -35,29 +31,12 @@ UI32 readPipe(ARGS *args){
 	while (cIn!=Z0){
 		cIn = getchar();
 		if (cIn=='\n') cIn = Z0;
-		// cIn[strcspn(&cIn, "\n")] = '\0';
 		pPipe=realloc(pipe,sRead);
 		pipe[sRead++]=cIn;
-		// if (sRead > 20) break;
 	}
-	// strcpy(args->rep,pipe);
-	// pPipe=realloc(args->rep,sRead);
-	// for (UI32 i=0;i<sRead;i++){
-		// args->rep[i]=pipe[i];
-	// }
-	pipe[sRead++]=Z0;
-
-	args->rep=escape(pPipe);
-
-	// args->rep=pPipe;
+	rep=pPipe;
 	// free(pipe);
-	printf("rep:\t%s\n",args->rep);
-	if (sRead > 1) ret_code+=(1<<0);
-
-
-	free(pipe);
-
-	return ret_code;
+	return
 }
 
 UI32 Option(char *sopt,char *lopt ,char *arg ){ return !( strcmp(arg, sopt ) && strcmp(arg, lopt ));}
