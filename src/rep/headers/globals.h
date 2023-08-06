@@ -17,9 +17,10 @@
 #define Z0 '\0'
 
 typedef unsigned int UI32;
+
 typedef struct ARGS{
-	UI32 n;
-	UI32 w;
+	UI32 num;
+	UI32 col;
 	char *bgn;
 	char *pfx;
 	char *rep;

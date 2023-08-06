@@ -171,10 +171,21 @@ char *escape(char *str){
 	UI32 x[8];
 	UI32 i,j,idx ;
 	i=0;j=0;
-	// for (idx=0;idx<(lnstr+1);idx++){
+	for (i=0;i<lnstr;i++){
+
 	// 	nstr[idx]=str[idx];
 	// 	printf("%d", idx);
-	// 	// if (str[i] == '\\'){
+		if (str[i] == '\\'){
+			switch (str[i+1]){
+					case 'n':
+						nstr[j] = '\n';
+						j++;
+						break;
+			}
+		}else{
+			nstr[j]=str[i];
+			j++;
+		}
 	// 		// switch (str[i+1]){
 	// 				// case 'n':
 	// 					// nstr[j++] = '\n';
@@ -186,7 +197,7 @@ char *escape(char *str){
 	// }
 	// printf("i: %d\tJ: %d\tnew %s\tchar: %s\tstring: %s\n",i,j,&nstr[i],&str[i],str);
 		// if (*pstr[i] == '\\'){
-
+	}//done
 	//done
 
 	// char *eval[]={'a','b','f',ntvr01234567suUvxX'""'};
