@@ -165,18 +165,16 @@ char *escape(char str[]){
 
 	// printf("pointer: %p\tInt: %d\tchar: %c\tstring: %s\n",str,(int)str[0],str[0],str);
 	UI32 lnstr  = strlen(str)+1;
-	char *nstr[lnstr];
 	char O[6] = {Z0,Z0,Z0,Z0,Z0,Z0};
 	char X[8] = {Z0,Z0,Z0,Z0,Z0,Z0,Z0,Z0};
-	char U[8] = {Z0,Z0,Z0,Z0,Z0,Z0,Z0,Z0};
+	char U[12] = {Z0,Z0,Z0,Z0,Z0,Z0,Z0,Z0,Z0,Z0,Z0,Z0};
 	UI32 o[3];
 	UI32 x[8];
 	UI32 u[8];
-
-	// 'a','b','f',n t v r
-	//  01234567 s uU  xX'""'
+	UI32 xval;
 	UI32 i,j;
-	i=0;j=0;
+
+	j=0;
 	for (i=0;i<=lnstr;i++){
 		if (str[i] == '\\'){
 			switch (str[i+1]){
@@ -241,75 +239,109 @@ char *escape(char str[]){
 				case 'X':
 					X[0] =str[i+2];
 					X[2] =str[i+3];
-					// printf("pointer: %p\tInt: %d\tchar: %c\tstring: %s\n",str,(int)str[i],str[i],str);
 					if ( sscanf( &X[0],"%x", &x[0] ) ){
-							if ( sscanf( &X[2],"%x", &x[1] ) ){
-								str[j++] = (x[0]*16) + (x[1]);
-								X[4] =str[i+4];
-								X[6] =str[i+5];
-								if ( sscanf( &X[4],"%x", &x[2] ) ){
-									if ( sscanf( &X[6],"%x", &x[3] ) ){
-										str[j-1] = (x[0]*16*16*16) + (x[1]*16*16) + (x[2]*16) + (x[3]);
-										i=i+2;
-									}//fi
+						if ( sscanf( &X[2],"%x", &x[1] ) ){
+							str[j++] = (x[0]*16) + (x[1]);
+							X[4] =str[i+4];
+							X[6] =str[i+5];
+							if ( sscanf( &X[4],"%x", &x[2] ) ){
+								if ( sscanf( &X[6],"%x", &x[3] ) ){
+									str[j-1] = (x[0]*16*16*16) + (x[1]*16*16) + (x[2]*16) + (x[3]);
+									i=i+2;
 								}//fi
-								i=i+2;
-							} //fi
-							i++;
-					} //fi
-					break;
-				case 'u':
-					printf("-------------------------\n\n%c",str[i]);
-
-					U[0] = str[i+2];
-					printf("%c",U[0]);
-					U[2] = str[i+3];
-					printf("%c",U[2]);
-					U[4] = str[i+4];
-					printf("%c",U[4]);
-					U[6] = str[i+5];
-					printf("%c",U[6]);
-
-					if (
-						sscanf( &U[0],"%x",&u[0]) &&
-						sscanf( &U[2],"%x",&u[1]) &&
-						sscanf( &U[4],"%x",&u[2]) &&
-						sscanf( &U[6],"%x",&u[3])){
-						printf("%d  ", u[0]);
-						printf("%d  ", u[1]);
-						printf("%d  ", u[2]);
-						printf("%d  \n", u[3]);
-						UI32 xval;
-						xval = 	( u[0] *16*16*16 ) +
-										( u[1] *16*16 ) +
-										( u[2] *16 ) +
-										( u[3]);
-						if (xval <= 0x7F) {
-							str[j] = xval;
-						} else if (xval <= 0x7FF) {
-							str[j]   = 0xC0 | (xval >> 6);
-							str[j+1] = 0x80 | (xval & 0x3F);
-						} else if (xval <= 0xFFFF) {
-							str[j]   = 0xE0 | (xval >> 12);
-							str[j+1] = 0x80 | ((xval >> 6) & 0x3F);
-							str[j+2] = 0x80 | (xval & 0x3F);
-						} else if (xval <= 0x10FFFF) {
-							str[j]   = 0xF0 | (xval >> 18);
-							str[j+1] = 0x80 | ((xval >> 12) & 0x3F);
-							str[j+2] = 0x80 | ((xval >> 6) & 0x3F);
-							str[j+3] = 0x80 | (xval & 0x3F);
+							}//fi
+							i=i+2;
 						} //fi
+						i++;
 					} //fi
-					i=i+5;
 					break;
-			}//switch
-		} else {
-			str[j++]=str[i];
-			// printf("%c" , str[j]);
+	// 			case 'u':
+	// 				U[0] = str[i+2];
+	// 				U[2] = str[i+3];
+	// 				U[4] = str[i+4];
+	// 				U[6] = str[i+5];
+	// 				if (
+	// 					sscanf( &U[0],"%x",&u[0]) &&
+	// 					sscanf( &U[2],"%x",&u[1]) &&
+	// 					sscanf( &U[4],"%x",&u[2]) &&
+	// 					sscanf( &U[6],"%x",&u[3])){
+	// 					xval = 	( u[0] *16*16*16 ) +
+	// 									( u[1] *16*16 ) +
+	// 									( u[2] *16 ) +
+	// 									( u[3]);
+	// 					if (xval <= 0x7F) {
+	// 						str[j] = xval;
+	// 					} else if (xval <= 0x7FF) {
+	// 						str[j]   = 0xC0 | (xval >> 6);
+	// 						str[j+1] = 0x80 | (xval & 0x3F);
+	// 					} else if (xval <= 0xFFFF) {
+	// 						str[j]   = 0xE0 | (xval >> 12);
+	// 						str[j+1] = 0x80 | ((xval >> 6) & 0x3F);
+	// 						str[j+2] = 0x80 | (xval & 0x3F);
+	// 					} else if (xval <= 0x10FFFF) {
+	// 						str[j]   = 0xF0 | (xval >> 18);
+	// 						str[j+1] = 0x80 | ((xval >> 12) & 0x3F);
+	// 						str[j+2] = 0x80 | ((xval >> 6) & 0x3F);
+	// 						str[j+3] = 0x80 | (xval & 0x3F);
+	// 					} //fi
+	// 				} //fi
+	// 				i=i+5;
+	// 				break;
+	// 		}//switch
+	// 	} else {
+	// 		str[j++]=str[i];
+	// 	} //fi
+	// }//done
+	// return str;
+case 'u':
+                    U[0] = str[i + 2];
+                    U[2] = str[i + 3];
+                    U[4] = str[i + 4];
+                    U[6] = str[i + 5];
+                    U[8] = str[i + 6];
+                    U[10] = str[i + 7]; // Additional two digits for the Unicode escape sequence
+                    if (sscanf(&U[0], "%x", &u[0]) &&
+                        sscanf(&U[2], "%x", &u[1]) &&
+                        sscanf(&U[4], "%x", &u[2]) &&
+                        sscanf(&U[6], "%x", &u[3]) &&
+                        sscanf(&U[8], "%x", &u[4]) &&
+                        sscanf(&U[10], "%x", &u[5])) { // Handle six hexadecimal digits
+                        xval = (u[0] << 20) | (u[1] << 16) | (u[2] << 12) | (u[3] << 8) | (u[4] << 4) | u[5];
+                        if (xval <= 0x7F) {
+                            str[j] = xval;
+                        }
+                        else if (xval <= 0x7FF) {
+                            str[j] = 0xC0 | (xval >> 6);
+                            str[j + 1] = 0x80 | (xval & 0x3F);
+                            j++;
+                        }
+                        else if (xval <= 0xFFFF) {
+                            str[j] = 0xE0 | (xval >> 12);
+                            str[j + 1] = 0x80 | ((xval >> 6) & 0x3F);
+                            str[j + 2] = 0x80 | (xval & 0x3F);
+                            j += 2;
+                        }
+                        else if (xval <= 0x10FFFF) {
+                            str[j] = 0xF0 | (xval >> 18);
+                            str[j + 1] = 0x80 | ((xval >> 12) & 0x3F);
+                            str[j + 2] = 0x80 | ((xval >> 6) & 0x3F);
+                            str[j + 3] = 0x80 | (xval & 0x3F);
+                            j += 3;
+                        }
+                    }
+                    i += 5; // Skip the six characters representing the Unicode escape sequence
+                    break;
+            }//switch
+        }
+        else {
+            str[j++] = str[i];
+        }
+    }
+    str[j] = Z0; // Null-terminate the modified string
+    return str;
 
+			}
 
-		} //fi
-	}
 
 	// str=*nstr;
 	// 	*arg[i] = str[i];
@@ -444,8 +476,3 @@ char *escape(char str[]){
 	// 		str[k]=Z0;
 	// }
 	// char *pnstr=nstr;
-
-	return str;
-}
-
-
