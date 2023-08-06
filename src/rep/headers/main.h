@@ -7,6 +7,9 @@ extern char *strUsage;
 extern char *strAbout;
 extern char *strHelp;
 int main(int argc, char *argv[]);
+void repeat(ARGS args);
+void print(char *str);
+
 ARGS args;
 
 

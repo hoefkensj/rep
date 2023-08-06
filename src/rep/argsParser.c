@@ -1,39 +1,40 @@
 #include "headers/argsParser.h"
-char *flags[][3] = {{"-h", "--???", "--help",   },
-										{"-v", "--ver", "--version" }};
 
-char *opts[][3]  = {{"-n", "--num", "--number"  },
-                    {"-w", "--col", "--colums"  },
-                    {"-b", "--bgn", "--begin"   },
-                    {"-p", "--pfx", "--prefix"  },
-                    {"-r", "--rep", "--repeat"  },
-                    {"-s", "--sfx", "--suffix"  },
-                    {"-c", "--cat", "--concat"  },
-                    {"-e", "--end", "--last"    }};
+char *flags[][3] = {
+	{"-h", "--???", "--help",   },
+	{"-v", "--ver", "--version" }};
+
+char *opts[][3]  = {
+	{"-n", "--num", "--number"  },
+	{"-w", "--col", "--colums"  },
+	{"-b", "--bgn", "--begin"   },
+	{"-p", "--pfx", "--prefix"  },
+	{"-r", "--rep", "--repeat"  },
+	{"-s", "--sfx", "--suffix"  },
+	{"-c", "--cat", "--concat"  },
+	{"-e", "--end", "--last"    }};
+
 UI32 readPipe(ARGS *args,UI32 rcode){
   UI32 sRead = 0;
 	UI32 sAlloc = 1;
 	char *pipe =	malloc(sAlloc);
-	char cIn = Z0; //Z0 = '\0'
-
+	char cIn = Z0;
   // sPipe = getline(&pipe, &len, stdin);
 	while ((cIn=getchar())!=EOF){
-		// pPipe=realloc(pipe,++sRead);
-		// printf("allocated :%i\n",++sAlloc);
 		char *pPipe = realloc(pipe,sAlloc);
 		if (pPipe==NULL){
 			rcode=(rcode & (1<<31));
 			break;
-			}//fi
+		}//fi
 		pipe=pPipe;
 		pipe[sRead]=cIn;
 		sRead++;
-	}
+	}//while
 	args->rep=pipe;
 	rcode += (1<<4);
 	rcode += (1<<29);
 	return rcode;
-}
+}//readPipe
 
 UI32 isOption(char *opt[3] ,char *arg ){
 	return !(
@@ -41,22 +42,7 @@ UI32 isOption(char *opt[3] ,char *arg ){
 		strcmp(arg, opt[1] ) &&
 		strcmp(arg, opt[2] )
 	);
-} // Option
-
-void print_binary(unsigned int number)
-{
-    if (number >> 1) {
-        print_binary(number >> 1);
-    }
-    putc((number & 1) ? '1' : '0', stdout);
-}
-
-void print_bin(unsigned int number){
-  for (int i = 31; i>=0 ; i--){
-		putc((number & (1<<i)) ? '1' : '0', stdout);
-	}
-}
-
+} //isOption
 
 UI32 parseArgs(UI32 argc, char **argv, ARGS *args,UI32 rcode) {
 
@@ -79,25 +65,25 @@ UI32 parseArgs(UI32 argc, char **argv, ARGS *args,UI32 rcode) {
 			args->bgn = escape(argv[++i]);
 			rcode += (1<<2);
 		}else if ( isOption( opts[3], argv[i])) {
-			args->pfx = ( argv[++i]);
+			args->pfx = escape(argv[++i]);
 			rcode += (1<<3);
 		}else if ( isOption( opts[4], argv[i])) {
 			if ( !(rcode & (1<<4)) ) {
-				args->rep = ( argv[++i]);
+				args->rep =  escape( argv[++i]);
 				rcode += (1<<4);
 			}//fi
 		}else if ( isOption( opts[5], argv[i])) {
-			args->sfx = ( argv[++i]);
+			args->sfx = escape( argv[++i]);
 			rcode += (1<<5);
 		}else if ( isOption( opts[6], argv[i])) {
-			args->cat = ( argv[++i]);
+			args->cat = escape( argv[++i]);
 			rcode += (1<<6);
 		}else if ( isOption( opts[7], argv[i])) {
-			args->end = ( argv[++i]);
+			args->end = escape( argv[++i]);
 			rcode += (1<<7);
 		}else {
 			if (!(rcode &(1<<4))) {
-				args->rep = argv[i];
+				args->rep = escape(argv[i]);
 				rcode += (1<<4);
 			} else if ( !( rcode&(1<<0) )) {
 				args->num = atol( argv[i] );
@@ -105,8 +91,5 @@ UI32 parseArgs(UI32 argc, char **argv, ARGS *args,UI32 rcode) {
 			} //fi
 		}//fi
 	}//done
-	// printf("\nrcode: %i\nhv----------------------ecsrpbwn\n",rcode);
-	// print_bin(rcode);
-	// printf("\n");
 	return rcode;
 } //parseArgs
