@@ -19,7 +19,7 @@ UI32 readPipe(ARGS *args,UI32 rcode){
   // sPipe = getline(&pipe, &len, stdin);
 	while ((cIn=getchar())!=EOF){
 		// pPipe=realloc(pipe,++sRead);
-		printf("allocated :%i\n",++sAlloc);
+		// printf("allocated :%i\n",++sAlloc);
 		char *pPipe = realloc(pipe,sAlloc);
 		if (pPipe==NULL){
 			rcode=(rcode & (1<<31));
@@ -76,7 +76,7 @@ UI32 parseArgs(UI32 argc, char **argv, ARGS *args,UI32 rcode) {
 				rcode += (1<<1);
 			}//fi
 		}else if ( isOption( opts[2], argv[i])) {
-			args->bgn = ( argv[++i] );
+			args->bgn = escape(argv[++i]);
 			rcode += (1<<2);
 		}else if ( isOption( opts[3], argv[i])) {
 			args->pfx = ( argv[++i]);
@@ -104,9 +104,9 @@ UI32 parseArgs(UI32 argc, char **argv, ARGS *args,UI32 rcode) {
 				rcode += (1<<0);
 			} //fi
 		}//fi
-	printf("\nrcode: %i\nhv----------------------ecsrpbwn\n",rcode);
-	print_bin(rcode);
-	printf("\n");
 	}//done
+	// printf("\nrcode: %i\nhv----------------------ecsrpbwn\n",rcode);
+	// print_bin(rcode);
+	// printf("\n");
 	return rcode;
 } //parseArgs

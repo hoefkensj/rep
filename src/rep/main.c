@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
 
 	if (!isatty(fileno(stdin))){
 		return_code=readPipe(&args,return_code);
-		printf("b:%s\tp:%s\n",args.bgn,args.pfx) ;
+		// printf("b:%s\tp:%s\n",args.bgn,args.pfx) ;
 	}
 	return_code=parseArgs(argc,argv,&args,return_code);
 	printf(ARGSPRINT, args.num,args.col,args.bgn,args.pfx,args.rep,args.sfx,args.cat,args.end);

@@ -5,14 +5,4 @@ UI32 readPipe(ARGS *args,UI32 rcode);
 UI32 isOption(char *opt[3], char *arg);
 UI32 parseArgs(UI32 argc, char **argv,ARGS *args,UI32 rcode);
 
-char *flags[][3] = {{"-h", "--???", "--help",   },
-										{"-v", "--ver", "--version" }};
 
-char *opts[][3]  = {{"-n", "--num", "--number"  },
-                    {"-w", "--col", "--colums"  },
-                    {"-b", "--bgn", "--begin"   },
-                    {"-p", "--pfx", "--prefix"  },
-                    {"-r", "--rep", "--repeat"  },
-                    {"-s", "--sfx", "--suffix"  },
-                    {"-c", "--cat", "--concat"  },
-                    {"-e", "--end", "--last"    }};

@@ -29,6 +29,8 @@ int main(int argc, char *argv[]) {
 	}
 	return_code=parseArgs(argc,argv,&args,return_code);
 	printf(ARGSPRINT, args.num,args.col,args.bgn,args.pfx,args.rep,args.sfx,args.cat,args.end);
+
+
 	if (return_code & (1<<29)){
 		free(args.rep);
 	}

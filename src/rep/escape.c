@@ -161,31 +161,174 @@
 // }
 
 
-char *escape(char *str){
+char *escape(char str[]){
+
 	// printf("pointer: %p\tInt: %d\tchar: %c\tstring: %s\n",str,(int)str[0],str[0],str);
-	UI32 lnstr  = strlen(str);
-	char nstr[lnstr];
+	UI32 lnstr  = strlen(str)+1;
+	char *nstr[lnstr];
 	char O[6] = {Z0,Z0,Z0,Z0,Z0,Z0};
 	char X[8] = {Z0,Z0,Z0,Z0,Z0,Z0,Z0,Z0};
+	char U[8] = {Z0,Z0,Z0,Z0,Z0,Z0,Z0,Z0};
 	UI32 o[3];
 	UI32 x[8];
-	UI32 i,j,idx ;
-	i=0;j=0;
-	for (i=0;i<lnstr;i++){
+	UI32 u[8];
 
-	// 	nstr[idx]=str[idx];
-	// 	printf("%d", idx);
+	// 'a','b','f',n t v r
+	//  01234567 s uU  xX'""'
+	UI32 i,j;
+	i=0;j=0;
+	for (i=0;i<=lnstr;i++){
 		if (str[i] == '\\'){
 			switch (str[i+1]){
-					case 'n':
-						nstr[j] = '\n';
-						j++;
-						break;
-			}
-		}else{
-			nstr[j]=str[i];
-			j++;
-		}
+				case '\\':                           break;
+				case '\'': str[j] = '\''; i=i+1;j++; break;
+				case '\"': str[j] = '\"'; i=i+1;j++; break;
+				case 'a' : str[j] = '\a'; i=i+1;j++; break;
+				case 'b' : str[j] = '\b'; i=i+1;j++; break;
+				case 'f' : str[j] = '\f'; i=i+1;j++; break;
+				case 'n' : str[j] = '\n'; i=i+1;j++; break;
+				case 'r':  str[j] = '\r'; i=i+1;j++; break;
+				case 't':  str[j] = '\t'; i=i+1;j++; break;
+				case 'v':  str[j] = '\v'; i=i+1;j++; break;
+				case 'o':
+				case 'O':
+					O[0] = str[i+2];
+					O[2] = str[i+3];
+					O[4] = str[i+4];
+					if ( sscanf( &O[0],"%o", &o[0] ) ){
+							str[j++] = o[0];
+							if ( sscanf( &O[2],"%o", &o[1] ) ){
+								str[j-1] = (o[0]*8) + o[1];
+								if ( sscanf( &O[4],"%o", &o[2] ) ){
+									if (o[0] < 4 ){
+										str[j-1] = (o[0]*8*8) + (o[1]*8) + o[2];
+										i++;
+									}//fi
+								}//fi
+								i++;
+							}//fi
+							i++;
+					}//fi
+					i++;
+					break;
+				case '0':
+				case '1':
+				case '2':
+				case '3':
+				case '4':
+				case '5':
+				case '6':
+				case '7':
+					O[0] = str[i+1];
+					O[2] = str[i+2];
+					O[4] = str[i+3];
+					if ( sscanf( &O[0],"%o", &o[0] ) ){
+						str[j++] = o[0];
+						if ( sscanf( &O[2],"%o", &o[1] ) ){
+							str[j-1] = (o[0]*8) + o[1];
+							if ( sscanf( &O[4],"%o", &o[2] ) ){
+								if (o[0] < 4 ){
+									str[j-1] = (o[0]*8*8) + (o[1]*8) + o[2];
+									i++;
+								}//fi
+							}//fi
+							i++;
+						}//fi
+						i++;
+					}//fi
+					break;
+				case 'x':
+				case 'X':
+					X[0] =str[i+2];
+					X[2] =str[i+3];
+					// printf("pointer: %p\tInt: %d\tchar: %c\tstring: %s\n",str,(int)str[i],str[i],str);
+					if ( sscanf( &X[0],"%x", &x[0] ) ){
+							if ( sscanf( &X[2],"%x", &x[1] ) ){
+								str[j++] = (x[0]*16) + (x[1]);
+								X[4] =str[i+4];
+								X[6] =str[i+5];
+								if ( sscanf( &X[4],"%x", &x[2] ) ){
+									if ( sscanf( &X[6],"%x", &x[3] ) ){
+										str[j-1] = (x[0]*16*16*16) + (x[1]*16*16) + (x[2]*16) + (x[3]);
+										i=i+2;
+									}//fi
+								}//fi
+								i=i+2;
+							} //fi
+							i++;
+					} //fi
+					break;
+				case 'u':
+					printf("-------------------------\n\n%c",str[i]);
+
+					U[0] = str[i+2];
+					printf("%c",U[0]);
+					U[2] = str[i+3];
+					printf("%c",U[2]);
+					U[4] = str[i+4];
+					printf("%c",U[4]);
+					U[6] = str[i+5];
+					printf("%c",U[6]);
+
+					if (
+						sscanf( &U[0],"%x",&u[0]) &&
+						sscanf( &U[2],"%x",&u[1]) &&
+						sscanf( &U[4],"%x",&u[2]) &&
+						sscanf( &U[6],"%x",&u[3])){
+						printf("%d  ", u[0]);
+						printf("%d  ", u[1]);
+						printf("%d  ", u[2]);
+						printf("%d  \n", u[3]);
+						UI32 xval;
+						xval = 	( u[0] *16*16*16 ) +
+										( u[1] *16*16 ) +
+										( u[2] *16 ) +
+										( u[3]);
+						if (xval <= 0x7F) {
+							str[j] = xval;
+						} else if (xval <= 0x7FF) {
+							str[j]   = 0xC0 | (xval >> 6);
+							str[j+1] = 0x80 | (xval & 0x3F);
+						} else if (xval <= 0xFFFF) {
+							str[j]   = 0xE0 | (xval >> 12);
+							str[j+1] = 0x80 | ((xval >> 6) & 0x3F);
+							str[j+2] = 0x80 | (xval & 0x3F);
+						} else if (xval <= 0x10FFFF) {
+							str[j]   = 0xF0 | (xval >> 18);
+							str[j+1] = 0x80 | ((xval >> 12) & 0x3F);
+							str[j+2] = 0x80 | ((xval >> 6) & 0x3F);
+							str[j+3] = 0x80 | (xval & 0x3F);
+						} //fi
+					} //fi
+					i=i+5;
+					break;
+			}//switch
+		} else {
+			str[j++]=str[i];
+			// printf("%c" , str[j]);
+
+
+		} //fi
+	}
+
+	// str=*nstr;
+	// 	*arg[i] = str[i];
+	// 	// if (nstr[i] == '\\'){
+	// 	// 	// switch (nstr[i+1]){
+	// 	// 	// 		case '\\':                           break;
+	// 	// 	// 		case '\'': *arg[j] = '\''; j++;  break;
+	// 	// 	// 		case '\"': *arg[j] = '\"'; j++;  break;
+	// 	// 	// 		case 'a' : *arg[j] = '\a'; j++;  break;
+	// 	// 	// 		case 'b' : *arg[j] = '\b'; j++;  break;
+	// 	// 	// 		case 'f' : *arg[j] = '\f'; j++;  break;
+	// 	// 	// 		case 'n' : *arg[j] = '\n'; j++;i++;  break;
+	// 	// 	*arg[j]=nstr[i++];
+	// 	// 	j++;
+	// 	// }else{
+	// 	// 	*arg[j]=nstr[i];
+	// 	// 	j++;
+	// 	// }
+	// 	printf("%s\n%s\n",str,*arg);
 	// 		// switch (str[i+1]){
 	// 				// case 'n':
 	// 					// nstr[j++] = '\n';
@@ -197,7 +340,7 @@ char *escape(char *str){
 	// }
 	// printf("i: %d\tJ: %d\tnew %s\tchar: %s\tstring: %s\n",i,j,&nstr[i],&str[i],str);
 		// if (*pstr[i] == '\\'){
-	}//done
+	// }//done
 	//done
 
 	// char *eval[]={'a','b','f',ntvr01234567suUvxX'""'};
@@ -269,7 +412,7 @@ char *escape(char *str){
 	// 			case '4':
 	// 			case '5':
 	// 			case '6':
-	// 			case '7':
+	// 			case '7':xrdp xorgxrdp
 	// 				O[0] = str[i+1];
 	// 				O[2] = str[i+2];
 	// 				O[4] = str[i+3];
@@ -300,6 +443,7 @@ char *escape(char *str){
 	// for (int k=j;k<i;k++){
 	// 		str[k]=Z0;
 	// }
+	// char *pnstr=nstr;
 
 	return str;
 }

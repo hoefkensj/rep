@@ -2,7 +2,6 @@
 #include "globals.h"
 #include "argsParser.h"
 // #include "help.h"
-// #include "escape.h"
 
 extern char *strUsage;
 extern char *strAbout;
