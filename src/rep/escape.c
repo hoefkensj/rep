@@ -1,5 +1,88 @@
 #include "headers/escape.h"
 
+
+static void octal(char str[], UI32 *i, UI32 *j) {
+    char O[6] = { Z0, Z0, Z0, Z0, Z0, Z0 };
+    UI32 o[3];
+
+    O[0] = str[*i + 2];
+    O[2] = str[*i + 3];
+    O[4] = str[*i + 4];
+    if (sscanf(&O[0], "%o", &o[0])) {
+        str[(*j)++] = o[0];
+        if (sscanf(&O[2], "%o", &o[1])) {
+            str[(*j) - 1] = (o[0] * 8) + o[1];
+            if (sscanf(&O[4], "%o", &o[2])) {
+                if (o[0] < 4) {
+                    str[(*j) - 1] = (o[0] * 8 * 8) + (o[1] * 8) + o[2];
+                    (*i)++;
+                }//fi
+            }//fi
+            (*i)++;
+        }//fi
+        (*i)++;
+    }//fi
+}//octal
+
+static void hex(char str[], UI32 *i, UI32 *j) {
+    char X[8] = { Z0, Z0, Z0, Z0, Z0, Z0, Z0, Z0 };
+    UI32 x[8];
+    UI32 xval;
+
+    X[0] = str[*i + 2];
+    X[2] = str[*i + 3];
+    if (sscanf(&X[0], "%x", &x[0])) {
+        if (sscanf(&X[2], "%x", &x[1])) {
+            str[(*j)++] = (x[0] * 16) + (x[1]);
+            X[4] = str[*i + 4];
+            X[6] = str[*i + 5];
+            if (sscanf(&X[4], "%x", &x[2])) {
+                if (sscanf(&X[6], "%x", &x[3])) {
+                    str[(*j) - 1] = (x[0] * 16 * 16 * 16) + (x[1] * 16 * 16) + (x[2] * 16) + (x[3]);
+                    (*i) += 2;
+                }//fi
+            }//fi
+            (*i) += 2;
+        }//fi
+        (*i)++;
+    }//fi
+}//hex
+
+static void unicode(char str[], UI32 *i, UI32 *j, char U[], UI32 len) {
+    UI32 x[8];
+    UI32 xval;
+
+    for (UI32 k = 0; k < len; k += 2) {
+        U[k] = str[*i + k];
+        U[k + 1] = str[*i + k + 1];
+    }
+
+    if (
+        sscanf(&U[0], "%x", &x[0]) && sscanf(&U[2], "%x", &x[1]) &&
+        sscanf(&U[4], "%x", &x[2]) && sscanf(&U[6], "%x", &x[3])
+    ) {
+        (*i) += len - 1;
+        xval = (x[0] << 12) + (x[1] << 8) + (x[2] << 4) + (x[3]);
+        if (xval <= 0x7F) {
+            str[(*j)++] = xval;
+        } else if (xval <= 0x7FF) {
+            str[(*j)++] = 0xC0 | (xval >> 6);
+            str[(*j)++] = 0x80 | (xval & 0x3F);
+        } else if (xval <= 0xFFFF) {
+            str[(*j)++] = 0xE0 | (xval >> 12);
+            str[(*j)++] = 0x80 | ((xval >> 6) & 0x3F);
+            str[(*j)++] = 0x80 | (xval & 0x3F);
+        } else if (xval <= 0x10FFFF) {
+            str[(*j)++] = 0xF0 | (xval >> 18);
+            str[(*j)++] = 0x80 | ((xval >> 12) & 0x3F);
+            str[(*j)++] = 0x80 | ((xval >> 6) & 0x3F);
+            str[(*j)++] = 0x80 | (xval & 0x3F);
+        }//fi
+    }//fi
+}//unicode
+
+
+
 char *escape(char str[]){
 	UI32 lnstr  = strlen(str)+1;
 	char O[6] = {Z0,Z0,Z0,Z0,Z0,Z0};
@@ -21,30 +104,12 @@ char *escape(char str[]){
 				case 'b' : str[j] = '\b'; i=i+1;j++; break;
 				case 'f' : str[j] = '\f'; i=i+1;j++; break;
 				case 'n' : str[j] = '\n'; i=i+1;j++; break;
-				case 'r':  str[j] = '\r'; i=i+1;j++; break;
-				case 't':  str[j] = '\t'; i=i+1;j++; break;
-				case 'v':  str[j] = '\v'; i=i+1;j++; break;
+				case 'r' : str[j] = '\r'; i=i+1;j++; break;
+				case 't' : str[j] = '\t'; i=i+1;j++; break;
+				case 'v' : str[j] = '\v'; i=i+1;j++; break;
 				case 'o':
-				case 'O':
-					O[0] = str[i+2];
-					O[2] = str[i+3];
-					O[4] = str[i+4];
-					if ( sscanf( &O[0],"%o", &o[0] ) ){
-							str[j++] = o[0];
-							if ( sscanf( &O[2],"%o", &o[1] ) ){
-								str[j-1] = (o[0]*8) + o[1];
-								if ( sscanf( &O[4],"%o", &o[2] ) ){
-									if (o[0] < 4 ){
-										str[j-1] = (o[0]*8*8) + (o[1]*8) + o[2];
-										i++;
-									}//fi
-								}//fi
-								i++;
-							}//fi
-							i++;
-					}//fi
-					i++;
-					break;
+				case 'O': octal(str, &i, &j);        break;
+
 				case '0':
 				case '1':
 				case '2':
@@ -72,26 +137,8 @@ char *escape(char str[]){
 					}//fi
 					break;
 				case 'x':
-				case 'X':
-					X[0] =str[i+2];
-					X[2] =str[i+3];
-					if ( sscanf( &X[0],"%x", &x[0] ) ){
-						if ( sscanf( &X[2],"%x", &x[1] ) ){
-							str[j++] = (x[0]*16) + (x[1]);
-							X[4] =str[i+4];
-							X[6] =str[i+5];
-							if ( sscanf( &X[4],"%x", &x[2] ) ){
-								if ( sscanf( &X[6],"%x", &x[3] ) ){
-									str[j-1] = (x[0]*16*16*16) + (x[1]*16*16) + (x[2]*16) + (x[3]);
-									i=i+2;
-								}//fi
-							}//fi
-							i=i+2;
-						} //fi
-						i++;
-					} //fi
-					break;
-				case 'u':
+				case 'X': hex(str, &i, &j); break;
+				case 'u': unicode(str,&i,&j,U,)
 					U[0]=str[i+2];
 					U[2]=str[i+3];
 					U[4]=str[i+4];
