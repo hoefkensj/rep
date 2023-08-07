@@ -100,14 +100,27 @@ UI32 parseArgs(UI32 argc, char **argv, ARGS *args,UI32 rcode) {
 					rcode += (1<<6);
 				}//fi
 			}//fi
-			if ( !( rcode & (1<<7)) ) {
+			if ( !( rcode & (1<7)) ) {
 				if ( isOption( opts[7], argv[i])) {
 					args->end = escape(argv[++i]);
 					rcode += (1<<7);
 				}//fi
 			}//fi
 
-
+		}else if ( isOption( opts[4], argv[i])) {
+			if ( !(rcode & (1<<4)) ) {
+				args->rep =  escape( argv[++i]);
+				rcode += (1<<4);
+			}//fi
+		}else if ( isOption( opts[5], argv[i])) {
+			args->sfx = escape( argv[++i]);
+			rcode += (1<<5);
+		}else if ( isOption( opts[6], argv[i])) {
+			args->cat = escape( argv[++i]);
+			rcode += (1<<6);
+		}else if ( isOption( opts[7], argv[i])) {
+			args->end = escape( argv[++i]);
+			rcode += (1<<7);
 		}else {
 			if (!(rcode &(1<<4))) {
 				args->rep = escape(argv[i]);

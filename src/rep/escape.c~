@@ -138,7 +138,7 @@ char *escape(char str[]){
 					break;
 				case 'x':
 				case 'X': hex(str, &i, &j); break;
-				case 'u': unicode(str,&i,&j,U,)
+				case 'u': unicode(str,&i,&j,)
 					U[0]=str[i+2];
 					U[2]=str[i+3];
 					U[4]=str[i+4];

@@ -14,6 +14,5 @@ clean:
 	rm -vfr *~ build/bin/rep
 	rm -vfr *~ build/bin/rep.exe
 	rm -vfr *~ build/bin/rep.pdp
-	rm -vfr *~ src/rep/
 install:
 	install rep /usr/bin/rep
