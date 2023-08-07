@@ -1,6 +1,0 @@
-#include "headers/globals.h"
-
-
-ARGS args;
-int return_code;
-char *exeName;
