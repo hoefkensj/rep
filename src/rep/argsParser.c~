@@ -1,5 +1,11 @@
 #include "headers/argsParser.h"
 
+<<<<<<< HEAD
+=======
+char *flags[][3] = {
+	{"-h", "--???", "--help",   },
+	{"-v", "--ver", "--version" }};
+>>>>>>> parent of 7da53c8... argsParser.c, argsParser.c~, escape.c, and escape.c~
 
 
 UI32 *readPipe(char *rep,UI32 *r){
@@ -62,6 +68,7 @@ UI32 parseArgs(UI32 argc, char **argv, ARGS *args,UI32 *nwbprsce[8]) {
 						*nwbprsce[4]=1;	break;
 					case 's':
 
+<<<<<<< HEAD
 						args->s=escape(argv[++i]);
 						*nwbprsce[5]=1;
 						break;
@@ -97,3 +104,52 @@ UI32 parseArgs(UI32 argc, char **argv, ARGS *args,UI32 *nwbprsce[8]) {
 
 
 
+=======
+	for (UI32 i=1 ; i <= argc; i++) {
+		if ( isOption( flags[0] , argv[i])){
+			rcode += (1<<30);
+		}else if  (isOption( flags[1] , argv[i])){
+			rcode += (1<<29);
+		}else if ( isOption( opts[0], argv[i])) {
+			if ( !(rcode & (1<<0)) ) {
+				args->num = atol( argv[++i]);
+				rcode += (1<<0) ;
+			}//fi
+		}else if ( isOption( opts[1], argv[i])) {
+			if ( !(rcode & (1<<1)) ) {
+				args->col = atol( argv[++i]);
+				rcode += (1<<1);
+			}//fi
+		}else if ( isOption( opts[2], argv[i])) {
+			args->bgn = escape(argv[++i]);
+			rcode += (1<<2);
+		}else if ( isOption( opts[3], argv[i])) {
+			args->pfx = escape(argv[++i]);
+			rcode += (1<<3);
+		}else if ( isOption( opts[4], argv[i])) {
+			if ( !(rcode & (1<<4)) ) {
+				args->rep =  escape( argv[++i]);
+				rcode += (1<<4);
+			}//fi
+		}else if ( isOption( opts[5], argv[i])) {
+			args->sfx = escape( argv[++i]);
+			rcode += (1<<5);
+		}else if ( isOption( opts[6], argv[i])) {
+			args->cat = escape( argv[++i]);
+			rcode += (1<<6);
+		}else if ( isOption( opts[7], argv[i])) {
+			args->end = escape( argv[++i]);
+			rcode += (1<<7);
+		}else {
+			if (!(rcode &(1<<4))) {
+				args->rep = escape(argv[i]);
+				rcode += (1<<4);
+			} else if ( !( rcode&(1<<0) )) {
+				args->num = atol( argv[i] );
+				rcode += (1<<0);
+			} //fi
+		}//fi
+	}//done
+	return rcode;
+} //parseArgs
+>>>>>>> parent of 7da53c8... argsParser.c, argsParser.c~, escape.c, and escape.c~
