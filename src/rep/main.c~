@@ -12,6 +12,7 @@ end:\t%s\n\
 
 int main(int argc, char *argv[]) {
 
+	UI32 rcode[16] = {[0 ... 15]=0};
 	args.n = 0;
 	args.w = 0;
 	args.b = NULL;

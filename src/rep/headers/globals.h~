@@ -30,4 +30,4 @@ typedef struct ARGS{
 }ARGS;
 
 
-
+UI32 *nwbprsce[8] = {[0 ... 7] = 0};

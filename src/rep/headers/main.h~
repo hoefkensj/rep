@@ -11,6 +11,6 @@ void repeat(ARGS args);
 void print(char *str);
 
 ARGS args;
-UI32 *nwbprsce[8] = {[0 ... 7] = 0};
+
 
 
