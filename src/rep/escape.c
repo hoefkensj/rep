@@ -1,28 +1,6 @@
 #include "headers/escape.h"
 
-
-static void octal(char str[], UI32 *i, UI32 *j) {
-    char O[6] = { Z0, Z0, Z0, Z0, Z0, Z0 };
-    UI32 o[3];
-
-    O[0] = str[*i + 2];
-    O[2] = str[*i + 3];
-    O[4] = str[*i + 4];
-    if (sscanf(&O[0], "%o", &o[0])) {
-        str[(*j)++] = o[0];
-        if (sscanf(&O[2], "%o", &o[1])) {
-            str[(*j) - 1] = (o[0] * 8) + o[1];
-            if (sscanf(&O[4], "%o", &o[2])) {
-                if (o[0] < 4) {
-                    str[(*j) - 1] = (o[0] * 8 * 8) + (o[1] * 8) + o[2];
-                    (*i)++;
-                }//fi
-            }//fi
-            (*i)++;
-        }//fi
-        (*i)++;
-    }//fi
-}//octal
+static void octal(char str[], UI32 *i, UI32 *j)
 
 static void hex(char str[], UI32 *i, UI32 *j) {
     char X[8] = { Z0, Z0, Z0, Z0, Z0, Z0, Z0, Z0 };
@@ -212,3 +190,25 @@ char *escape(char str[]){
   str[j] = Z0; // Null-terminate the modified string
   return str;
 }
+static void oct(char o[3], UI32 *i, UI32 *j) {
+    char *O[6] = {[0 ... 5] =  "" };
+		O[0]=&str[0];
+		O[2]=&str[1];
+		O[4]=&str[2];
+    UI32 o[3];
+
+    if (sscanf(O[0], "%o", &o[0])) {
+        str[(*j)++] = o[0];
+        if (sscanf(&O[2], "%o", &o[1])) {
+            str[(*j) - 1] = (o[0] * 8) + o[1];
+            if (sscanf(&O[4], "%o", &o[2])) {
+                if (o[0] < 4) {
+                    str[(*j) - 1] = (o[0] * 8 * 8) + (o[1] * 8) + o[2];
+                    (*i)++;
+                }//fi
+            }//fi
+            (*i)++;
+        }//fi
+        (*i)++;
+    }//fi
+}//octal
