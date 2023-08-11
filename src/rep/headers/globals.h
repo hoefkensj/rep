@@ -12,7 +12,7 @@
 #define VERSION "0.0.3                "
 #define DATE    "2023.07.11           "
 #define LICENSE "MIT                  "
-#define DEBUG   0
+#define DEBUG   1
 
 #define Z0 '\0'
 

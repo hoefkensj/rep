@@ -30,12 +30,12 @@ UI32 readPipe(ARGS *args){
 			break;
 		}//fi
 		pipe=pPipe;
-		pipe[sR]=cIn;
+		rpipe[sR]=cIn;
 		sR++;
 		debug("read: %s\n",&cIn);
 		debug("full: %s\n",pipe);
 	}//while
-	args->r=escape(pipe);
+	args->r=pipe;
 	debug("full: %s\n",args->r);
 
 	// *args.r[sR]=Z0;

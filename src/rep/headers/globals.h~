@@ -11,8 +11,7 @@
 #define REPO    "rep                  "
 #define VERSION "0.0.3                "
 #define DATE    "2023.07.11           "
-#define LICENSE "MIT                  "
-#define DEBUG   0
+#define LICENSE "MIT1
 
 #define Z0 '\0'
 
@@ -27,7 +26,7 @@ typedef struct OPTS{
 	char *w;
 }OPTS;
 typedef struct ARGS{
-	UI32 *n;
+	UI32 n;
 	char *r;
 }ARGS;
 

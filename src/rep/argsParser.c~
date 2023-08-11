@@ -25,6 +25,7 @@ UI32 readPipe(ARGS *args){
   // sPipe = getline(&pipe, &len, stdin);
 	while ((cIn=getchar())!=EOF){
 		char *pPipe = realloc(pipe,++sA);
+		char rpipe=*pPipe;
 		if (pPipe==NULL){
 			return 3;
 			break;
@@ -35,8 +36,8 @@ UI32 readPipe(ARGS *args){
 		debug("read: %s\n",&cIn);
 		debug("full: %s\n",pipe);
 	}//while
-	args.r=escape(pipe);
-	debug("full: %s\n",args.r);
+	args->r=pipe;
+	debug("full: %s\n",args->r);
 
 	// *args.r[sR]=Z0;
 	return 1;

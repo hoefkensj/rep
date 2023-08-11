@@ -1,8 +1,8 @@
 #include "headers/escape.h"
 
 
-static void octal(char str[], UI32 *i, UI32 *j, UI32 offset) {
-	char O[6] = { Z0, Z0, Z0, Z0, Z0, Z0 };
+static void oct(char str[], UI32 *i, UI32 *j, UI32 offset) {
+	char O[6] = { [0 ... 5]=Z0 };
 	UI32 o[3];
 
 	O[0] = str[*i + offset];
@@ -22,9 +22,10 @@ static void octal(char str[], UI32 *i, UI32 *j, UI32 offset) {
         }//fi
         (*i)++;
     }//fi
-}//octal
+}//oct
+
 static void hex(char str[], UI32 *i, UI32 *j) {
-    char X[8] = { Z0, Z0, Z0, Z0, Z0, Z0, Z0, Z0 };
+    char X[8] ={ [0 ... 7]=Z0 };
     UI32 x[8];
 
     X[0] = str[*i + 2];
@@ -45,45 +46,41 @@ static void hex(char str[], UI32 *i, UI32 *j) {
         (*i)++;
     }//fi
 }//hex
-static void unicode4(char str[], UI32 *i, UI32 *j) {
-	char U[8] = {Z0,Z0,Z0,Z0,Z0,Z0,Z0,Z0};
+
+static void uni4(char str[], UI32 *i, UI32 *j) {
+	char U[8] = {[0 ... 7]=Z0};
 	UI32 x[8];
 	UI32 xval;
 
-					U[0]=str[*i+2];
-					U[2]=str[*i+3];
-					U[4]=str[*i+4];
-					U[6]=str[*i+5];
-					if (
-						sscanf(&U[0],"%x",&x[0]) &&
-						sscanf(&U[2],"%x",&x[1]) &&
-						sscanf(&U[4],"%x",&x[2]) &&
-						sscanf(&U[6],"%x",&x[3])
-						) {
-						i+=5;
-						xval = 	( x[0] << 12 ) +
-										( x[1] <<  8 ) +
-										( x[2] <<  4 ) +
-										( x[3] <<  0 );
-						if (xval <= 0x7F) {
-							str[*j++] = xval;
-						} else if (xval <= 0x7FF) {
-							str[*j++] = 0xC0 | ( xval >> 6);
-							str[*j++] = 0x80 | ( xval        & 0x3F);
-						} else if (xval <= 0xFFFF) {
-							str[*j++] = 0xE0 | ( xval >> 12);
-							str[*j++] = 0x80 | ((xval >> 6 ) & 0x3F);
-							str[*j++] = 0x80 | ( xval        & 0x3F);
-						} else if (xval <= 0x10FFFF) {
-							str[*j++] = 0xF0 | ( xval >> 18);
-							str[*j++] = 0x80 | ((xval >> 12) & 0x3F);
-							str[*j++] = 0x80 | ((xval >> 6 ) & 0x3F);
-							str[*j++] = 0x80 | ( xval        & 0x3F);
-						} //fi
-					} //fi
-}//unicode4
-static void unicode8(char str[], UI32 *i, UI32 *j) {
-	char U[16] = {Z0,Z0,Z0,Z0,Z0,Z0,Z0,Z0,Z0,Z0,Z0,Z0,Z0,Z0,Z0,Z0};
+	U[0]=str[*i+2];					U[2]=str[*i+3];
+	U[4]=str[*i+4];					U[6]=str[*i+5];
+	if (
+		sscanf(&U[0],"%x",&x[0]) && sscanf(&U[2],"%x",&x[1]) &&
+		sscanf(&U[4],"%x",&x[2]) && sscanf(&U[6],"%x",&x[3])
+		) {
+		i+=5;
+		xval = 	( x[0] << 12 ) + ( x[1] <<  8 ) +
+						( x[2] <<  4 ) + ( x[3] <<  0 );
+		if (xval <= 0x7F) {
+			str[*j++] = xval;
+		} else if (xval <= 0x7FF) {
+			str[*j++] = 0xC0 | ( xval >> 6);
+			str[*j++] = 0x80 | ( xval        & 0x3F);
+		} else if (xval <= 0xFFFF) {
+			str[*j++] = 0xE0 | ( xval >> 12);
+			str[*j++] = 0x80 | ((xval >> 6 ) & 0x3F);
+			str[*j++] = 0x80 | ( xval        & 0x3F);
+		} else if (xval <= 0x10FFFF) {
+			str[*j++] = 0xF0 | ( xval >> 18);
+			str[*j++] = 0x80 | ((xval >> 12) & 0x3F);
+			str[*j++] = 0x80 | ((xval >> 6 ) & 0x3F);
+			str[*j++] = 0x80 | ( xval        & 0x3F);
+		} //fi
+	} //fi
+}//uni4
+
+static void uni8(char str[], UI32 *i, UI32 *j) {
+	char U[16] = {[0 ... 15]=Z0};
 	UI32 x[8];
 	UI32 xval;
 	U[0]=str[*i+2];		U[2]=str[*i+3];
@@ -117,13 +114,12 @@ static void unicode8(char str[], UI32 *i, UI32 *j) {
 			str[*j++] = 0x80 | ( xval        & 0x3F);
 		} //fi
 	} //fi
-}//unicode8
+}//uni8
+
 char *escape(char str[]){
 	UI32 lnstr  = strlen(str)+1;
-	UI32 i,j;
 
-	j=0;
-	for (i=0;i<=lnstr;i++){
+	for (UI32 i=0,j=0 ;i<=lnstr;i++){
 		if (str[i] == '\\'){
 			switch (str[i+1]){
 				case '\\':                           break;
@@ -137,7 +133,7 @@ char *escape(char str[]){
 				case 't' : str[j] = '\t'; i=i+1;j++; break;
 				case 'v' : str[j] = '\v'; i=i+1;j++; break;
 				case 'o':
-				case 'O': octal(str, &i, &j, 2); break;
+				case 'O': oct(str, &i, &j, 2); break;
 				case '0':
 				case '1':
 				case '2':
@@ -145,16 +141,20 @@ char *escape(char str[]){
 				case '4':
 				case '5':
 				case '6':
-				case '7': octal(str, &i, &j, 1); break;
+				case '7': oct(str, &i, &j, 1); break;
 				case 'x':
 				case 'X': hex(str, &i, &j); break;
-				case 'u': unicode4(str, &i, &j); break;
-				case 'U': unicode8(str, &i, &j) ;break;*/
+				case 'u': uni4(str, &i, &j); break;
+				case 'U': uni8(str, &i, &j) ;break;
 			}//switch
 		} else {
 			str[j++]=str[i];
+			debug("storing %s",&str[i]);
+			debug("in %d",&i);
 		} //fi
+		if (i == lnstr){
+				str[j] = Z0;
+		}
 	}//done
-  str[j] = Z0; // Null-terminate the modified string
   return str;
 }
