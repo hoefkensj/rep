@@ -1,19 +1,20 @@
-#pragma once
+#ifndef MAIN_H
+#define MAIN_H
+
 #include "globals.h"
-#include "argsParser.h"
-// #include "help.h"
 
-extern char *strUsage;
-extern char *strAbout;
-extern char *strHelp;
-int main(int argc, char *argv[]);
-void repeat();
+// Function declarations
 void print(char *str);
-
-OPTS opts;
-ARGS args;
-UI32 optStat[5]={[0 ... 4]=0};
-UI32 STATUS[32]={[0 ... 31]=0};
+static void repeat();
+void debug(char *fmt,char *str);
+#endif // MAIN_H
 
 
+// #pragma once
+// #define _GNU_SOURCE
+//
+// #include "globals.h"
+// #include "escape.h"
+// #include "argsParser.h"
+//
 

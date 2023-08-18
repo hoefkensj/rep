@@ -1,9 +1,5 @@
 #pragma once
 #define _GNU_SOURCE
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
 
 #define AUTHOR  "Hoefkens Jeroen      "
 #define EMAIL   "Hoefkens.J@gmail.com "
@@ -11,9 +7,14 @@
 #define REPO    "rep                  "
 #define VERSION "0.0.3                "
 #define DATE    "2023.07.11           "
-#define LICENSE "MIT1
+#define LICENSE "MIT                  "
+#define DEBUG   1
+#define Z0      '\0'
 
-#define Z0 '\0'
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 
 typedef unsigned int UI32;
 
@@ -23,14 +24,46 @@ typedef struct OPTS{
 	char *s;
 	char *j;
 	char *f;
-	char *w;
+	char *c;
+	char *r;
+	char *n;
+	char *h;
+	char *v;
 }OPTS;
 typedef struct ARGS{
 	UI32 n;
 	char *r;
 }ARGS;
+typedef struct PIPE{
+	UI32 n;
+	char *r
+	;
+}PIPE;
+extern OPTS opts;
+extern ARGS args;
+extern PIPE stdn;
+extern char *pOpts[10];
 
-extern char *pArgv[];
-extern UI32 optStat[5];
-extern UI32 STATUS[32];
+
+
 void debug(char *fmt,char *str);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

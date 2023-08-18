@@ -1,9 +1,39 @@
-#pragma once
+#ifndef ARGS_H
+#define ARGS_H
+
 #include "globals.h"
-#include "escape.h"
 
-UI32 readPipe(ARGS *args);
-UI32 isOption(UI32 optn, char *arg);
-// UI32 parseArgs(UI32 argc, char **argv,ARGS *args,UI32 rcode);
-UI32 parseOpts(UI32 argc, char **pArgv, OPTS *opts);
+// Function declarations
+UI32 parse(UI32 argc, char **argv);
 
+static char *flag[][3] = {
+	{"-v", "--ver", "--version" },
+	{"-h", "--???", "--help",   }};
+
+static char *opt[10][3]  = {
+	{"-b", "--bgn", "--begin"   },
+	{"-p", "--pfx", "--prefix"  },
+	{"-s", "--sfx", "--suffix"  },
+	{"-j", "--jnt", "--join"    },
+	{"-f", "--fin", "--final"   },
+	{"-c", "--col", "--colums"  },
+	{"-n", "--num", "--number"  },
+	{"-r", "--rep", "--repeat"  },
+	{"-v", "--ver", "--version" },
+	{"-h", "--???", "--help",   }};
+
+
+
+#endif // ARGS_H
+
+
+/*
+
+
+#pragma once
+#define _GNU_SOURCE
+
+
+
+
+*/

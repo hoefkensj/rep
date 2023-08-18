@@ -1,6 +1,4 @@
 #include "headers/globals.h"
+#define _GNU_SOURCE
 
 
-ARGS args;
-int return_code;
-char *exeName;

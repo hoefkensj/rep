@@ -1,27 +1,47 @@
+
 #include "headers/escape.h"
 
-
-static void oct(char str[], UI32 *i, UI32 *j, UI32 offset) {
+static void oct0(char str[], UI32 *i, UI32 *j) {
 	char O[6] = { [0 ... 5]=Z0 };
 	UI32 o[3];
-
-	O[0] = str[*i + offset];
-	O[2] = str[*i + offset+1];
-	O[4] = str[*i + offset+2];
-    if (sscanf(&O[0], "%o", &o[0])) {
-        str[(*j)++] = o[0];
-        if (sscanf(&O[2], "%o", &o[1])) {
-            str[(*j) - 1] = (o[0] * 8) + o[1];
-            if (sscanf(&O[4], "%o", &o[2])) {
-                if (o[0] < 4) {
-                    str[(*j) - 1] = (o[0] * 8 * 8) + (o[1] * 8) + o[2];
-                    (*i)++;
-                }//fi
-            }//fi
-            (*i)++;
-        }//fi
-        (*i)++;
-    }//fi
+	O[0] = str[*i + 0];
+	O[2] = str[*i + 1];
+	O[4] = str[*i + 2];
+  if ( (O[0]!='\0') & sscanf(&O[0], "%o", &o[0])) {
+		str[(*j)++] = o[0];
+		if (( (O[2]!='\0') & sscanf(&O[2], "%o", &o[1]))) {
+			str[(*j) - 1] = (o[0] * 8) + o[1];
+			if (( (O[4]!='\0') & sscanf(&O[4], "%o", &o[2]))) {
+				if (o[0] < 4) {
+					str[(*j) - 1] = (o[0]*8*8) + (o[1]*8) + o[2];
+					(*i)++;
+				}//fi
+			}//fi
+			(*i)++;
+		}//fi
+		(*i)++;
+	}//fi
+}//oct
+static void oct1(char str[], UI32 *i, UI32 *j) {
+	char O[6] = { [0 ... 5]=Z0 };
+	UI32 o[3];
+	O[0] = str[*i + 1];
+	O[2] = str[*i + 2];
+	O[4] = str[*i + 3];
+  if ( (O[0]!='\0') & sscanf(&O[0], "%o", &o[0])) {
+		str[(*j)++] = o[0];
+		if (( (O[2]!='\0') & sscanf(&O[2], "%o", &o[1]))) {
+			str[(*j) - 1] = (o[0] * 8) + o[1];
+			if (( (O[4]!='\0') & sscanf(&O[4], "%o", &o[2]))) {
+				if (o[0] < 4) {
+					str[(*j) - 1] = (o[0]*8*8) + (o[1]*8) + o[2];
+					(*i)++;
+				}//fi
+			}//fi
+			(*i)++;
+		}//fi
+		(*i)++;
+	}//fi
 }//oct
 
 static void hex(char str[], UI32 *i, UI32 *j) {
@@ -133,7 +153,7 @@ char *escape(char str[]){
 				case 't' : str[j] = '\t'; i=i+1;j++; break;
 				case 'v' : str[j] = '\v'; i=i+1;j++; break;
 				case 'o':
-				case 'O': oct(str, &i, &j, 2); break;
+				case 'O': oct1(str, &i, &j); break;
 				case '0':
 				case '1':
 				case '2':
@@ -141,7 +161,7 @@ char *escape(char str[]){
 				case '4':
 				case '5':
 				case '6':
-				case '7': oct(str, &i, &j, 1); break;
+				case '7': oct0(str, &i, &j); break;
 				case 'x':
 				case 'X': hex(str, &i, &j); break;
 				case 'u': uni4(str, &i, &j); break;
@@ -150,7 +170,7 @@ char *escape(char str[]){
 		} else {
 			str[j++]=str[i];
 			debug("storing %s",&str[i]);
-			debug("in %d",&i);
+			debug("in %s",(char *)i);
 		} //fi
 		if (i == lnstr){
 				str[j] = Z0;
