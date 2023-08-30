@@ -1,4 +1,4 @@
- #include "headers/argsParser.h"
+ #include "headers/parser.h"
 //--98765432109876543210
 //hv-----r-nr-vhnrcfjspb
 
@@ -44,7 +44,7 @@ static UI32 isOption(UI32 optn ,char *arg ){
 	return match;
 } //isOption
 
-static UI32 isFlag(UI32 flag ,char *arg ){
+static UI32 isFlag(UI32 flagn ,char *arg ){
 	UI32 match=0;
 	// debug("testing:\t%s",arg);
 	// debug("\tin\t%s",FLAG[flag][0]);
@@ -52,9 +52,9 @@ static UI32 isFlag(UI32 flag ,char *arg ){
 	// debug(" %s\n ",FLAG[flag][2]);
 
 	match = !(
-		strcmp(arg, FLAG[flag][0] ) &&
-		strcmp(arg, FLAG[flag][1] ) &&
-		strcmp(arg, FLAG[flag][2] )
+		strcmp(arg, FLAG[flagn][0] ) &&
+		strcmp(arg, FLAG[flagn][1] ) &&
+		strcmp(arg, FLAG[flagn][2] )
 	);
 	if (match){
 		debug("\x1b[60Gfound :\t%s\n",arg);
@@ -77,7 +77,7 @@ static UI32 Flags(UI32 argc, char **argv){
 	}//done
 FLAGGED:
 	return gotflagged;
-}
+}//Flags
 static UI32 Opts(UI32 argc, char **argv) {
 	UI32 status=0;
 	UI32 optStat[12]={[0 ... 11]=0};
@@ -88,6 +88,7 @@ static UI32 Opts(UI32 argc, char **argv) {
 		for(UI32 j= 0; j< 10;j++){
 			if (!STATUS[j]  && isOption( j ,argv[i]) ) {
 				pOpts[j] = argv[++i];
+				printf("opt %d : %s\n",i, pOpts[j]);
 				STATUS[j] = 1 ;
 				dbreak=1;
 				break;
@@ -119,18 +120,21 @@ STOP:
 	print_binary(status);
 
 	return status;
-} //parseOpts
+} //Opts
 
 
 UI32 parse(UI32 argc, char **argv){
 	UI32 status=0;
-	status=Flags(argc,argv)
+	status=Flags(argc,argv);
 
 	if (!isatty(fileno(stdin))){
 		status=readPipe();
 
 	}//fi
-	status=parseOpts(argc,argv);
+	status=Opts(argc,argv);
+	printf("popt 0: %s\n",pOpts[0]);
+	printf("opts.b : %s\n",opts.b);
+
 	print_binary(status);
 	return status;
 }//parse

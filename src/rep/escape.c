@@ -135,8 +135,10 @@ static void uni8(char str[], unsigned int *i, unsigned int *j) {
 	} //fi
 }//uni8
 
-char *escape(char str[]){
+char *escape(char *str){
+	printf("escaping %s\n",str);
 	unsigned int lnstr  = strlen(str)+1;
+
 
 	for (unsigned int i=0,j=0 ;i<=lnstr;i++){
 		if (str[i] == '\\'){
@@ -168,8 +170,7 @@ char *escape(char str[]){
 			}//switch
 		} else {
 			str[j++]=str[i];
-			debug("storing %s",&str[i]);
-			} //fi
+		} //else
 		if (i == lnstr){
 				str[j] = '\0';
 		}

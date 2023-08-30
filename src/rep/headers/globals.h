@@ -16,6 +16,7 @@
 #include <string.h>
 #include <unistd.h>
 
+
 typedef unsigned int UI32;
 
 typedef struct OPTS{
@@ -42,12 +43,6 @@ typedef struct PIPE{
 	;
 }PIPE;
 
-extern OPTS opts;
-extern ARGS args;
-extern PIPE stdn;
-extern UI32 STATUS[32];
-extern char *pOpts[];
-extern	UI32 optStat[12];
 
 
 void print_binary(unsigned int number);
@@ -55,18 +50,27 @@ void debug(char *fmt,char *str);
 UI32 parse(UI32 argc, char **argv);
 
 
+extern OPTS opts;
+extern ARGS args;
+extern PIPE stdn;
+extern UI32 STATUS[32];
+extern char **pOpts[10];
 
+static char *FLAG[2][3] = {
+	{"-v", "--ver", "--version" },
+	{"-h", "-?", "--help",   }};
 
-
-
-
-
-
-
-
-
-
-
+static char *opt[10][3]  = {
+	{"-b", "--bgn", "--begin"   },
+	{"-p", "--pfx", "--prefix"  },
+	{"-s", "--sfx", "--suffix"  },
+	{"-j", "--jnt", "--join"    },
+	{"-f", "--fin", "--final"   },
+	{"-c", "--col", "--colums"  },
+	{"-n", "--num", "--number"  },
+	{"-r", "--rep", "--repeat"  },
+	{"-v", "--ver", "--version" },
+	{"-h", "-?", "--help",   }};
 
 
 

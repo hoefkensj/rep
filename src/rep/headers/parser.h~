@@ -5,7 +5,7 @@
 
 // Function declarations
 
-static char *FLAG[][3] = {
+static char *FLAG[2][3] = {
 	{"-v", "--ver", "--version" },
 	{"-h", "-?", "--help",   }};
 

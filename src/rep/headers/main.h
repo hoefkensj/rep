@@ -1,20 +1,19 @@
-
 #pragma once
 #define _GNU_SOURCE
 #include "globals.h"
-#include "parser.h"
-#include "escape.h"
+
 
 // Function declarations
-void print(char *str);
 static void repeat();
+void print(char *str);
 void debug(char *fmt,char *str);
 
-// #pragma once
-// #define _GNU_SOURCE
-//
-// #include "globals.h"
-// #include "escape.h"
-// #include "argsParser.h"
-//
 
+
+OPTS opts;
+ARGS args;
+PIPE stdn;
+UI32 STATUS[32]={[0 ... 31]=0};
+char **pOpts[10]={ &opts.b,	&opts.p,	&opts.s,	&opts.j,	&opts.f,	&opts.c,	&opts.r,	&opts.n,	&opts.h,	&opts.v};
+#include "parser.h"
+#include "escape.h"

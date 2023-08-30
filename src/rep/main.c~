@@ -1,50 +1,41 @@
 #include "headers/main.h"
 
 
-OPTS opts;
-ARGS args;
-PIPE stdn;
-UI32 STATUS[32]={[0 ... 31]=0};
+
 
 // Declaration of the array of pointers
-char *pOpts[] = {opts.b, opts.p, opts.s, opts.j, opts.f,opts.c, opts.r, opts.n, opts.h, opts.v};
+
 
 void init() {
-	opts.b = "";
-	opts.p = "";
-	opts.s = "";
-	opts.j = "";
-	opts.f = "";
-	opts.c = "";
-	opts.r = "";
-	opts.n = "";
-	opts.h = "";
-	opts.v = "";
 
-	pOpts[0] = opts.b;
-	pOpts[1] = opts.p;
-	pOpts[2] = opts.s;
-	pOpts[3] = opts.j;
-	pOpts[4] = opts.f;
-	pOpts[5] = opts.c;
-	pOpts[6] = opts.r;
-	pOpts[7] = opts.n;
-	pOpts[8] = opts.h;
-	pOpts[9] = opts.v;
+	opts.b= "";
+	opts.p= "";
+	opts.s= "";
+	opts.j= "";
+	opts.c= "";
+	opts.r= "";
+	opts.n= "";
+	opts.h= "";
+	opts.v= "";
+	// **pOpts[0] = *opts.b;
+	// **pOpts[1] = *opts.p;
+	// **pOpts[2] = *opts.s;
+	// **pOpts[3] = *opts.j;
+	// **pOpts[4] = *opts.c;
+	// **pOpts[5] = *opts.r;
+	// **pOpts[6] = *opts.n;
+	// **pOpts[7] = *opts.h;
+	// **pOpts[8] = *opts.v;
+	pOpts[0] = &opts.b;
+	pOpts[1] = &opts.p;
+	pOpts[2] = &opts.s;
+	pOpts[3] = &opts.j;
+	pOpts[4] = &opts.c;
+	pOpts[5] = &opts.r;
+	pOpts[6] = &opts.n;
+	pOpts[7] = &opts.h;
+	pOpts[8] = &opts.v;
 
-	args.n=0;
-	args.r=NULL;
-
-	*pOpts[0] = &*opts.b;
-	pOpts[1] = &*opts.p;
-	pOpts[2] = &*opts.s;
-	pOpts[3] = &*opts.j;
-	pOpts[4] = &*opts.f;
-	pOpts[5] = &*opts.c;
-	pOpts[6] = &*opts.n;
-	pOpts[7] = &*opts.r;
-	pOpts[8] = &*opts.h;
-	pOpts[9] = &*opts.v;
 }
 
 int main(int argc, char *argv[]) {
@@ -53,15 +44,24 @@ int main(int argc, char *argv[]) {
 	debug("init done\n", "");
 
 	status=parse(argc,argv);
-	debug("parse done\n", "");
+	debug("parse done\n","");
+
+	debug("opts.p: %p\n",opts.p);
+  printf("%s\n",opts.p);
+  printf("%s\n",*pOpts[0]);
+	debug("opts.s: %s\n",opts.p);
+	debug("opts.j: %s\n",opts.j);
+	debug("opts.f: %s\n",opts.f);
+
 	repeat();
-	return 1;
+	return status;
 }//main
 
 static void repeat(){
 
 	UI32 n;
 	// escapeStrs();
+	debug("escape? %s\n",opts.b);
 	printf("%s", escape(opts.b) );
 	for ( n= args.n ; n >  0 ; n--) {
 		print(opts.p);
