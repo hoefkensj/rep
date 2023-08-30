@@ -21,7 +21,7 @@ static UI32 readPipe(){
 		debug("read: %s\n",&cIn);
 		debug("full: %s\n",pipe);
 	}
-	stdn->r=pipe;
+	stdn.r=pipe;
 	// *args.r[sR]=Z0;
 	STATUS[14]=1; //got pipedata
 	STATUS[12]=1; //skip arg rep
@@ -63,68 +63,74 @@ static UI32 isFlag(UI32 flag ,char *arg ){
 }//isFlag
 
 
-static UI32 parseOpts(UI32 argc, char **argv) {
-	UI32 status=0;
-	UI32 dbreak=0;
-
+static UI32 Flags((UI32 argc, char **argv){
+	int gotflagged=	0;
 	//flags
 	for (UI32 i=1 ; i < argc; i++) {
 		for(UI32 j= 0; j< 2;j++){
 			if (isFlag( j ,argv[i]) ) {
-				// optStat[8+j] = 1 ;
+				gotflagged=1;
 				STATUS[30+j]=1;
-				goto STOP;
+				goto FLAGGED;
 			}//fi
 		}//done
 	}//done
-
-	//options
-	for (UI32 i=1 ; i < argc; i++) {
-		for(UI32 j= 0; j< 10;j++){
-			if (!STATUS[j]  && isOption( j ,argv[i]) ) {
-				pOpts[j] = escape(argv[++i]);
-				STATUS[j] = 1 ;
-				dbreak=1;
-				break;
-			}
-			dbreak=0;
-		}//done
-		if (!dbreak){
-			if (!(STATUS[6] && STATUS[11])){
-				args->r=argv[i];
-				opts->r=argv[i];
-				STATUS[6]=1;
-				STATUS[11]=1;
-				// optStat[6]=1;
-				debug("\nrep-> %s\n",argv[i]);
-			}	else if (!(STATUS[7] && STATUS[12])){
-					args->n = atol(argv[i]);
-					opts->n = argv[i];
-					STATUS[7]=1;
-					STATUS[12]=1;
-					// optStat[7]=1;
-					debug("\nn-> %s\n",argv[i]);
-			}// else
-		}//fi
-	}//done
-
-STOP:
-	for (int i=0;i<32;i++){
-		status+=(STATUS[i]*(1<<i));
-	}
-	print_binary(status);
-
-	return status;
-} //parseOpts
-
+FLAGGED:
+	return gotflagged;
+}
+// static UI32 Opts(UI32 argc, char **argv) {
+// 	UI32 status=0;
+// 	UI32 optStat[12]={[0 ... 11]=0};
+// 	UI32 dbreak=0;
+//
+// 	//options
+// 	for (UI32 i=1 ; i < argc; i++) {
+// 		for(UI32 j= 0; j< 10;j++){
+// 			if (!STATUS[j]  && isOption( j ,argv[i]) ) {
+// 				pOpts[j] = argv[++i];
+// 				STATUS[j] = 1 ;
+// 				dbreak=1;
+// 				break;
+// 			}
+// 			dbreak=0;
+// 		}//done
+// 		if (!dbreak){
+// 			if (!(STATUS[6] && STATUS[11])){
+// 				args.r=argv[i];
+// 				opts.r=argv[i];
+// 				STATUS[6]=1;
+// 				STATUS[11]=1;
+// 				// optStat[6]=1;
+// 				debug("\nrep-> %s\n",argv[i]);
+// 			}	else if (!(STATUS[7] && STATUS[12])){
+// 					args.n = atol(argv[i]);
+// 					opts.n = argv[i];
+// 					STATUS[7]=1;
+// 					STATUS[12]=1;
+// 					// optStat[7]=1;
+// 					debug("\nn-> %s\n",argv[i]);
+// 			}// else
+// 		}//fi
+// 	}//done
+// STOP:
+// 	for (int i=0;i<32;i++){
+// 		status+=(STATUS[i]*(1<<i));
+// 	}
+// 	print_binary(status);
+//
+// 	return status;
+// } //parseOpts
+//
 
 UI32 parse(UI32 argc, char **argv){
 	UI32 status=0;
-	status=parseOpts(argc,argv);
+	status=Flags(argc,argv)
 
 	if (!isatty(fileno(stdin))){
 		status=readPipe();
+
 	}//fi
-	// print_binary(status);
+	status=parseOpts(argc,argv);
+	print_binary(status);
 	return status;
 }//parse

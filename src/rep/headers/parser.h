@@ -1,14 +1,13 @@
-#ifndef ARGS_H
-#define ARGS_H
+#pragma once
+#define _GNU_SOURCE
 
 #include "globals.h"
 
 // Function declarations
-UI32 parse(UI32 argc, char **argv);
 
-static char *flag[][3] = {
+static char *FLAG[][3] = {
 	{"-v", "--ver", "--version" },
-	{"-h", "--???", "--help",   }};
+	{"-h", "-?", "--help",   }};
 
 static char *opt[10][3]  = {
 	{"-b", "--bgn", "--begin"   },
@@ -20,20 +19,8 @@ static char *opt[10][3]  = {
 	{"-n", "--num", "--number"  },
 	{"-r", "--rep", "--repeat"  },
 	{"-v", "--ver", "--version" },
-	{"-h", "--???", "--help",   }};
+	{"-h", "-?", "--help",   }};
+
+UI32 parse(UI32 argc, char **argv);
 
 
-
-#endif // ARGS_H
-
-
-/*
-
-
-#pragma once
-#define _GNU_SOURCE
-
-
-
-
-*/

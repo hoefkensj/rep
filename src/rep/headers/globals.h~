@@ -30,25 +30,29 @@ typedef struct OPTS{
 	char *h;
 	char *v;
 }OPTS;
+
 typedef struct ARGS{
 	UI32 n;
 	char *r;
 }ARGS;
+
 typedef struct PIPE{
 	UI32 n;
 	char *r
 	;
 }PIPE;
+
 extern OPTS opts;
 extern ARGS args;
 extern PIPE stdn;
-extern char *pOpts[10];
+extern UI32 STATUS[32];
+extern char pOpts[10];
+extern	UI32 optStat[12];
 
 
-
+void print_binary(unsigned int number);
 void debug(char *fmt,char *str);
-
-
+UI32 parse(UI32 argc, char **argv);
 
 
 
