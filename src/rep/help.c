@@ -1,4 +1,4 @@
-		`	`	W`	W	 `21Q`12QW `1`2	EWQ	QASA#include "headers/help.h"
+#include "headers/help.h"
 
 #define USAGE "\
 USAGE:  %s  <string> <int> [-o,--option <string>] )\n\
