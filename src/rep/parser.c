@@ -46,20 +46,21 @@ static UI32 isFlag(UI32 flagn ,char *arg ){
 
 
 static UI32 Flags(UI32 argc, char **argv){
-	unsigned int gotflagged=	0;
+	UI32 gotflagged=	0;
 	//flags
 	for (UI32 i=1 ; i < argc; i++) {
 		for(UI32 j= 0; j< 2;j++){
 			if (isFlag( j ,argv[i]) ) {
 				gotflagged=-1;
 				STATUS[30+j]=1;
-				goto FLAGGED;
+				break;
 			}//fi
+			if (STATUS[29]|STATUS[30]|STATUS[31])	break;
 		}//done
 	}//done
-FLAGGED:
 	return gotflagged;
 }//Flags
+
 static UI32 Opts(UI32 argc, char **argv) {
 	UI32 status=0;
 	UI32 optStat[12]={[0 ... 11]=0};

@@ -16,7 +16,9 @@
 #include <string.h>
 #include <unistd.h>
 
-
+#include "parser.h"
+#include "escape.h"
+#include "help.h"
 typedef unsigned int UI32;
 
 typedef struct OPTS{
@@ -52,28 +54,12 @@ UI32 parse(UI32 argc, char **argv);
 extern OPTS opts;
 extern ARGS args;
 extern PIPE stdn;
+
 extern UI32 STATUS[32];
 extern UI32 pOpts[10];
-extern char *strUse;
-// char *strAbout=ABOUT;
+
+
 extern char *strHelp;
-
-static char *FLAG[2][3] = {
-	{"-v", "--ver", "--version" },
-	{"-h", "-?", "--help",   }};
-
-static char *opt[10][3]  = {
-	{"-b", "--bgn", "--begin"   },
-	{"-p", "--pfx", "--prefix"  },
-	{"-s", "--sfx", "--suffix"  },
-	{"-j", "--jnt", "--join"    },
-	{"-f", "--fin", "--final"   },
-	{"-c", "--col", "--colums"  },
-	{"-n", "--num", "--number"  },
-	{"-r", "--rep", "--repeat"  },
-	{"-v", "--ver", "--version" },
-	{"-h", "-?", "--help",   }};
-
-
+extern char *strUse;
 
 
