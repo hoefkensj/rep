@@ -10,25 +10,53 @@ static void esc(){
 	opts.s=escape(opts.s);
 	opts.j=escape(opts.j);
 	opts.f=escape(opts.f);
+	args.r=escape(args.r);
+	opts.r=escape(opts.r);
+	stdn.r=escape(stdn.r);
+}
+static void info(char exeName){
+	UI32 lnBHelp;
+	char bufHelp[lnBHelp];
+	int lnBUse=strlen(strUse)+strlen(exeName)+1;
+	char bufUse[lnBUse];
+	char bufAb[100];
+	lnBHelp=strlen(strHelp)+strlen(exeName)+1;
+	if (STATUS[31]){
+			print(about(bufAb));
+	} else if(STATUS[30]){
+			print(help(bufHelp,exeName));
+	} else if (STATUS[29]) {
+		print(use(bufUse,exeName));
+	}
 }
 
 
 int main(int argc, char *argv[]) {
-	UI32 status = 1;
+	UI32 status = 0;
+	UI32 status = 0;
+	printf("starting...");
+
 	status=parse(argc,argv);
-	// if (status!=0) goto LAST;
+	printf("parsed...");
+
+	if (status && (1<<32)) goto LAST;
 	esc();
+	printf("escaped...");
 	repeat();
+	printf("repeated...");
+
 
 LAST:
-	if (STATUS[30]){
-
+	if (STATUS[29],STATUS[30]|STATUS[31]){
+		info(*argv[0]);
 	}
 	return status;
 }//main
 
 static void repeat(){
 	UI32 n;
+	printf("%s",opts.b);
+
 	for ( n= args.n ; n >  0 ; n--) {
 		printf("%s%s%s",opts.p,opts.r,opts.s);
 		printf("%s%s%s",opts.p,args.r,opts.s);

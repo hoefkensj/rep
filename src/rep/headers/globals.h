@@ -55,6 +55,9 @@ extern ARGS args;
 extern PIPE stdn;
 extern UI32 STATUS[32];
 extern UI32 pOpts[10];
+extern char *strUse;
+// char *strAbout=ABOUT;
+extern char *strHelp;
 
 static char *FLAG[2][3] = {
 	{"-v", "--ver", "--version" },

@@ -54,7 +54,7 @@ extern OPTS opts;
 extern ARGS args;
 extern PIPE stdn;
 extern UI32 STATUS[32];
-extern char **pOpts[10];
+extern UI32 pOpts[10];
 
 static char *FLAG[2][3] = {
 	{"-v", "--ver", "--version" },

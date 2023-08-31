@@ -46,12 +46,12 @@ static UI32 isFlag(UI32 flagn ,char *arg ){
 
 
 static UI32 Flags(UI32 argc, char **argv){
-	int gotflagged=	0;
+	unsigned int gotflagged=	0;
 	//flags
 	for (UI32 i=1 ; i < argc; i++) {
 		for(UI32 j= 0; j< 2;j++){
 			if (isFlag( j ,argv[i]) ) {
-				gotflagged=1;
+				gotflagged=-1;
 				STATUS[30+j]=1;
 				goto FLAGGED;
 			}//fi
@@ -94,7 +94,7 @@ static UI32 Opts(UI32 argc, char **argv) {
 			}// else
 		}//fi
 	}//done
-STOP:
+
 	for (int i=0;i<32;i++){
 		status+=(STATUS[i]*(1<<i));
 	}
@@ -105,17 +105,27 @@ STOP:
 
 UI32 parse(UI32 argc, char **argv){
 	UI32 status=0;
+	printf("parsing...");
+
 	status=Flags(argc,argv);
-	if (status != 0) goto END;
+	if (status != 0){
+		printf("FLAGGED...");
+		goto END;
+	}
+	printf("NOT FLAGGED...");
+
 	if (!isatty(fileno(stdin))){
 		status=readPipe();
 	}//fi
+	printf("piped...");
 
 
 	status=Opts(argc,argv);
+	printf("ASSIGNING...");
+
 	for (int i=0;i<10;i++){
 		switch (i){
-			case 0:	opts.b=escape(argv[pOpts[i]]);
+			case 0:	opts.b=argv[pOpts[i]];
 			case 1:	opts.p=argv[pOpts[i]];
 			case 2:	opts.s=argv[pOpts[i]];
 			case 3:	opts.j=argv[pOpts[i]];

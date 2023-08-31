@@ -43,7 +43,7 @@ DOCS:\n\
   \n\
 \n\
 "
-char *strUsage=USAGE;
+char *strUse=USAGE;
 // char *strAbout=ABOUT;
 char *strHelp=HELP;
 
@@ -69,6 +69,6 @@ char *help(char *strInfo,char *exeName){
 	return strInfo;
 }
 char *use(char *strInfo,char *exeName){
-	sprintf(strInfo,strUsage,exeName);
+	sprintf(strInfo,strUse,exeName);
 	return strInfo;
 }
