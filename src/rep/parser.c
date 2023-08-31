@@ -9,56 +9,38 @@ static UI32 readPipe(){
 	char cIn = Z0;
   // sPipe = getline(&pipe, &len, stdin);
 	while ((cIn=getchar())!=EOF){
-
 		if (!(sR%8)){
 			sA+=8;
 			char *pPipe = realloc(pipe,sA);
-			if (pPipe==NULL) return 0;
+			if (pPipe==NULL) return 1;
 			pipe=pPipe;
 		}
 		pipe[sR]=cIn;
 		sR++;
-		debug("read: %s\n",&cIn);
-		debug("full: %s\n",pipe);
 	}
 	stdn.r=pipe;
-	// *args.r[sR]=Z0;
 	STATUS[14]=1; //got pipedata
 	STATUS[12]=1; //skip arg rep
-	return 1;
+	return 0;
 }//readPipe
 
 static UI32 isOption(UI32 optn ,char *arg ){
 	UI32 match=0;
-	// debug("testing:\t%s",arg);
-	// debug("\tin\t%s",opt[optn][0]);
-	// debug(" %s ",opt[optn][1]);
-	// debug(" %s ",opt[optn][2]);
-
 	match = !(
 		strcmp(arg, opt[optn][0] ) &&
 		strcmp(arg, opt[optn][1] ) &&
 		strcmp(arg, opt[optn][2] )
 	);
-				// printf("options if");
 	return match;
 } //isOption
 
 static UI32 isFlag(UI32 flagn ,char *arg ){
 	UI32 match=0;
-	// debug("testing:\t%s",arg);
-	// debug("\tin\t%s",FLAG[flag][0]);
-	// debug(" %s ",FLAG[flag][1]);
-	// debug(" %s\n ",FLAG[flag][2]);
-
 	match = !(
 		strcmp(arg, FLAG[flagn][0] ) &&
 		strcmp(arg, FLAG[flagn][1] ) &&
 		strcmp(arg, FLAG[flagn][2] )
 	);
-	if (match){
-		debug("\x1b[60Gfound :\t%s\n",arg);
-	}
 	return match;
 }//isFlag
 
@@ -87,8 +69,7 @@ static UI32 Opts(UI32 argc, char **argv) {
 	for (UI32 i=1 ; i < argc; i++) {
 		for(UI32 j= 0; j< 10;j++){
 			if (!STATUS[j]  && isOption( j ,argv[i]) ) {
-				pOpts[j] = &argv[++i];
-				printf("-> %s\n", *pOpts[j]);
+				pOpts[j] = ++i;
 				STATUS[j] = 1 ;
 				dbreak=1;
 				break;
@@ -117,7 +98,6 @@ STOP:
 	for (int i=0;i<32;i++){
 		status+=(STATUS[i]*(1<<i));
 	}
-	print_binary(status);
 
 	return status;
 } //Opts
@@ -126,15 +106,23 @@ STOP:
 UI32 parse(UI32 argc, char **argv){
 	UI32 status=0;
 	status=Flags(argc,argv);
-
+	if (status != 0) goto END;
 	if (!isatty(fileno(stdin))){
 		status=readPipe();
-
 	}//fi
-	status=Opts(argc,argv);
-	printf("parse popts0 : %s\n",*pOpts[0]);
-	printf("parse opts.b : %s\n",opts.b);
 
-	print_binary(status);
+
+	status=Opts(argc,argv);
+	for (int i=0;i<10;i++){
+		switch (i){
+			case 0:	opts.b=argv[pOpts[i]];
+			case 1:	opts.p=argv[pOpts[i]];
+			case 2:	opts.s=argv[pOpts[i]];
+			case 3:	opts.j=argv[pOpts[i]];
+			case 4:	opts.f=argv[pOpts[i]];
+		}
+	}
+
+END:
 	return status;
 }//parse

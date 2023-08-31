@@ -14,6 +14,6 @@ OPTS opts;
 ARGS args;
 PIPE stdn;
 UI32 STATUS[32]={[0 ... 31]=0};
-char **pOpts[10]={ &opts.b,	&opts.p,	&opts.s,	&opts.j,	&opts.f,	&opts.c,	&opts.r,	&opts.n,	&opts.h,	&opts.v};
+UI32 pOpts[10]={[0 ... 9]=0};
 #include "parser.h"
 #include "escape.h"
