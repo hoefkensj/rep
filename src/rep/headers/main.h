@@ -17,4 +17,4 @@ UI32 STATUS[32]={[0 ... 31]=0};
 UI32 pOpts[10]={[0 ... 9]=0};
 #include "parser.h"
 #include "escape.h"
-#include "help.h"
+// #include "help.h"

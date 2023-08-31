@@ -39,8 +39,7 @@ typedef struct ARGS{
 
 typedef struct PIPE{
 	UI32 n;
-	char *r
-	;
+	char *r;
 }PIPE;
 
 
