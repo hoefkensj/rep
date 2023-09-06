@@ -98,26 +98,34 @@ static UI32 Opts(UI32 argc, char **argv) {
 				break;
 			}
 			dbreak=0;
-		}//done
-	}//done
+		}//DONE
+		if (!dbreak){
+			if (!(STATUS[14]||STATUS[11]||STATUS[6])){
+				pArgs[0]=i;
+				printf("pArgs%i:%i %s\n",0,pArgs[0],argv[i]);
+				STATUS[11]=1;
+			}	else if (!(STATUS[12]||STATUS[7])){
+				pArgs[1] = i;
+				printf("pArgs%i:%i %s\n",1,pArgs[1],argv[i]);
 
-	for (int i=0;i<32;i++){
-		status+=(STATUS[i]*(1<<i));
-	}
+				STATUS[12]=1;
+			}// else
+		}//fi
+	}//done
 
 	return status;
 } //Opts
 
 UI32 parse(UI32 argc, char **argv){
 	UI32 status=0;
-	printf("parsing...");
+	printf("\nPARSING...");
 
 	status=Flags(argc,argv);
 	if (status != 0){
-		printf("FLAGGED...");
+		printf("\n\tFLAGGED...");
 		goto END;
 	}
-	printf("NOT FLAGGED...");
+	printf("\n\tNOT FLAGGED...");
 
 	if (!isatty(fileno(stdin))){
 		status=readPipe();
@@ -132,6 +140,7 @@ UI32 parse(UI32 argc, char **argv){
 	printf("\nASSIGNING...\n");
 
 	for (int i=0;i<8;i++){
+		printf("%i: status:%i",i,STATUS[i]);
 		if(STATUS[i]==1){
 			switch(i){
 				case 0:		opts.b=argv[pOpts[i]];printf("\n%i:b %s\t",i,argv[pOpts[i]]);	break;
@@ -140,8 +149,9 @@ UI32 parse(UI32 argc, char **argv){
 				case 3:		opts.j=argv[pOpts[i]];printf("\n%i:j %s\t",i,argv[pOpts[i]]);break;
 				case 4:		opts.f=argv[pOpts[i]];printf("\n%i:f %s\t",i,argv[pOpts[i]]);break;
 				case 5:		opts.c=argv[pOpts[i]];printf("\n%i:c %s\t",i,argv[pOpts[i]]);break;
-				case 6:		opts.r=argv[pOpts[i]];printf("\n%i:r %s\t",i,argv[pOpts[i]]);break;
-				case 7:		opts.n=argv[pOpts[i]];printf("\n%i:n %s\t",i,argv[pOpts[i]]);break;
+				case 6:		opts.r=argv[pOpts[i]];printf("\n%i:or %s\t",i,argv[pOpts[i]]);break;
+				case 7:		opts.n=argv[pOpts[i]];printf("\n%i:on %s\t",i,argv[pOpts[i]]);break;
+
 			}
 		}
 	}
