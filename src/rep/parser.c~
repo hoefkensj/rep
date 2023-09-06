@@ -88,11 +88,10 @@ static UI32 Opts(UI32 argc, char **argv) {
 
 	//options
 	for (UI32 i=1 ; i < argc; i++) {
-		printf("\n%i: %s\t",i,argv[i]);
 		for(UI32 j= 0; j< 8;j++){
-			if (!STATUS[j]  && isOption( j ,argv[i]) ) {
+			if ((!STATUS[j])  && isOption( j ,argv[i]) ) {
 				pOpts[j] = ++i;
-				printf("%i: %s\t",i,argv[i]);
+				printf("\narg: %i detected:%s in %s \tvalue=%s",i,argv[i-1],opt[j][0],argv[i]);
 				STATUS[j] = 1 ;
 				dbreak=1;
 				break;
@@ -102,20 +101,16 @@ static UI32 Opts(UI32 argc, char **argv) {
 		if (!dbreak){
 			if (!(STATUS[14]||STATUS[11]||STATUS[6])){
 				pArgs[0]=i;
-				printf("pArgs%i:%i %s\n",0,pArgs[0],argv[i]);
+				printf("\nargs:r arg: %i  value: %s\n",pArgs[0],argv[pArgs[0]]);
 				STATUS[11]=1;
 			}	else if (!(STATUS[12]||STATUS[7])){
 				pArgs[1] = i;
-				printf("pArgs%i:%i %s\n",1,pArgs[1],argv[i]);
+				printf("\nargs:n arg: %i  value: %s\n",pArgs[0],argv[pArgs[1]]);
 
 				STATUS[12]=1;
 			}// else
 		}//fi
 	}//done
-
-	for (int i=0;i<32;i++){
-		status+=(STATUS[i]*(1<<i));
-	}
 
 	return status;
 } //Opts
@@ -144,22 +139,33 @@ UI32 parse(UI32 argc, char **argv){
 	printf("\nASSIGNING...\n");
 
 	for (int i=0;i<8;i++){
-		printf("%i: status:%i",i,STATUS[i]);
+		printf("opt: %i: status:%i\t",i,STATUS[i]);
 		if(STATUS[i]==1){
 			switch(i){
-				case 0:		opts.b=argv[pOpts[i]];printf("\n%i:b %s\t",i,argv[pOpts[i]]);	break;
-				case 1:		opts.p=argv[pOpts[i]];printf("\n%i:p %s\t",i,argv[pOpts[i]]);break;
-				case 2:		opts.s=argv[pOpts[i]];printf("\n%i:s %s\t",i,argv[pOpts[i]]);break;
-				case 3:		opts.j=argv[pOpts[i]];printf("\n%i:j %s\t",i,argv[pOpts[i]]);break;
-				case 4:		opts.f=argv[pOpts[i]];printf("\n%i:f %s\t",i,argv[pOpts[i]]);break;
-				case 5:		opts.c=argv[pOpts[i]];printf("\n%i:c %s\t",i,argv[pOpts[i]]);break;
-				case 6:		opts.r=argv[pOpts[i]];printf("\n%i:or %s\t",i,argv[pOpts[i]]);break;
-				case 7:		opts.n=argv[pOpts[i]];printf("\n%i:on %s\t",i,argv[pOpts[i]]);break;
+				case 0:		opts.b=argv[pOpts[i]];printf("%i:b %s\n",i,argv[pOpts[i]]);	break;
+				case 1:		opts.p=argv[pOpts[i]];printf("%i:p %s\n",i,argv[pOpts[i]]);break;
+				case 2:		opts.s=argv[pOpts[i]];printf("%i:s %s\n",i,argv[pOpts[i]]);break;
+				case 3:		opts.j=argv[pOpts[i]];printf("%i:j %s\n",i,argv[pOpts[i]]);break;
+				case 4:		opts.f=argv[pOpts[i]];printf("%i:f %s\n",i,argv[pOpts[i]]);break;
+				case 5:		opts.c=argv[pOpts[i]];printf("%i:c %s\n",i,argv[pOpts[i]]);break;
+				case 6:		opts.r=argv[pOpts[i]];printf("%i:or %s\n",i,argv[pOpts[i]]);break;
+				case 7:		opts.n=argv[pOpts[i]];printf("%i:on %s\n",i,argv[pOpts[i]]);break;
 
+			}
+		}	else	{
+			printf("\n");
+		}
+	}
+	for (int i=11;i<13;i++){
+		printf("arg %i: status:%i\t",i,STATUS[i]);
+		if(STATUS[i]==1){
+			switch(i){
+				case 11:		args.r=argv[pArgs[0]];printf("%i:or %s\t",i,argv[pArgs[0]]);break;
+				case 12:		args.n=argv[pArgs[1]];printf("%i:on %s\t",i,argv[pArgs[1]]);break;
 			}
 		}
 	}
 
 END:
-	return status;
+	return 0;
 }//parse

@@ -5,6 +5,19 @@
 #include "headers/info.h"
 //--98765432109876543210
 //hv-----r-nr---nrcfjspb
+static init(){
+	opts.b="";
+	opts.p="";
+	opts.s="";
+	opts.j="";
+	opts.f="";
+	opts.c="";
+	opts.r="";
+	opts.n="";
+
+	args.n="";
+	args.r="";
+}
 
 static UI32 compile_vars(){
 	if (STATUS[5]) num.c=atol(opts.c);
@@ -30,16 +43,7 @@ static UI32 compile_vars(){
 	return 0;
 }
 int main(int argc, char *argv[]) {
-	opts.b="";
-	opts.p="";
-	opts.s="";
-	opts.j="";
-	opts.f="";
-	opts.c="";
-	opts.r="";
-	opts.n="";
-	args.n="";
-	args.r="";
+
 
 	printf("starting...");
 	err.parse = parse(argc,argv);

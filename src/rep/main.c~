@@ -22,7 +22,8 @@ static UI32 compile_vars(){
 				case 6:		opts.r=escape(opts.r);break;
 				case 7:		num.o=atol(opts.n);break;
 				case 11:	args.r=escape(args.r);break;
-				case 12:	num.a=atol(args.a);break;
+				case 12:	num.a=atol(args.n);break;
+				case 14:	stdn.r=escape(stdn.r);break;
 			}
 		}
 	}
