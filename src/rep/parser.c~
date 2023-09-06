@@ -13,8 +13,8 @@ static char *opt[10][3]  = {
 	{"-j", "--jnt", "--join"    },
 	{"-f", "--fin", "--final"   },
 	{"-c", "--col", "--colums"  },
-	{"-n", "--num", "--number"  },
 	{"-r", "--rep", "--repeat"  },
+	{"-n", "--num", "--number"  },
 	{"-v", "--ver", "--version" },
 	{"-h", "-?", "--help",   }};
 
@@ -101,11 +101,11 @@ static UI32 Opts(UI32 argc, char **argv) {
 		if (!dbreak){
 			if (!(STATUS[14]||STATUS[11]||STATUS[6])){
 				pArgs[0]=i;
-				printf("\nargs:r arg: %i  value: %s\n",pArgs[0],argv[pArgs[0]]);
+				// printf("\nargs:r arg: %i  value: %s\n",pArgs[0],argv[pArgs[0]]);
 				STATUS[11]=1;
 			}	else if (!(STATUS[12]||STATUS[7])){
 				pArgs[1] = i;
-				printf("\nargs:n arg: %i  value: %s\n",pArgs[0],argv[pArgs[1]]);
+				// printf("\nargs:n arg: %i  value: %s\n",pArgs[0],argv[pArgs[1]]);
 
 				STATUS[12]=1;
 			}// else
@@ -117,14 +117,14 @@ static UI32 Opts(UI32 argc, char **argv) {
 
 UI32 parse(UI32 argc, char **argv){
 	UI32 status=0;
-	printf("\nPARSING...");
+	// printf("\nPARSING...");
 
 	status=Flags(argc,argv);
 	if (status != 0){
-		printf("\n\tFLAGGED...");
+		// printf("\n\tFLAGGED...");
 		goto END;
 	}
-	printf("\n\tNOT FLAGGED...");
+	// printf("\n\tNOT FLAGGED...");
 
 	if (!isatty(fileno(stdin))){
 		status=readPipe();
@@ -132,36 +132,36 @@ UI32 parse(UI32 argc, char **argv){
 	if (status==0){
 		stdn.r="";
 	}
-	printf("piped...");
+	// printf("piped...");
 
 
 	status=Opts(argc,argv);
-	printf("\nASSIGNING...\n");
+	// printf("\nASSIGNING...\n");
 
 	for (int i=0;i<8;i++){
-		printf("opt: %i: status:%i\t",i,STATUS[i]);
+		// printf("opt: %i: status:%i\t",i,STATUS[i]);
 		if(STATUS[i]==1){
 			switch(i){
-				case 0:		opts.b=argv[pOpts[i]];printf("%i:b %s\n",i,argv[pOpts[i]]);	break;
-				case 1:		opts.p=argv[pOpts[i]];printf("%i:p %s\n",i,argv[pOpts[i]]);break;
-				case 2:		opts.s=argv[pOpts[i]];printf("%i:s %s\n",i,argv[pOpts[i]]);break;
-				case 3:		opts.j=argv[pOpts[i]];printf("%i:j %s\n",i,argv[pOpts[i]]);break;
-				case 4:		opts.f=argv[pOpts[i]];printf("%i:f %s\n",i,argv[pOpts[i]]);break;
-				case 5:		opts.c=argv[pOpts[i]];printf("%i:c %s\n",i,argv[pOpts[i]]);break;
-				case 6:		opts.r=argv[pOpts[i]];printf("%i:or %s\n",i,argv[pOpts[i]]);break;
-				case 7:		opts.n=argv[pOpts[i]];printf("%i:on %s\n",i,argv[pOpts[i]]);break;
+				case 0:		opts.b=argv[pOpts[i]];break;
+				case 1:		opts.p=argv[pOpts[i]];break;
+				case 2:		opts.s=argv[pOpts[i]];break;
+				case 3:		opts.j=argv[pOpts[i]];break;
+				case 4:		opts.f=argv[pOpts[i]];break;
+				case 5:		opts.c=argv[pOpts[i]];break;
+				case 6:		opts.r=argv[pOpts[i]];break;
+				case 7:		opts.n=argv[pOpts[i]];break;
 
 			}
 		}	else	{
-			printf("\n");
+			// printf("\n");
 		}
 	}
 	for (int i=11;i<13;i++){
-		printf("arg %i: status:%i\t",i,STATUS[i]);
+		// printf("arg %i: status:%i\t",i,STATUS[i]);
 		if(STATUS[i]==1){
 			switch(i){
-				case 11:		args.r=argv[pArgs[0]];printf("%i:or %s\t",i,argv[pArgs[0]]);break;
-				case 12:		args.n=argv[pArgs[1]];printf("%i:on %s\t",i,argv[pArgs[1]]);break;
+				case 11:		args.r=argv[pArgs[0]];break;
+				case 12:		args.n=argv[pArgs[1]];break;
 			}
 		}
 	}

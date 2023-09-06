@@ -5,7 +5,7 @@
 #include "headers/info.h"
 //--98765432109876543210
 //hv-----r-nr---nrcfjspb
-static init(){
+static void init(){
 	opts.b="";
 	opts.p="";
 	opts.s="";
@@ -43,20 +43,34 @@ static UI32 compile_vars(){
 	return 0;
 }
 int main(int argc, char *argv[]) {
-
-
-	printf("starting...");
+	init();
 	err.parse = parse(argc,argv);
-	printf("parsed...");
 	err.escape =	compile_vars();
-	printf("escaped...");
 	err.repeat = repeat();
-	printf("repeated...");
 	return 0;
 }//main
 
 UI32 repeat(){
 	UI32 n = 0;
+	n= (STATUS[7]*num.o)+(STATUS[12]*num.a);
+	//repeat sequence :
+	printf("%s",opts.b);
+	for ( n ; n >  0 ; n--) {
+		printf("%s",opts.p);
+		printf("%s",opts.r);
+		printf("%s",args.r);
+		printf("%s",stdn.r);
+		printf("%s",opts.s);
+		if ( n > 1 ){
+			printf("%s",opts.j);
+		}//fi
+	} // for
+	printf("%s",opts.f);
+	return 0;
+}//repeat
+
+
+UI32 debug(){
 	printf("\n-------STRINGS-------\n");
 	printf("opts.b= %s\n",opts.b);
 	printf("opts.p= %s\n",opts.p);
@@ -75,22 +89,7 @@ UI32 repeat(){
 	printf("args.n= %s\t",args.n);
 	printf("num.a= %d\n",num.a);
 	printf("------PROCESSED-------\n");
-	printf("n= %d\n",n);
-
-	n= (!STATUS[12]*STATUS[7]*num.o)+(STATUS[12]*num.a);
-	for ( n ; n >  0 ; n--) {
-		printf("%s%s%s",opts.p,opts.r,opts.s);
-		printf("%s%s%s",opts.p,args.r,opts.s);
-		if ( n > 1 ){
-			printf("%s",opts.j);
-		}//fi
-	} // for
-	printf("%s",opts.f);
-	return 0;
-}//repeat
-
-
-
+}
 UI32 show_info(){
 	return 0;
 }
