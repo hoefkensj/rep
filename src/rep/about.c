@@ -1,7 +1,5 @@
-#include "headers/help.h"
-
-
-
+#define _GNU_SOURCE
+#include "headers/about.h"
 char *about(char *strAbout){
 	// char *keyval[];
 	char *mask="\x1b[%iG%s:\x1b[%iG%s%s";
@@ -14,17 +12,7 @@ char *about(char *strAbout){
 	printf(mask,42 ,"REPO   " ,54 ,REPO   ,"\n");
 	printf(mask,0  ,"AUTHORS" ,12 ,AUTHOR,"");
 	printf(mask,42 ,"LICENSE" ,54 ,LICENSE   ,"\n");
-	printf(strAbout,"%s%s%s%s%s%s",aAb[0],aAb[1],aAb[2],aAb[3],aAb[4],aAb[5]);
+	sprintf(strAbout,"%s%s%s%s%s%s",aAb[0],aAb[1],aAb[2],aAb[3],aAb[4],aAb[5]);
 	// printf("%i",(int) strlen(strAbout));
 	return strAbout;
-}
-
-char *help(char *strInfo,char *exeName){
-
-	sprintf(strInfo,strHelp,exeName);
-	return strInfo;
-}
-char *use(char *strInfo,char *exeName){
-	sprintf(strInfo,strUse,exeName);
-	return strInfo;
 }

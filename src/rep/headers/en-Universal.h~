@@ -1,22 +1,8 @@
 #pragma once
-#include "globals.h"
-
-char *about(char *strInfo);
-char *help(char *strInfo,char *exeName);
-char *use(char *strInfo,char *exeName);
-char *test();
-
-
-
-#define USE "\
-USAGE:  %s  <string> <int> [-o,--option <string>] )\n\
-        USE -h or --help for more info\n\
-"
-
-
+#define _GNU_SOURCE
 #define HELP "\
 USAGE:  %s <rep> <int> [-o,--option <str>]\n\
-        Prints <rep> <int> times to stdout.\n\
+        Prints ( [?prefix]<rep>[?suffix])([?join])) <int> times to stdout.\n\
 \n\
 ARGS:\n\
 \n\
@@ -25,10 +11,16 @@ ARGS:\n\
 \n\
 OPTIONS:\n\
 \n\
-    -h, --help        Show this help message and exit.\n\
-    -p, --pfx <str>   Prefix, this string will be printed before the first <rep>.\n\
-    -s, --sfx <str>   Suffix, this string will be printed after the last <rep>\n\
-    -c, --cat <str>   Concat, this string will be printed in between every two <rep> \n\
+    -h. -?, --help        Show this help message and exit.\n\
+   \
+    -b, --bgn,  --begin  <str>   Prefix, this string will be printed before the first <rep>.\n\
+    -f, --fin,  --final  <str>   Suffix, this string will be printed after the last <rep>\n\
+    \
+    -p, --pre,  --prefix <str>   Concat, this string will be printed in between every two <rep> \n\
+    -s, --suf,  --suffix\
+    \
+    -j, --cat,	--join\
+
     -v, --version     Show Version,About\n\
 \n\
 DOCS:\n\
@@ -52,5 +44,8 @@ DOCS:\n\
   \n\
 \n\
 "
-char *strHelp=HELP;
-char *strUse=USE;
+
+#define USE "\
+USAGE:  %s  <string> <int> [-o,--option <string>] )\n\
+        USE -h or --help for more info\n\
+"

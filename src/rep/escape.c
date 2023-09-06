@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include "headers/escape.h"
 
 static void oct0(char str[], unsigned int *i, unsigned int *j) {

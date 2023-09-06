@@ -1,6 +1,26 @@
- #include "headers/parser.h"
+#define _GNU_SOURCE
+#include "headers/parser.h"
 //--98765432109876543210
-//hv-----r-nr-vhnrcfjspb
+//hv-----r-nr---nrcfjspb
+static char *FLAG[2][3] = {
+	{"-v", "--ver", "--version" },
+	{"-h", "-?", "--help",   }};
+
+static char *opt[10][3]  = {
+	{"-b", "--bgn", "--begin"   },
+	{"-p", "--pfx", "--prefix"  },
+	{"-s", "--sfx", "--suffix"  },
+	{"-j", "--jnt", "--join"    },
+	{"-f", "--fin", "--final"   },
+	{"-c", "--col", "--colums"  },
+	{"-n", "--num", "--number"  },
+	{"-r", "--rep", "--repeat"  },
+	{"-v", "--ver", "--version" },
+	{"-h", "-?", "--help",   }};
+
+UI32 STATUS[32]={[0 ... 31]=0};
+UI32 pOpts[8]={[0 ... 7]=0};
+UI32 pArgs[2]={[0 ... 1]=0};
 
 static UI32 readPipe(){
   UI32 sR = 0;
@@ -12,7 +32,7 @@ static UI32 readPipe(){
 		if (!(sR%8)){
 			sA+=8;
 			char *pPipe = realloc(pipe,sA);
-			if (pPipe==NULL) return 1;
+			if (pPipe==NULL) return 0;
 			pipe=pPipe;
 		}
 		pipe[sR]=cIn;
@@ -20,8 +40,8 @@ static UI32 readPipe(){
 	}
 	stdn.r=pipe;
 	STATUS[14]=1; //got pipedata
-	STATUS[12]=1; //skip arg rep
-	return 0;
+	rep.i=1;
+	return rep.i;
 }//readPipe
 
 static UI32 isOption(UI32 optn ,char *arg ){
@@ -68,30 +88,17 @@ static UI32 Opts(UI32 argc, char **argv) {
 
 	//options
 	for (UI32 i=1 ; i < argc; i++) {
-		for(UI32 j= 0; j< 10;j++){
+		printf("\n%i: %s\t",i,argv[i]);
+		for(UI32 j= 0; j< 8;j++){
 			if (!STATUS[j]  && isOption( j ,argv[i]) ) {
 				pOpts[j] = ++i;
+				printf("%i: %s\t",i,argv[i]);
 				STATUS[j] = 1 ;
 				dbreak=1;
 				break;
 			}
 			dbreak=0;
 		}//done
-		if (!dbreak){
-			if (!(STATUS[6] && STATUS[11])){
-				args.r=argv[i];
-				opts.r=argv[i];
-				STATUS[6]=1;
-				STATUS[11]=1;
-				// optStat[6]=1;
-			}	else if (!(STATUS[7] && STATUS[12])){
-					args.n = atol(argv[i]);
-					opts.n = argv[i];
-					STATUS[7]=1;
-					STATUS[12]=1;
-					// optStat[7]=1;
-			}// else
-		}//fi
 	}//done
 
 	for (int i=0;i<32;i++){
@@ -100,7 +107,6 @@ static UI32 Opts(UI32 argc, char **argv) {
 
 	return status;
 } //Opts
-
 
 UI32 parse(UI32 argc, char **argv){
 	UI32 status=0;
@@ -116,19 +122,27 @@ UI32 parse(UI32 argc, char **argv){
 	if (!isatty(fileno(stdin))){
 		status=readPipe();
 	}//fi
+	if (status==0){
+		stdn.r="";
+	}
 	printf("piped...");
 
 
 	status=Opts(argc,argv);
-	printf("ASSIGNING...");
+	printf("\nASSIGNING...\n");
 
-	for (int i=0;i<10;i++){
-		switch (i){
-			case 0:	opts.b=argv[pOpts[i]];
-			case 1:	opts.p=argv[pOpts[i]];
-			case 2:	opts.s=argv[pOpts[i]];
-			case 3:	opts.j=argv[pOpts[i]];
-			case 4:	opts.f=argv[pOpts[i]];
+	for (int i=0;i<8;i++){
+		if(STATUS[i]==1){
+			switch(i){
+				case 0:		opts.b=argv[pOpts[i]];printf("\n%i:b %s\t",i,argv[pOpts[i]]);	break;
+				case 1:		opts.p=argv[pOpts[i]];printf("\n%i:p %s\t",i,argv[pOpts[i]]);break;
+				case 2:		opts.s=argv[pOpts[i]];printf("\n%i:s %s\t",i,argv[pOpts[i]]);break;
+				case 3:		opts.j=argv[pOpts[i]];printf("\n%i:j %s\t",i,argv[pOpts[i]]);break;
+				case 4:		opts.f=argv[pOpts[i]];printf("\n%i:f %s\t",i,argv[pOpts[i]]);break;
+				case 5:		opts.c=argv[pOpts[i]];printf("\n%i:c %s\t",i,argv[pOpts[i]]);break;
+				case 6:		opts.r=argv[pOpts[i]];printf("\n%i:r %s\t",i,argv[pOpts[i]]);break;
+				case 7:		opts.n=argv[pOpts[i]];printf("\n%i:n %s\t",i,argv[pOpts[i]]);break;
+			}
 		}
 	}
 

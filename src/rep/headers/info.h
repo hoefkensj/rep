@@ -1,8 +1,7 @@
 #pragma once
+#define _GNU_SOURCE
 #include "globals.h"
-#include "defHelp.h"
-
 char *about(char *strInfo);
 char *help(char *strInfo,char *exeName);
 char *use(char *strInfo,char *exeName);
-char *test();
+void info(UI32 iInfo,char exeName);
