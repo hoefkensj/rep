@@ -14,7 +14,8 @@ PIPE stdn;
 REP rep;
 NUM num;
 ERR err;
-
+UI32 STATUS[32]={[0 ... 31]=0};
+UI32 debug=DEBUG;
 
 
 

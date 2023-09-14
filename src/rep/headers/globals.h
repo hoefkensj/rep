@@ -16,6 +16,5 @@ extern REP rep;
 extern NUM num;
 
 extern UI32 STATUS[32];
-extern UI32 pOpts[8];
-extern UI32 pArgs[2];
+extern UI32 debug;
 

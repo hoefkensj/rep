@@ -2,7 +2,7 @@
 #include "headers/escape.h"
 
 static void oct0(char str[], unsigned int *i, unsigned int *j) {
-	char O[6] = { [0 ... 5]=Z0 };
+	char O[6] = { [0 ... 5]='\0' };
 	unsigned int o[3];
 	O[0] = str[*i + 0];
 	O[2] = str[*i + 1];
@@ -45,7 +45,7 @@ static void oct1(char str[], unsigned int *i, unsigned int *j) {
 }//oct
 
 static void hex(char str[], unsigned int *i, unsigned int *j) {
-    char X[8] ={ [0 ... 7]=Z0 };
+    char X[8] ={ [0 ... 7]='\0' };
     unsigned int x[8];
 
     X[0] = str[*i + 2];
@@ -57,7 +57,10 @@ static void hex(char str[], unsigned int *i, unsigned int *j) {
             X[6] = str[*i + 5];
             if (sscanf(&X[4], "%x", &x[2])) {
                 if (sscanf(&X[6], "%x", &x[3])) {
-                    str[(*j) - 1] = (x[0] * 16 * 16 * 16) + (x[1] * 16 * 16) + (x[2] * 16) + (x[3]);
+                    str[(*j) - 1] = (x[0] * 16 * 16 * 16) +
+																		(x[1] * 16 * 16) +
+																		(x[2] * 16) +
+																		(x[3]);
                     (*i) += 2;
                 }//fi
             }//fi
@@ -68,7 +71,7 @@ static void hex(char str[], unsigned int *i, unsigned int *j) {
 }//hex
 
 static void uni4(char str[], unsigned int *i, unsigned int *j) {
-	char U[8] = {[0 ... 7]=Z0};
+	char U[8] = {[0 ... 7]='\0'};
 	unsigned int x[8];
 	unsigned int xval;
 
@@ -100,7 +103,7 @@ static void uni4(char str[], unsigned int *i, unsigned int *j) {
 }//uni4
 
 static void uni8(char str[], unsigned int *i, unsigned int *j) {
-	char U[16] = {[0 ... 15]=Z0};
+	char U[16] = {[0 ... 15]='\0'};
 	unsigned int x[8];
 	unsigned int xval;
 	U[0]=str[*i+2];		U[2]=str[*i+3];
@@ -137,6 +140,8 @@ static void uni8(char str[], unsigned int *i, unsigned int *j) {
 }//uni8
 
 char *escape(char *str){
+	printf("%s" , str);
+	printf("\n->escaped:\n" );
 	unsigned int lnstr  = strlen(str)+1;
 	for (unsigned int i=0,j=0 ;i<=lnstr;i++){
 		if (str[i] == '\\'){
@@ -153,6 +158,16 @@ char *escape(char *str){
 				case 'v' : str[j] = '\v'; i=i+1;j++; break;
 				case 'o':
 				case 'O': oct1(str, &i, &j); break;
+				case 'u':
+					if((lnstr-i)>=6)	uni4(str, &i, &j);
+					break;
+				case 'U':
+					if((lnstr-i)>=10)	uni8(str, &i, &j) ;
+					break;
+				case 'x':
+				case 'X':
+					if((lnstr-i)>=4)	hex(str, &i, &j);
+					break;
 				case '0':
 				case '1':
 				case '2':
@@ -161,10 +176,7 @@ char *escape(char *str){
 				case '5':
 				case '6':
 				case '7': oct0(str, &i, &j); break;
-				case 'x':
-				case 'X': hex(str, &i, &j); break;
-				case 'u': uni4(str, &i, &j); break;
-				case 'U': uni8(str, &i, &j) ;break;
+
 			}//switch
 		} else {
 			str[j++]=str[i];
@@ -173,5 +185,6 @@ char *escape(char *str){
 				str[j] = '\0';
 		}
 	}//done
-  return str;
+	printf("%s" , str);
+	return str;
 }

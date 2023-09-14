@@ -1,6 +1,7 @@
 #pragma once
 #define _GNU_SOURCE
 #include "globals.h"
+#include "pipe.h"
 
 // Function declarations
 
