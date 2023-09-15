@@ -23,7 +23,7 @@ typedef struct PIPE{
 }PIPE;
 
 typedef struct REP{
-	ui32 i;
+	UI32 i;
 	UI32 a;
 	UI32 o;
 }REP;

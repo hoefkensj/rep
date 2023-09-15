@@ -14,26 +14,24 @@ char *help(char *strInfo,char *exeName){
 	return strInfo;
 }
 
-char *use(char *strInfo,char *exeName){
+static char *use(char *exeName){
 	UI32 lnBUse;
 	char *strUse=USE;
-	char bufUse[lnBUse];
-
 	lnBUse=strlen(strUse)+strlen(exeName)+1;
-
-	sprintf(strInfo,strUse,exeName);
-	return strInfo;
+	char *bufUse=malloc(lnBUse);
+	sprintf(bufUse,strUse,exeName);
+	return bufUse;
 }
 
-void info(UI32 iInfo,char exeName){
+void info(UI32 iInfo,char *exeName){
 	char *bufInfo;
 	char bufAb[100];
 	switch (iInfo){
 		case 0:
 			printf("\n%s\n","tmp");
 		case 1:
-			printf("\n%s\n",help(bufInfo,&exeName));
+			printf("\n%s\n",help(bufInfo,exeName));
 		case 2:
-			printf("\n%s\n",use(bufInfo,&exeName));
+			printf("\n%s\n",use(exeName));
 	}
 }

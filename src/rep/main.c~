@@ -22,9 +22,38 @@ static void init(){
 	num.c=0;
 
 }
-UI32 debug(UI32 select){
-	if (select==1){
+UI32 debug_proc(UI32 select){
+SELECT:
+	if (select&(1<0)){
+		printf("-1-0-9-8-7-6-5-4-3-2-1-0-9-8-7-6-5-4-3-2-1-0-9-8-7-6-5-4-3-2-1-0\n");
+		printf("-d-h-v-----------------------------r---n-r-------n-r-c-f-j-s-p-b\n");
+		for (int i = 31 ; i>=0;i--){
+			printf("-%i",STATUS[i]);
+		}
+		printf("\n");
+		select-=(1<0);
+	}
+	if (select&(1<1)){
 		printf("\n-------STRINGS-------\n");
+		goto STRINGS;
+	}
+	if (select&(1<2)){
+		printf("------INTEGERS-------\n");
+		printf("opts.c= %s\t",opts.c);
+		printf("num.c= %d\n",num.c);
+		printf("opts.n= %s\t",opts.n);
+		printf("num.o= %d\n",num.o);
+		printf("args.n= %s\t",args.n);
+		printf("num.a= %d\n",num.a);
+		printf("---------------------\n");
+	}
+	if (select&(1<3)){
+		printf("------PROCESSED-------\n");
+				select-=(1<3);
+		goto STRINGS;
+	}
+	goto END;
+STRINGS:
 		printf("opts.b= %s\n",opts.b);
 		printf("opts.p= %s\n",opts.p);
 		printf("opts.s= %s\n",opts.s);
@@ -34,68 +63,70 @@ UI32 debug(UI32 select){
 		printf("args.r= %s\t",args.r);
 		printf("stdn.r= %s\n",stdn.r);
 		printf("---------------------\n");
-	} else if (select == 2){
-		printf("------INTEGERS-------\n");
-		printf("opts.c= %s\t",opts.c);
-		printf("num.c= %d\n",num.c);
-		printf("opts.n= %s\t",opts.n);
-		printf("num.o= %d\n",num.o);
-		printf("args.n= %s\t",args.n);
-		printf("num.a= %d\n",num.a);
-		printf("---------------------\n");
-	} else if (select==3){
-		printf("------PROCESSED-------\n");
-		printf("opts.b= %s\x1b[m\n",opts.b);
-		printf("opts.p= %s\x1b[m\n",opts.p);
-		printf("opts.s= %s\x1b[m\n",opts.s);
-		printf("opts.j= %s\x1b[m\n",opts.j);
-		printf("opts.f= %s\x1b[m\n",opts.f);
-		printf("opts.r= %s\x1b[m\t",opts.r);
-		printf("args.r= %s\x1b[m\t",args.r);
-		printf("stdn.r= %s\x1b[m\n",stdn.r);
-		printf("---------------------\n");
+		goto SELECT;
+END:
+	return 0;
+}
+void debug_print(const char *tpl,...){
+	if (debug){
+		va_list args;
+    va_start(args, tpl);
+    vprintf(tpl, args);
+    va_end(args);
 	}
 }
 
-static UI32 compile_vars(){
 
-	if (STATUS[5]) num.c=atol(opts.c);
-	if (STATUS[7]) num.o=atol(opts.n);
-	if (STATUS[12]) num.a=atol(args.n);
-	debug(3);
+void main_debug(int argc, char *argv[]){
+
+	if (debug) debug_print("%s\n","DEBUG: ENABLED...");
+	if (debug) debug_print("%s","DEBUG: INIT... ");
+	init();\
+	if (debug) debug_print("\x1b[50G\x1b[32m%s\x1b[m\n","DONE");
+	debug_proc(1);
+	if (debug) debug_print("\n%s","DEBUG: CHECKING FLAGS... ");
+	err.flags	=	check_flags(argc,argv,STATUS);
+
+
+
+
+}
+static UI32 compile_strings(){
+	UI32 done = 0;
 	for (int i=0;i<16;i++){
 		if(STATUS[i]==1){
+			done ++ ;
 			switch(i){
-				case 0:		escape(opts.b);break;
-				case 1:		opts.p=escape(opts.p);break;
-				case 2:		opts.s=escape(opts.s);break;
-				case 3:		opts.j=escape(opts.j);break;
-				case 4:		opts.f=escape(opts.f);break;
-				case 5:		num.c=atol(opts.c);break;
-				case 6:		opts.r=escape(opts.r);break;
-				case 7:		num.o=atol(opts.n);break;
-				case 11:	args.r=escape(args.r);break;
-				case 12:	num.a=atol(args.n);break;
-				case 14:	stdn.r=escape(stdn.r);break;
+				case 0:		opts.b = escape(opts.b);break;
+				case 1:		opts.p = escape(opts.p);break;
+				case 2:		opts.s = escape(opts.s);break;
+				case 3:		opts.j = escape(opts.j);break;
+				case 4:		opts.f = escape(opts.f);break;
+				case 6:		opts.r = escape(opts.r);break;
+				case 11:	args.r = escape(args.r);break;
+				case 14:	stdn.r = escape(stdn.r);break;
 			}
 		}
 	}
-	debug(3);
-
-	return 0;
+	return done;
 }
 int main(int argc, char *argv[]) {
+	if (debug) main_debug(argc,argv);
 	init();
-	err.parse = parse(argc,argv);
-	debug(1);
-	for (int i =0 ; i<32;i++){
-		printf("%i-",STATUS[i]);
-	}
-	err.escape =	compile_vars();
-	debug(2);
-	debug(3);
 
-	err.repeat = repeat();
+	err.flags = check_flags(argc,argv,STATUS);
+	if (err.flags!=0) run_flags(argc,argv);
+
+
+	// err.parse = parse(argc,argv);
+	// err.escape =	compile_strings();
+	if(MANDATORY==0){
+		printf("MISSING: <STRING> and <NUM>\n");
+		info(2,argv[0]);
+	}
+
+	// err.repeat = repeat();
+END:
 	return 0;
 }//main
 
@@ -123,3 +154,21 @@ UI32 repeat(){
 UI32 show_info(){
 	return 0;
 }
+void run_flags(int argc,char **argv){
+	for (int i = 0 ; i < 4; i++ ){
+		if (err.flags & (1<i )){
+			switch(i){
+				case 0:
+					debug=1;
+					main_debug(argc,argv);
+				case 1:
+					info(2,argv[0]);
+				case 2:
+					info(1,argv[0]);
+				default:
+					break;
+			}
+		}
+	}
+}
+

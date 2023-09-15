@@ -6,7 +6,8 @@
 UI32 repeat();
 UI32 escape_opts();
 UI32 show_info();
-
+void debug_print(const char *tpl,...);
+void run_flags(int argc,char **argv);
 
 OPTS opts;
 ARGS args;
@@ -15,6 +16,7 @@ REP rep;
 NUM num;
 ERR err;
 UI32 STATUS[32]={[0 ... 31]=0};
+UI32 MANDATORY=0;
 UI32 debug=DEBUG;
 
 

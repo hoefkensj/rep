@@ -2,11 +2,13 @@
 #include "headers/parser.h"
 //--98765432109876543210
 //hv-----r-nr---nrcfjspb
-static char *FLAG[2][3] = {
+static char *FLAG[3][3] = {
+	{"-d", "--deb", "--debug"   },
+	{"-h", "-?", "--help",      },
 	{"-v", "--ver", "--version" },
-	{"-h", "-?", "--help",   }};
+};
 
-static char *opt[10][3]  = {
+static char *OPT[8][3]  = {
 	{"-b", "--bgn", "--begin"   },
 	{"-p", "--pfx", "--prefix"  },
 	{"-s", "--sfx", "--suffix"  },
@@ -14,48 +16,41 @@ static char *opt[10][3]  = {
 	{"-f", "--fin", "--final"   },
 	{"-c", "--col", "--colums"  },
 	{"-r", "--rep", "--repeat"  },
-	{"-n", "--num", "--number"  },
-	{"-v", "--ver", "--version" },
-	{"-h", "-?", "--help",   }};
+	{"-n", "--num", "--number"  }
+};
 
-
-
-
-static UI32 isOption(UI32 optn ,char *arg ){
+static UI32 isOption(UI32 n ,char *arg ){
 	UI32 match=0;
 	match = !(
-		strcmp(arg, opt[optn][0] ) &&
-		strcmp(arg, opt[optn][1] ) &&
-		strcmp(arg, opt[optn][2] )
+		strcmp(arg, OPT[n][0] ) &&
+		strcmp(arg, OPT[n][1] ) &&
+		strcmp(arg, OPT[n][2] )
 	);
 	return match;
 } //isOption
 
-static UI32 isFlag(UI32 flagn ,char *arg ){
+static UI32 isFlag(UI32 n ,char *arg ){
 	UI32 match=0;
 	match = !(
-		strcmp(arg, FLAG[flagn][0] ) &&
-		strcmp(arg, FLAG[flagn][1] ) &&
-		strcmp(arg, FLAG[flagn][2] )
+		strcmp(arg, FLAG[n][0] ) &&
+		strcmp(arg, FLAG[n][1] ) &&
+		strcmp(arg, FLAG[n][2] )
 	);
 	return match;
 }//isFlag
 
 
-static UI32 Flags(UI32 argc, char **argv){
-	UI32 gotflagged=	0;
-	//flags
+UI32 check_flags(UI32 argc, char **argv,UI32 STATUS[32]){
+	UI32 ret=0;
 	for (UI32 i=1 ; i < argc; i++) {
 		for(UI32 j= 0; j< 2;j++){
-			if (isFlag( j ,argv[i]) ) {
-				gotflagged=-1;
-				STATUS[30+j]=1;
-				break;
-			}//fi
-			if (STATUS[29]|STATUS[30]|STATUS[31])	break;
+			if (isFlag( j ,argv[i]) ){
+				STATUS[31-i]=1;
+				ret=ret|(1<i);}
+				argv[i]="";
 		}//done
 	}//done
-	return gotflagged;
+	return ret;
 }//Flags
 
 static UI32 Opts(UI32 argc, char **argv ,UI32 pOpts[8],UI32 pArgs[2],UI32 STATUS[32]) {
@@ -103,25 +98,6 @@ UI32 parse(UI32 argc, char **argv){
 
 	UI32 pOpts[8]={[0 ... 7]=0};
 	UI32 pArgs[2]={[0 ... 1]=0};
-
-	// printf("\nPARSING...");
-
-	status=Flags(argc,argv);
-	if (status != 0){
-		// printf("\n\tFLAGGED...");
-		goto END;
-	}
-	// printf("\n\tNOT FLAGGED...");
-
-	if (!isatty(fileno(stdin))){
-		stdn.r=readPipe(STATUS);
-		printf("%s",stdn.r);
-		status=1;
-	}//fi
-	if (status==0){
-		stdn.r="";
-	}
-
 
 	status=Opts(argc,argv,pOpts,pArgs,STATUS);
 	// printf("\nASSIGNING...\n");

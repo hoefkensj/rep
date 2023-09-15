@@ -1,6 +1,6 @@
 #pragma once
 #define _GNU_SOURCE
-#define HELP "\
+static char *HELP ="\
 USAGE:  %s <rep> <int> [-o,--option <str>]\n\
         Prints ( [?prefix]<rep>[?suffix])([?join])) <int> times to stdout.\n\
 \n\
@@ -43,9 +43,9 @@ DOCS:\n\
   This supports outputting to arguments of printf, or to the programs own arguments.\n\
   \n\
 \n\
-"
+";
 
-#define USE "\
+static char *USE ="\
 USAGE:  %s  <string> <int> [-o,--option <string>] )\n\
         USE -h or --help for more info\n\
-"
+";

@@ -23,3 +23,10 @@ char *readPipe(UI32 STATUS[32]){
 	STATUS[14]=1;
 	return str;
 }//readPipe
+
+UI32 read_stdin(UI32 STATUS[32]){
+	UI32 ret = 0;
+
+
+	return ret;
+}

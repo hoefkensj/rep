@@ -158,17 +158,25 @@ char *escape(char *str){
 				case 'v' : str[j] = '\v'; i=i+1;j++; break;
 				case 'o':
 				case 'O': oct1(str, &i, &j); break;
-
-				case 'x':
-				case 'X':
-					if((lnstr-i)>=4)	hex(str, &i, &j);
-					break;
 				case 'u':
 					if((lnstr-i)>=6)	uni4(str, &i, &j);
 					break;
 				case 'U':
 					if((lnstr-i)>=10)	uni8(str, &i, &j) ;
 					break;
+				case 'x':
+				case 'X':
+					if((lnstr-i)>=4)	hex(str, &i, &j);
+					break;
+				case '0':
+				case '1':
+				case '2':
+				case '3':
+				case '4':
+				case '5':
+				case '6':
+				case '7': oct0(str, &i, &j); break;
+
 			}//switch
 		} else {
 			str[j++]=str[i];
@@ -177,6 +185,5 @@ char *escape(char *str){
 				str[j] = '\0';
 		}
 	}//done
-	printf("%s" , str);
 	return str;
 }
