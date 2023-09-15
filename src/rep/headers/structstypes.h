@@ -36,6 +36,7 @@ typedef struct NUM{
 
 typedef struct ERR{
 	UI32 flags;
+	UI32 pipe;
 	UI32 parse;
 	UI32 escape;
 	UI32 repeat;

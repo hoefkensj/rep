@@ -2,7 +2,7 @@
 #include "headers/pipe.h"
 //--98765432109876543210
 //hv-----r-nr---nrcfjspb
-char *readPipe(UI32 STATUS[32]){
+char *readPipe(){
 	unsigned int sR   = 0 ,
                sA   = 8 ;
 	char         cI  = '\0';
@@ -20,13 +20,16 @@ char *readPipe(UI32 STATUS[32]){
 	}//while
 	char *str = ((char *)malloc( strlen(pipe) ));
 	strcpy(str, pipe);
-	STATUS[14]=1;
 	return str;
 }//readPipe
 
 UI32 read_stdin(UI32 STATUS[32]){
 	UI32 ret = 0;
-
-
+	if (!isatty(fileno(stdin))){
+		stdn.r=readPipe();
+		if (stdn.r != NULL)	{	STATUS[14] = 1;	}	else { ret = 2;	}
+	} else {
+		ret = 1;
+	}
 	return ret;
 }

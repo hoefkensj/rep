@@ -46,8 +46,10 @@ UI32 check_flags(UI32 argc, char **argv,UI32 STATUS[32]){
 		for(UI32 j= 0; j< 2;j++){
 			if (isFlag( j ,argv[i]) ){
 				STATUS[31-i]=1;
-				ret=ret|(1<i);}
+				ret=ret+(1<<j);
+				printf("ret= %i\n",ret);
 				argv[i]="";
+			}
 		}//done
 	}//done
 	return ret;
@@ -98,12 +100,6 @@ UI32 parse(UI32 argc, char **argv){
 
 	UI32 pOpts[8]={[0 ... 7]=0};
 	UI32 pArgs[2]={[0 ... 1]=0};
-
-	// printf("\nPARSING...");
-
-
-
-
 
 	status=Opts(argc,argv,pOpts,pArgs,STATUS);
 	// printf("\nASSIGNING...\n");

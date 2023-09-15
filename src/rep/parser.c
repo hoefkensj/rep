@@ -46,8 +46,10 @@ UI32 check_flags(UI32 argc, char **argv,UI32 STATUS[32]){
 		for(UI32 j= 0; j< 2;j++){
 			if (isFlag( j ,argv[i]) ){
 				STATUS[31-i]=1;
-				ret=ret|(1<i);}
+				ret=ret+(1<<i);
+				printf("ret= %i\n",ret);
 				argv[i]="";
+			}
 		}//done
 	}//done
 	return ret;

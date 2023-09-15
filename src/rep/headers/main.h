@@ -7,7 +7,7 @@ UI32 repeat();
 UI32 escape_opts();
 UI32 show_info();
 void debug_print(const char *tpl,...);
-void run_flags(int argc,char **argv);
+void runInfo(int select,int argc,char **argv);
 
 OPTS opts;
 ARGS args;
