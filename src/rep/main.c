@@ -3,6 +3,7 @@
 #include "headers/parser.h"
 #include "headers/escape.h"
 #include "headers/info.h"
+#include "headers/debug.h"
 //--98765432109876543210
 //hv-----r-nr---nrcfjspb
 static void init(){
@@ -10,39 +11,14 @@ static void init(){
 }
 
 
-void debug_print(const char *tpl,...){
-	if (debug){
-		va_list args;
-    va_start(args, tpl);
-    vprintf(tpl, args);
-    va_end(args);
-	}
-}
 
 
-void main_debug(int argc, char *argv[]){
-
-	if (debug) debug_print("%s\n","DEBUG: ENABLED...");
-	if (debug) debug_print("%s","DEBUG: INIT... ");
-	init();\
-	if (debug) debug_print("\x1b[50G\x1b[32m%s\x1b[m\n","DONE");
-	debug_proc(1);
-	if (debug) debug_print("\n%s","DEBUG: CHECKING FLAGS... ");
-	err.flags	=	check_flags(argc,argv,STATUS);
-	if (debug) debug_print("\x1b[50G\x1b[32m%s\x1b[m\n","DONE");
-	if (err.flags!=0) runInfo(0,argc,argv);
-	if (debug) debug_print("\n%s","DEBUG: CHECKING STDIN... ");
-	err.pipe= read_stdin(STATUS);
-	if (debug) debug_print("\x1b[50G\x1b[32m%s\x1b[m\n","DONE");
-
-
-
-}
 static char *fmtInfo(char *strInfo ,char *exeName){
 	char *bufUse=malloc(strlen(strInfo) + strlen(exeName) + 1);
 	sprintf(bufUse,strInfo,exeName);
 	return bufUse;
 }
+
 static UI32 compile_strings(){
 	UI32 done = 0;
 	for (int i=0;i<16;i++){
@@ -67,15 +43,15 @@ int main(int argc, char *argv[]) {
 	init();
 
 	err.flags = check_flags(argc,argv,STATUS);
-	if (err.flags!=0) runInfo(0,argc,argv);
+	if (err.flags!=0) runInfo(err.flags,argc,argv);
 	err.pipe= read_stdin(STATUS);
-	if (err.pipe>1) runInfo(2,argc,argv);
+	if (err.pipe>1) runInfo(0b100,argc,argv);
 
 	err.parse = parse(argc,argv);
 	// err.escape =	compile_strings();
 	if(MANDATORY==0){
 		printf("MISSING: <STRING> and <NUM>\n");
-		runInfo(3,argc,argv);
+		runInfo(0b1000,argc,argv);
 	}
 
 	// err.repeat = repeat();
@@ -108,30 +84,27 @@ UI32 show_info(){
 	return 0;
 }
 void runInfo(int select,int argc,char **argv){
-	if (!select){
-		for (int i = 1 ; i < 4; i++ ){
-			if ((err.flags & (1<<i))==1 ){
-				select=i;
+	printf("select: %i\n", select);
+	for (int i=0;i<5;i++){
+		if (select & (1<<i)) {
+			switch(i){
+				case 1: // about
+					printf("\n%s\n",fmtInfo("%s ABOUT",argv[0]));
+					break;
+				case 2: //help
+					printf("\n%s\n",fmtInfo(HELP,argv[0]));
+					break;
+				case 3: //use
+					printf("\n%s\n",fmtInfo(USE,argv[0]));
+					break;
+				case 4:
+					debug=1;
+					main_debug(argc,argv);
+					break;
+				default:
+					break;
 			}
 		}
-	}
-
-	switch(select){
-		case 1: // about
-			printf("\n%s\n",fmtInfo("%s ABOUT",argv[0]));
-			break;
-		case 2: //help
-			printf("\n%s\n",fmtInfo(HELP,argv[0]));
-			break;
-		case 3: //use
-			printf("\n%s\n",fmtInfo(USE,argv[0]));
-			break;
-		case 4:
-			debug=1;
-			main_debug(argc,argv);
-			break;
-		default:
-			break;
 	}
 }
 

@@ -46,3 +46,31 @@ STRINGS:
 END:
 	return 0;
 }
+
+void debug_print(const char *tpl,...){
+	if (debug){
+		va_list args;
+    va_start(args, tpl);
+    vprintf(tpl, args);
+    va_end(args);
+	}
+}
+
+void main_debug(int argc, char *argv[]){
+
+	if (debug) debug_print("%s\n","DEBUG: ENABLED...");
+	if (debug) debug_print("%s","DEBUG: INIT... ");
+	// init();
+	if (debug) debug_print("\x1b[50G\x1b[32m%s\x1b[m\n","DONE");
+	debug_proc(1);
+	if (debug) debug_print("\n%s","DEBUG: CHECKING FLAGS... ");
+	// err.flags	=	check_flags(argc,argv,STATUS);
+	if (debug) debug_print("\x1b[50G\x1b[32m%s\x1b[m\n","DONE");
+	// if (err.flags!=0) runInfo(0,argc,argv);
+	if (debug) debug_print("\n%s","DEBUG: CHECKING STDIN... ");
+	// err.pipe= read_stdin(STATUS);
+	if (debug) debug_print("\x1b[50G\x1b[32m%s\x1b[m\n","DONE");
+
+
+
+}
