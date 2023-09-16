@@ -6,22 +6,9 @@
 //--98765432109876543210
 //hv-----r-nr---nrcfjspb
 static void init(){
-	opts.b="";
-	opts.p="";
-	opts.s="";
-	opts.j="";
-	opts.f="";
-	opts.c="";
-	opts.r="";
-	opts.n="";
-
-	args.n="";
-	args.r="";
-	num.a=0;
-	num.o=0;
-	num.c=0;
-
+	opts.b="";	opts.p="";	opts.s="";	opts.j="";	opts.f="";	opts.c="";	opts.r="";	opts.n="";	args.n="";	args.r="";	num.a=0;	num.o=0;	num.c=0;
 }
+
 UI32 debug_proc(UI32 select){
 SELECT:
 	if (select&(1<0)){
@@ -166,7 +153,7 @@ UI32 show_info(){
 }
 void runInfo(int select,int argc,char **argv){
 	if (!select){
-		for (int i = 0 ; i < 4; i++ ){
+		for (int i = 1 ; i < 4; i++ ){
 			if ((err.flags & (1<<i))==1 ){
 				select=i;
 			}

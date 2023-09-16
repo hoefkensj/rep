@@ -1,25 +1,2 @@
-#define _GNU_SOURCE
+th#define _GNU_SOURCE
 #include "headers/info.h"
-#include "headers/en-Universal.h"
-
-
-
-static char *fmtInfo(char *strInfo ,char *exeName){
-	char *bufUse=malloc(strlen(strInfo) + strlen(exeName) + 1);
-	sprintf(bufUse,strInfo,exeName);
-	return bufUse;
-}
-
-void info(UI32 iInfo,char *exeName){
-	switch (iInfo){
-		case 1:
-			printf("\n%s\n","ABOUT");
-			break;
-		case 2:
-			printf("\n%s\n",fmtInfo(HELP,exeName));
-			break;
-		case 3:
-			printf("\n%s\n",fmtInfo(USE,exeName));
-			break;
-	}
-}
