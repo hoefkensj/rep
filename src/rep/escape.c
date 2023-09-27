@@ -141,7 +141,7 @@ static void uni8(char str[], unsigned int *i, unsigned int *j) {
 
 char *escape(char *str){
 	unsigned int lnstr  = strlen(str)+1;
-	for (unsigned int i=0,j=0 ;i<=lnstr;i++){
+	for (unsigned int i=0,j=0 ;i<lnstr;i++){
 		if (str[i] == '\\'){
 			switch (str[i+1]){
 				case '\\':                           break;
