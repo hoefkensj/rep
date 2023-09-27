@@ -3,9 +3,9 @@
 //--98765432109876543210
 //hv-----r-nr---nrcfjspb
 static char *FLAG[3][3] = {
-	{"-d", "--deb", "--debug"   },
-	{"-h", "-?", "--help",      },
 	{"-v", "--ver", "--version" },
+	{"-h", "-?", "--help",      },
+	{"-d", "--deb", "--debug"   },
 };
 
 static char *OPT[8][3]  = {
@@ -46,7 +46,7 @@ UI32 check_flags(UI32 argc, char **argv,UI32 STATUS[32]){
 		for(UI32 j= 0; j< 3;j++){
 			if (isFlag( j ,argv[i]) ){
 				STATUS[31-j]=1;
-				ret=ret+(1<<j);
+				ret=ret+(1<<(j+1));
 				printf("ret= %i\n",ret);
 				argv[i]="";
 			}

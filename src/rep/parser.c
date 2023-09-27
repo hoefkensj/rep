@@ -3,9 +3,9 @@
 //--98765432109876543210
 //hv-----r-nr---nrcfjspb
 static char *FLAG[3][3] = {
-	{"-d", "--deb", "--debug"   },
-	{"-h", "-?", "--help",      },
 	{"-v", "--ver", "--version" },
+	{"-h", "-?", "--help",      },
+	{"-d", "--deb", "--debug"   },
 };
 
 static char *OPT[8][3]  = {
@@ -104,7 +104,7 @@ UI32 parse(UI32 argc, char **argv){
 	status=Opts(argc,argv,pOpts,pArgs,STATUS);
 	// printf("\nASSIGNING...\n");
 
-	for (int i=0;i<8;i++){
+	for (int i=0;i<15;i++){
 		// printf("opt: %i: status:%i\t",i,STATUS[i]);
 		if(STATUS[i]==1){
 			switch(i){

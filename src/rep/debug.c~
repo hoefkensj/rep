@@ -1,5 +1,8 @@
 #define _GNU_SOURCE
 #include "headers/debug.h"
+#include "headers/parser.h"
+#include "headers/escape.h"
+#include "headers/info.h"
 
 UI32 debug_proc(UI32 select){
 SELECT:
@@ -58,17 +61,21 @@ void debug_print(const char *tpl,...){
 
 void main_debug(int argc, char *argv[]){
 
-	if (debug) debug_print("%s\n","DEBUG: ENABLED...");
-	if (debug) debug_print("%s","DEBUG: INIT... ");
-	init();\
+	if (debug) debug_print("\n%s\n","DEBUG: ENABLED...");
 	if (debug) debug_print("\x1b[50G\x1b[32m%s\x1b[m\n","DONE");
 	debug_proc(1);
 	if (debug) debug_print("\n%s","DEBUG: CHECKING FLAGS... ");
-	err.flags	=	check_flags(argc,argv,STATUS);
-	if (debug) debug_print("\x1b[50G\x1b[32m%s\x1b[m\n","DONE");
-	if (err.flags!=0) runInfo(0,argc,argv);
-	if (debug) debug_print("\n%s","DEBUG: CHECKING STDIN... ");
+
+	err.flags = check_flags(argc,argv,STATUS);
+	if (err.flags!=0) runInfo(err.flags,argc,argv);
+
 	err.pipe= read_stdin(STATUS);
+	if (err.pipe>1) runInfo(0b100,argc,argv);
+
+	if (debug) debug_print("\x1b[50G\x1b[32m%s\x1b[m\n","DONE");
+	// if (err.flags!=0) runInfo(0,argc,argv);
+	if (debug) debug_print("\n%s","DEBUG: CHECKING STDIN... ");
+	// err.pipe= read_stdin(STATUS);
 	if (debug) debug_print("\x1b[50G\x1b[32m%s\x1b[m\n","DONE");
 
 
