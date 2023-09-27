@@ -4,10 +4,11 @@
 static void oct0(char str[], unsigned int *i, unsigned int *j) {
 	char O[6] = { [0 ... 5]='\0' };
 	unsigned int o[3];
-	O[0] = str[*i + 0];
-	O[2] = str[*i + 1];
-	O[4] = str[*i + 2];
+	O[0] = str[*i + 1];
+	O[2] = str[*i + 2];
+	O[4] = str[*i + 3];
   if ( (O[0]!='\0') & sscanf(&O[0], "%o", &o[0])) {
+		printf("\noct0:0 %i",o[0]);
 		str[(*j)++] = o[0];
 		if (( (O[2]!='\0') & sscanf(&O[2], "%o", &o[1]))) {
 			str[(*j) - 1] = (o[0] * 8) + o[1];
@@ -25,11 +26,12 @@ static void oct0(char str[], unsigned int *i, unsigned int *j) {
 static void oct1(char str[], unsigned int *i, unsigned int *j) {
 	char O[6] = { [0 ... 5]='\0' };
 	unsigned int o[3];
-	O[0] = str[*i + 2];
-	O[2] = str[*i + 3];
-	O[4] = str[*i + 4];
+	(*i)++;
+	O[0] = str[*i + 1];
+	O[2] = str[*i + 2];
+	O[4] = str[*i + 3];
   if ( (O[0]!='\0') & sscanf(&O[0], "%o", &o[0])) {
-		str[(*j)] = o[0];
+		str[(*j)++] = o[0];
 		if (( (O[2]!='\0') & sscanf(&O[2], "%o", &o[1]))) {
 			str[(*j) ] = (o[0] * 8) + o[1];
 			if (( (O[4]!='\0') & sscanf(&O[4], "%o", &o[2]))) {
@@ -174,7 +176,9 @@ char *escape(char *str){
 				case '5':
 				case '6':
 				case '7':
-					if((lnstr-i)>=3) oct0(str, &i, &j);
+					if((lnstr-i)>=4){
+						oct0(str, &i, &j);
+					}
 					break;
 				default:
 					break;
