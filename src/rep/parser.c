@@ -81,7 +81,7 @@ static UI32 Opts(UI32 argc, char **argv ,UI32 pOpts[8],UI32 pArgs[2],UI32 STATUS
 				STATUS[11]=1;
 			}	else if (STATUS[12]+STATUS[7]==0){
 				pArgs[1] = i;
-				printf("\nargs:n arg: %i  value: %s\n",pArgs[1],argv[pArgs[1]]);
+				// printf("\nargs:n arg: %i  value: %s\n",pArgs[1],argv[pArgs[1]]);
 
 				STATUS[12]=1;
 			}// else

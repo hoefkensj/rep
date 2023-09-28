@@ -1,4 +1,3 @@
-#pragma once
 #define _GNU_SOURCE
 #include "headers/about.h"
 char *about(char *strAbout){

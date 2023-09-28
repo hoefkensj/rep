@@ -76,30 +76,30 @@ static void uni4(char str[], unsigned int *i, unsigned int *j) {
 	char U[8] = {[0 ... 7]='\0'};
 	unsigned int x[8];
 	unsigned int xval;
+	U[0]=str[(*i)+2];					U[2]=str[(*i)+3];
+	U[4]=str[(*i)+4];					U[6]=str[(*i)+5];
 
-	U[0]=str[*i+2];					U[2]=str[*i+3];
-	U[4]=str[*i+4];					U[6]=str[*i+5];
 	if (
 		sscanf(&U[0],"%x",&x[0]) && sscanf(&U[2],"%x",&x[1]) &&
 		sscanf(&U[4],"%x",&x[2]) && sscanf(&U[6],"%x",&x[3])
 		) {
-		i+=5;
+		(*i)+=5;
 		xval = 	( x[0] << 12 ) + ( x[1] <<  8 ) +
 						( x[2] <<  4 ) + ( x[3] <<  0 );
 		if (xval <= 0x7F) {
-			str[*j++] = xval;
+			str[(*j)++] = xval;
 		} else if (xval <= 0x7FF) {
-			str[*j++] = 0xC0 | ( xval >> 6);
-			str[*j++] = 0x80 | ( xval        & 0x3F);
+			str[(*j)++] = 0xC0 | ( xval >> 6);
+			str[(*j)++] = 0x80 | ( xval        & 0x3F);
 		} else if (xval <= 0xFFFF) {
-			str[*j++] = 0xE0 | ( xval >> 12);
-			str[*j++] = 0x80 | ((xval >> 6 ) & 0x3F);
-			str[*j++] = 0x80 | ( xval        & 0x3F);
+			str[(*j)++] = 0xE0 | ( xval >> 12);
+			str[(*j)++] = 0x80 | ((xval >> 6 ) & 0x3F);
+			str[(*j)++] = 0x80 | ( xval        & 0x3F);
 		} else if (xval <= 0x10FFFF) {
-			str[*j++] = 0xF0 | ( xval >> 18);
-			str[*j++] = 0x80 | ((xval >> 12) & 0x3F);
-			str[*j++] = 0x80 | ((xval >> 6 ) & 0x3F);
-			str[*j++] = 0x80 | ( xval        & 0x3F);
+			str[(*j)++] = 0xF0 | ( xval >> 18);
+			str[(*j)++] = 0x80 | ((xval >> 12) & 0x3F);
+			str[(*j)++] = 0x80 | ((xval >> 6 ) & 0x3F);
+			str[(*j)++] = 0x80 | ( xval        & 0x3F);
 		} //fi
 	} //fi
 }//uni4
@@ -118,25 +118,25 @@ static void uni8(char str[], unsigned int *i, unsigned int *j) {
 		sscanf(&U[8],"%x",&x[4])  &&	sscanf(&U[10],"%x",&x[5]) &&
 		sscanf(&U[12],"%x",&x[6]) &&	sscanf(&U[14],"%x",&x[7])
 		) {
-		i+=9;
+		(*i)+=9;
 		xval = 	( x[0] <<  28 ) +		( x[1] <<  24 ) +
 		( x[2] <<  20 ) +		( x[3] <<  16 ) +
 		( x[4] <<  12 ) +		( x[5] <<  8 )  +
 		( x[6] <<  4 )  +		( x[7] <<  0 );
 		if (xval <= 0x7F) {
-			str[*j++] = xval;
+			str[(*j)++] = xval;
 		} else if (xval <= 0x7FF) {
-			str[*j++] = 0xC0 | ( xval >> 6);
-			str[*j++] = 0x80 | ( xval        & 0x3F);
+			str[(*j)++] = 0xC0 | ( xval >> 6);
+			str[(*j)++] = 0x80 | ( xval        & 0x3F);
 		} else if (xval <= 0xFFFF) {
-			str[*j++] = 0xE0 | ( xval >> 12);
-			str[*j++] = 0x80 | ((xval >> 6 ) & 0x3F);
-			str[*j++] = 0x80 | ( xval        & 0x3F);
+			str[(*j)++] = 0xE0 | ( xval >> 12);
+			str[(*j)++] = 0x80 | ((xval >> 6 ) & 0x3F);
+			str[(*j)++] = 0x80 | ( xval        & 0x3F);
 		} else if (xval <= 0x10FFFF) {
-			str[*j++] = 0xF0 | ( xval >> 18);
-			str[*j++] = 0x80 | ((xval >> 12) & 0x3F);
-			str[*j++] = 0x80 | ((xval >> 6 ) & 0x3F);
-			str[*j++] = 0x80 | ( xval        & 0x3F);
+			str[(*j)++] = 0xF0 | ( xval >> 18);
+			str[(*j)++] = 0x80 | ((xval >> 12) & 0x3F);
+			str[(*j)++] = 0x80 | ((xval >> 6 ) & 0x3F);
+			str[(*j)++] = 0x80 | ( xval        & 0x3F);
 		} //fi
 	} //fi
 }//uni8
@@ -146,7 +146,7 @@ char *escape(char *str){
 	for (unsigned int i=0,j=0 ;i<lnstr;i++){
 		if (str[i] == '\\'){
 			switch (str[i+1]){
-				case '\\':                           break;
+				case '\\': str[j] = '\\'; i++;j++; break;
 				case '\'': str[j] = '\''; i=i+1;j++; break;
 				case '\"': str[j] = '\"'; i=i+1;j++; break;
 				case 'a' : str[j] = '\a'; i=i+1;j++; break;
@@ -159,15 +159,12 @@ char *escape(char *str){
 				case 'o':
 				case 'O': oct1(str, &i, &j); break;
 				case 'u':
-					if((lnstr-i)>=6)	uni4(str, &i, &j);
-					break;
+					if((lnstr-i)>=5) uni4(str, &i, &j);	break;
 				case 'U':
-					if((lnstr-i)>=10)	uni8(str, &i, &j) ;
-					break;
+					if((lnstr-i)>=10)	uni8(str, &i, &j) ;	break;
 				case 'x':
 				case 'X':
-					if((lnstr-i)>=4)	hex(str, &i, &j);
-					break;
+					if((lnstr-i)>=4)	hex(str, &i, &j);	break;
 				case '0':
 				case '1':
 				case '2':
@@ -176,12 +173,8 @@ char *escape(char *str){
 				case '5':
 				case '6':
 				case '7':
-					if((lnstr-i)>=4){
-						oct0(str, &i, &j);
-					}
-					break;
-				default:
-					break;
+					if((lnstr-i)>=4) oct0(str, &i, &j);	break;
+				default: str[j] = str[i+1]; i++;j++; break;
 			}//switch
 		} else {
 			str[j++]=str[i];
