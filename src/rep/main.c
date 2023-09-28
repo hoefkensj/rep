@@ -5,11 +5,6 @@
 #include "headers/info.h"
 //--98765432109876543210
 //hv-----r-nr---nrcfjspb
-static void init(){
-	opts.b="";	opts.p="";	opts.s="";	opts.j="";	opts.f="";	opts.c="";	opts.r="";	opts.n="";	args.n="";	args.r="";	num.a=0;	num.o=0;	num.c=0;
-	MANDATORY=0;
-}
-
 static UI32 compile_strings(){
 	UI32 done = 0;
 	for (int i=0;i<16;i++){
@@ -32,9 +27,8 @@ static UI32 compile_strings(){
 	return done;
 }
 
-
 int main(int argc, char *argv[]) {
-	init();
+	opts.b="";	opts.p="";	opts.s="";	opts.j="";	opts.f="";	opts.c="";	opts.r="";	opts.n="";	args.n="";	args.r="";	num.a=0;	num.o=0;	num.c=0;
 
 	err.flags = check_flags(argc,argv,STATUS);
 	if (err.flags!=0) runInfo(err.flags,argc,argv);
@@ -44,26 +38,32 @@ int main(int argc, char *argv[]) {
 
 	err.parse = parse(argc,argv);
 	err.escape =	compile_strings();
-	err.repeat = repeat();
+
+	char *b, *p, *s, *f, *j, *r;
+	UI32 n = num.a+num.o;
+	b=opts.b;
+	p=opts.p;
+	s=opts.s;
+	f=opts.f;
+	j=opts.j;
+	if (STATUS[6]) r = opts.r;
+	else if (STATUS[11]) r= args.r ;
+	else if (STATUS[14]) r= stdn.r ;
+	err.repeat = repeat(n,b,p,s,f,j,r);
 	return 0;
 }//main
 
-UI32 repeat(){
-	UI32 n = 0;
-	n= num.a+num.o;
-	//repeat sequence :
-	printf("%s",opts.b);
+UI32 repeat(UI32 n,char *b,char *p,char *s,char *f,char *j, char *r){
+	printf("%s",b);
 	for ( int i=n ; i >  0 ; i--) {
-		printf("%s",opts.p);
-		printf("%s",opts.r);
-		printf("%s",args.r);
-		printf("%s",stdn.r);
-		printf("%s",opts.s);
+		printf("%s",p);
+		printf("%s",r);
+		printf("%s",s);
 		if ( i > 1 ){
-			printf("%s",opts.j);
+			printf("%s",j);
 		}//fi
 	} // for
-	printf("%s",opts.f);
+	printf("%s",f);
 	return 0;
 }//repeat
 

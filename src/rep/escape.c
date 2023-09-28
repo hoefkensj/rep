@@ -159,12 +159,21 @@ char *escape(char *str){
 				case 'o':
 				case 'O': oct1(str, &i, &j); break;
 				case 'u':
-					if((lnstr-i)>=5) uni4(str, &i, &j);	break;
+					if((lnstr-i)>=5){
+						uni4(str, &i, &j);
+						break;
+					}
 				case 'U':
-					if((lnstr-i)>=10)	uni8(str, &i, &j) ;	break;
+					if((lnstr-i)>=10){
+						uni8(str, &i, &j) ;
+						break;
+					}
 				case 'x':
 				case 'X':
-					if((lnstr-i)>=4)	hex(str, &i, &j);	break;
+					if((lnstr-i)>=4){
+						hex(str, &i, &j);
+						break;
+					}
 				case '0':
 				case '1':
 				case '2':
@@ -173,8 +182,13 @@ char *escape(char *str){
 				case '5':
 				case '6':
 				case '7':
-					if((lnstr-i)>=4) oct0(str, &i, &j);	break;
-				default: str[j] = str[i+1]; i++;j++; break;
+					if((lnstr-i)>=4){
+						oct0(str, &i, &j);
+						break;
+					}
+				default:
+					str[j] = str[i+1]; i++;j++;
+					break;
 			}//switch
 		} else {
 			str[j++]=str[i];

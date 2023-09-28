@@ -6,7 +6,6 @@
 #include <stdarg.h>
 #include <unistd.h>
 #include "structstypes.h"
-#include "en-Universal.h"
 
 #define DEBUG   0
 #define Z0      '\0'

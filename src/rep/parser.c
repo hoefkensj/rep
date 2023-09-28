@@ -96,8 +96,6 @@ static UI32 Opts(UI32 argc, char **argv ,UI32 pOpts[8],UI32 pArgs[2],UI32 STATUS
 
 UI32 parse(UI32 argc, char **argv){
 	UI32 status=0;
-	char *strStdin;
-
 	UI32 pOpts[8]={[0 ... 7]=0};
 	UI32 pArgs[2]={[0 ... 1]=0};
 
@@ -121,6 +119,5 @@ UI32 parse(UI32 argc, char **argv){
 			}
 		}
 	}
-END:
-	return 0;
+	return status;
 }//parse

@@ -1,5 +1,6 @@
 #define _GNU_SOURCE
 #include "headers/info.h"
+#include "headers/en-Universal.h"
 
 
 static char *fmtInfo(char *strInfo ,char *exeName){
