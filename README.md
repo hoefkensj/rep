@@ -5,8 +5,7 @@ INSTALLATION
 ```
 git clone https://github.com/hoefkensj/rep
 cd rep
-make
-make install # as root or with sudo
+make && su -c 'make install'
 ```
 
 
