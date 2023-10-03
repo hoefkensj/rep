@@ -26,6 +26,28 @@ parserArgumentsOpenCL=-ferror-limit=100 -fspell-checking -Wdocumentation -Wunuse
 [CustomDefinesAndIncludes][ProjectPath0][Compiler]
 Name=GCC
 
+[Launch]
+Launch Configurations=Launch Configuration 0
+
+[Launch][Launch Configuration 0]
+Configured Launch Modes=execute
+Configured Launchers=nativeAppLauncher
+Name=test
+Type=Native Application
+
+[Launch][Launch Configuration 0][Data]
+Arguments=-b "begin"
+Dependencies=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x00)
+Dependency Action=Build
+EnvironmentGroup=
+Executable=file:///home/hoefkens/Development/Code/C/rep/build/bin/rep
+External Terminal=konsole --noclose --workdir %workdir -e %exe
+Kill Before Executing Again=4194304
+Project Target=
+Use External Terminal=false
+Working Directory=
+isExecutable=true
+
 [MakeBuilder]
 Install As Root=true
 

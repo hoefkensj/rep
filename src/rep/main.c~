@@ -1,54 +1,71 @@
+#define _GNU_SOURCE
 #include "headers/main.h"
-#define ARGSPRINT "\
-num:\t%i\n\
-col:\t%i\n\
-bgn:\t%s\n\
-pfx:\t%s\n\
-rep:\t%s\n\
-sfx:\t%s\n\
-cat:\t%s\n\
-end:\t%s\n\
-"
+#include "headers/parser.h"
+#include "headers/escape.h"
+#include "headers/info.h"
+//--98765432109876543210
+//hv-----r-nr---nrcfjspb
+static UI32 compile_strings(){
+	UI32 done = 0;
+	for (int i=0;i<16;i++){
+		if(STATUS[i]==1){
+			done ++ ;
+			switch(i){
+				case 0:		opts.b = escape(opts.b);break;
+				case 1:		opts.p = escape(opts.p);break;
+				case 2:		opts.s = escape(opts.s);break;
+				case 3:		opts.j = escape(opts.j);break;
+				case 4:		opts.f = escape(opts.f);break;
+				case 6:		opts.r = escape(opts.r);break;
+				case 11:	args.r = escape(args.r);break;
+				case 14:	stdn.r = escape(stdn.r);break;
+			}
+		}
+	}
+	num.o=atol(opts.n);
+	num.a=atol(args.n);
+	return done;
+}
+
 
 int main(int argc, char *argv[]) {
+	opts.b="";	opts.p="";	opts.s="";	opts.j="";	opts.f="";	opts.c="";	opts.r="";	opts.n="";	args.n="";	args.r="";	num.a=0;	num.o=0;	num.c=0;
 
-	UI32 rcode[16] = {[0 ... 15]=0};
-	args.n = 0;
-	args.w = 0;
-	args.b = NULL;
-	args.p = NULL;
-	args.r = NULL;
-	args.s = NULL;
-	args.c = NULL;
-	args.e = NULL;
-	UI32 p=0,h=0;
-	if (!isatty(fileno(stdin))){
-		p = *readPipe(args.r,	nwbprsce[4]);
-	}//fi
+	err.flags = check_flags(argc,argv,STATUS);
+	if (err.flags!=0) runInfo(err.flags,argc,argv);
 
-	h=parseArgs(argc,argv,&args,nwbprsce);
-	repeat(args);
+	err.pipe= read_stdin(STATUS);
+	if (err.pipe>1) runInfo(0b100,argc,argv);
 
-	if (p ){
-		free(args.r);
-	}
-	printf("%i\n",h);
+	err.parse = parse(argc,argv);
+	err.escape =	compile_strings();
+
+	char *b, *p, *s, *f, *j, *r;
+	UI32 n = num.a+num.o;
+	b=opts.b;
+	p=opts.p;
+	s=opts.s;
+	f=opts.f;
+	j=opts.j;
+	if (STATUS[6]) r = opts.r;
+	else if (STATUS[11]) r= args.r ;
+	else if (STATUS[14]) r= stdn.r ;
+	err.repeat = repeat(n,b,p,s,f,j,r);
 	return 0;
 }//main
 
-void repeat(ARGS args){
-	UI32 n;
-	print( args.b );
-	for ( n= args.n ; n >  0 ; n--) {
-		print( args.p );
-		print( args.r );
-		print( args.s );
-		if ( args.n > 1 ){
-			print( args.c );
+UI32 repeat(UI32 n,char *b,char *p,char *s,char *f,char *j, char *r){
+	printf("%s",b);
+	for ( int i=n ; i >  0 ; i--) {
+		printf("%s",p);
+		printf("%s",r);
+		printf("%s",s);
+		if ( i > 1 ){
+			printf("%s",j);
 		}//fi
 	} // for
-	print( args.e );
+	printf("%s",f);
+	return 0;
 }//repeat
 
-void print(char *str){	printf("%s",str);}
 

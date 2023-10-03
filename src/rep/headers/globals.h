@@ -3,31 +3,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
 #include <unistd.h>
+#include "structstypes.h"
 
-#define AUTHOR  "Hoefkens Jeroen      "
-#define EMAIL   "Hoefkens.J@gmail.com "
-#define GITHUB  "github.com/hoefkensj "
-#define REPO    "rep                  "
-#define VERSION "0.0.3                "
-#define DATE    "2023.07.11           "
-#define LICENSE "MIT                  "
+#define DEBUG   0
+#define Z0      '\0'
 
+extern OPTS opts;
+extern ARGS args;
+extern PIPE stdn;
+extern REP rep;
+extern NUM num;
 
-#define Z0 '\0'
-
-typedef unsigned int UI32;
-
-typedef struct ARGS{
-	UI32 n;
-	UI32 w;
-	char *b;
-	char *p;
-	char *r;
-	char *s;
-	char *c;
-	char *e;
-}ARGS;
-
-
+extern UI32 STATUS[32];
+extern UI32 MANDATORY;
+extern UI32 debug;
 

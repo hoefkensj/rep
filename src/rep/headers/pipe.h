@@ -1,12 +1,8 @@
 #pragma once
 #define _GNU_SOURCE
-#define  Z0 '\0'
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
-
-char *escape(char str[]);
-
-
-
+#include "globals.h"
+UI32 read_stdin(UI32 STATUS[32]);
+char *readPipe();

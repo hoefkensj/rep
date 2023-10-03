@@ -1,5 +1,6 @@
 #pragma once
 #include "globals.h"
+#include "defHelp.h"
 
 char *about(char *strInfo);
 char *help(char *strInfo,char *exeName);
