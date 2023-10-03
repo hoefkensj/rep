@@ -20,23 +20,19 @@ static char *OPT[8][3]  = {
 };
 
 static UI32 isOption(UI32 n ,char *arg ){
-	UI32 match=0;
-	match = !(
+	return !(
 		strcmp(arg, OPT[n][0] ) &&
 		strcmp(arg, OPT[n][1] ) &&
 		strcmp(arg, OPT[n][2] )
 	);
-	return match;
 } //isOption
 
 static UI32 isFlag(UI32 n ,char *arg ){
-	UI32 match=0;
-	match = !(
+	return !(
 		strcmp(arg, FLAG[n][0] ) &&
 		strcmp(arg, FLAG[n][1] ) &&
 		strcmp(arg, FLAG[n][2] )
 	);
-	return match;
 }//isFlag
 
 
@@ -47,7 +43,6 @@ UI32 check_flags(UI32 argc, char **argv,UI32 STATUS[32]){
 			if (isFlag( j ,argv[i]) ){
 				STATUS[31-j]=1;
 				ret=ret+(1<<(j+1));
-				printf("ret= %i\n",ret);
 				argv[i]="";
 			}
 		}//done
@@ -55,7 +50,7 @@ UI32 check_flags(UI32 argc, char **argv,UI32 STATUS[32]){
 	return ret;
 }//Flags
 
-static UI32 Opts(UI32 argc, char **argv ,UI32 pOpts[8],UI32 pArgs[2],UI32 STATUS[32]) {
+UI32 check_Opts(UI32 argc, char **argv ,UI32 pOpts[8],UI32 pArgs[2],UI32 STATUS[32]) {
 	UI32 status=0;
 	UI32 dbreak=0;
 	if (STATUS[14]){
@@ -67,7 +62,6 @@ static UI32 Opts(UI32 argc, char **argv ,UI32 pOpts[8],UI32 pArgs[2],UI32 STATUS
 		for(UI32 j= 0; j< 8;j++){
 			if ((!STATUS[j])  && isOption( j ,argv[i]) ) {
 				pOpts[j] = ++i; // option j is the next value of i
-				// printf("\narg: %i detected:%s in %s \tvalue=%s",i,argv[i-1],opt[j][0],argv[i]);
 				STATUS[j] = 1 ;// 	option found , dont find it again
 				dbreak=1; // option found so this and the next are no argument
 				break; // break out of the testing each option loop
@@ -77,12 +71,9 @@ static UI32 Opts(UI32 argc, char **argv ,UI32 pOpts[8],UI32 pArgs[2],UI32 STATUS
 		if (!dbreak){
 			if (STATUS[14]+STATUS[11]+STATUS[6]==0){
 				pArgs[0]=i;
-				// printf("\nargs:r arg: %i  value: %s\n",pArgs[0],argv[pArgs[0]]);
 				STATUS[11]=1;
 			}	else if (STATUS[12]+STATUS[7]==0){
 				pArgs[1] = i;
-				// printf("\nargs:n arg: %i  value: %s\n",pArgs[1],argv[pArgs[1]]);
-
 				STATUS[12]=1;
 			}// else
 		}//fi
@@ -99,7 +90,7 @@ UI32 parse(UI32 argc, char **argv){
 	UI32 pOpts[8]={[0 ... 7]=0};
 	UI32 pArgs[2]={[0 ... 1]=0};
 
-	status=Opts(argc,argv,pOpts,pArgs,STATUS);
+	status=check_Opts(argc,argv,pOpts,pArgs,STATUS);
 	// printf("\nASSIGNING...\n");
 
 	for (int i=0;i<15;i++){

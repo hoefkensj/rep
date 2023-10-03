@@ -2,8 +2,6 @@
 #define _GNU_SOURCE
 #include "globals.h"
 
-// Function declarations
-UI32 repeat(UI32 n,char *b,char *p,char *s,char *f,char *j, char *r);
 
 OPTS opts;
 ARGS args;
@@ -14,6 +12,7 @@ ERR err;
 UI32 STATUS[32]={[0 ... 31]=0};
 UI32 MANDATORY=0;
 UI32 debug=DEBUG;
+UI32 repeat(UI32 n,char *b,char *p,char *s,char *f,char *j, char *r);
 
 
 
