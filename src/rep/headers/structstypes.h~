@@ -41,3 +41,4 @@ typedef struct ERR{
 	UI32 escape;
 	UI32 repeat;
 }ERR;
+

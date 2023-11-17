@@ -14,7 +14,6 @@ extern OPTS opts;
 extern ARGS args;
 extern PIPE stdn;
 extern REP rep;
-extern NUM num;
 
 extern UI32 STATUS[32];
 extern UI32 MANDATORY;

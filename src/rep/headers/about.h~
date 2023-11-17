@@ -1,6 +1,6 @@
 #pragma once
 #define _GNU_SOURCE
-
+#include "globals.h"
 #define AUTHOR  "Hoefkens Jeroen      "
 #define EMAIL   "Hoefkens.J@gmail.com "
 #define GITHUB  "github.com/hoefkensj "
