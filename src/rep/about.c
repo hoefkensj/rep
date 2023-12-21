@@ -1,5 +1,12 @@
 #define _GNU_SOURCE
 #include "headers/about.h"
+#define AUTHOR  "Hoefkens Jeroen      "
+#define EMAIL   "Hoefkens.J@gmail.com "
+#define GITHUB  "github.com/hoefkensj "
+#define REPO    "rep                  "
+#define VERSION "0.9                "
+#define DATE    "2023.0.           "
+#define LICENSE "MIT                  "
 char *about(char *strAbout){
 	char *mask="\x1b[%iG%s:\x1b[%iG%s%s";
 	char *kv="                                 ";
