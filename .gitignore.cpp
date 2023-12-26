@@ -99,6 +99,7 @@ proguard/
 
 #kdevelop
 *.kdev4
+
 # Android Studio Navigation editor temp files
 .navigation/
 
@@ -116,6 +117,7 @@ captures/
 # Android Studio 3 in .gitignore file.
 .idea/caches
 .idea/modules.xml
+
 # Comment next line if keeping position of elements in Navigation Editor is relevant for you
 .idea/navEditor.xml
 
