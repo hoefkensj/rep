@@ -8,7 +8,7 @@
 static UI32 compile_strings(){
 	UI32 done = 0;
 	for (int i=0;i<16;i++){
-		if(STATUS[i]==1){
+		if(Flag(get,i)==1){
 			done ++ ;
 			switch(i){
 				case 0:		opts.b = escape(opts.b);break;
@@ -30,10 +30,10 @@ static UI32 compile_strings(){
 int main(int argc, char *argv[]) {
 	opts.b="";	opts.p="";	opts.s="";	opts.j="";	opts.f="";	opts.c="";	opts.r="";	opts.n="";	args.n="";	args.r="";	num.a=0;	num.o=0;	num.c=0;
 
-	err.flags = check_flags(argc,argv,STATUS);
+	err.flags = check_flags(argc,argv,&STATUS);
 	if (err.flags!=0) runInfo(err.flags,argc,argv);
 
-	err.pipe= read_stdin(STATUS);
+	err.pipe= read_stdin(&STATUS);
 	if (err.pipe>1) runInfo(0b100,argc,argv);
 
 	err.parse = parse(argc,argv);
@@ -46,9 +46,9 @@ int main(int argc, char *argv[]) {
 	s=opts.s;
 	f=opts.f;
 	j=opts.j;
-	if (STATUS[6]) r = opts.r;
-	else if (STATUS[11]) r= args.r ;
-	else if (STATUS[14]) r= stdn.r ;
+	if (Flag(get,oNumber)) r = opts.r;
+	else if (Flag(get,aRepeat)) r= args.r ;
+	else if (Flag(get,iRepeat)) r= stdn.r ;
 	err.repeat = repeat(n,b,p,s,f,j,r);
 	return 0;
 }//main
