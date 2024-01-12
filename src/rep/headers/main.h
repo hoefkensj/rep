@@ -4,12 +4,13 @@
 
 
 OPTS opts;
+OPTS envv;
 ARGS args;
 PIPE stdn;
 REP rep;
 NUM num;
 ERR err;
-UI32 STATUS[32]={[0 ... 31]=0};
+UI32 STATUS=0;
 UI32 MANDATORY=0;
 UI32 debug=DEBUG;
 int main(int argc, char *argv[]);

@@ -1,4 +1,4 @@
-#define _GNU_SOURCE
+#define _GNU_SOURCEa
 #include "headers/info.h"
 #include "locale_enUniversal.c"
 

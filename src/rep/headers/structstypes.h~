@@ -3,14 +3,14 @@
 typedef unsigned int UI32;
 
 typedef struct OPTS{
+	char *r;
+	char *n;
 	char *b;
 	char *p;
 	char *s;
 	char *j;
 	char *f;
 	char *c;
-	char *r;
-	char *n;
 }OPTS;
 
 typedef struct ARGS{
@@ -37,6 +37,7 @@ typedef struct NUM{
 typedef struct ERR{
 	UI32 flags;
 	UI32 pipe;
+	UI32 envv;
 	UI32 parse;
 	UI32 escape;
 	UI32 repeat;

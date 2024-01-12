@@ -4,5 +4,5 @@
 #include <stdlib.h>
 #include <string.h>
 #include "globals.h"
-UI32 read_stdin(UI32 STATUS[32]);
+UI32 read_stdin(char *r);
 char *readPipe();
