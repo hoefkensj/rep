@@ -21,7 +21,7 @@ char *readVar(char *var){
 }//readEnv
 
 UI32 readEnv(OPTS *envv){
-	char *vars[8]={"REP_REPEAT","REP_NUMBER","REP_BEGIN","REP_PREFIX","REP_SUFFIX","REP_JOIN","REP_FINAL","REP_COLUMNS"};
+	char *vars[8]={"REP_REPEAT","REP_NUMBER","REP_BEGIN","REP_PREFIX","REP_SUFFIX","REP_FINAL","REP_JOIN","REP_COLUMNS"};
 	char **aenv[8]={&(envv->r),&(envv->n),&(envv->b),&(envv->p),&(envv->s),&(envv->f),&(envv->j), &(envv->c)};
 	char *val;
 	for(int i=0;i<8;i++){
