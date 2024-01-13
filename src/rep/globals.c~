@@ -1,4 +1,0 @@
-#include "headers/globals.h"
-#define _GNU_SOURCE
-
-
