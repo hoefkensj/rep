@@ -1,0 +1,15 @@
+
+// #define _GNU_SOURCE
+#ifndef ENVVAR_H_INCLUDED
+#define ENVVAR_H_INCLUDED
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "globals.h"
+UI32 rFlag(UI32 flag);
+UI32 sFlag(UI32 flag);
+UI32 zFlag(UI32 flag);
+char *readenv();
+
+#endif // ENVVAR_H_INCLUDED
