@@ -28,7 +28,7 @@ UI32 readEnv(OPTS *envv){
 		val=readVar(vars[i]);
 		if (val != NULL){
 			*aenv[i] = val;
-			printf("%s: %s\n", vars[i],*aenv[i]);
+			// printf("%s: %s\n", vars[i],*aenv[i]);
 			Flag(set,E+i);
 		}
 	}

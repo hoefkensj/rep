@@ -77,7 +77,7 @@ UI32 check_Opts(UI32 argc, char **argv ,UI32 pOpts[8],UI32 pArgs[2]) {
 				Flag(set,A+Repeat);
 			}	else if (Flag(get,A+Number)+Flag(get,O+Number)==0){
 				char first=argv[i][0];
-				if ((first>48)&(first<57)){
+				if ((first>47)&(first<58)){
 					pArgs[1] = i;
 					Flag(set,A+Number);
 				}else{
@@ -88,7 +88,6 @@ UI32 check_Opts(UI32 argc, char **argv ,UI32 pOpts[8],UI32 pArgs[2]) {
 		}//fi
 	}//done
 
-		printbin(STATUS);
 
 	return status;
 } //Opts

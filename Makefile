@@ -9,8 +9,11 @@ debug:clean
 	$(CC) $(CFLAGS) -g -o $(DST)/rep $(SRC)/main.c  $(SRC)/about.c  $(SRC)/escape.c  $(SRC)/info.c $(SRC)/parser.c $(SRC)/pipe.c $(SRC)/tools.c  $(SRC)/envvar.c
 stable:clean
 	$(CC) $(CFLAGS) -g -o $(DST)/rep $(SRC)/main.c  $(SRC)/about.c  $(SRC)/escape.c  $(SRC)/info.c $(SRC)/parser.c $(SRC)/pipe.c $(SRC)/tools.c  $(SRC)/envvar.c
+win:cleanwin
+	$(ZIGCC) $(WIN) $(CFLAGS) -g -o $(DST)/rep.exe $(SRC)/main.c  $(SRC)/about.c  $(SRC)/escape.c  $(SRC)/info.c $(SRC)/parser.c $(SRC)/pipe.c $(SRC)/tools.c  $(SRC)/envvar.c
 clean:
 	rm -vfr *~ build/bin/rep
+cleanwin:
 	rm -vfr *~ build/bin/rep.exe
 	rm -vfr *~ build/bin/rep.pdp
 install:

@@ -2,7 +2,6 @@
 #include "headers/tools.h"
 
 void printbin(UI32 var){
-	int bit=0;
 	for (int i =31; i>=0; i--){
 		printf("%s" ,(var&(1<<i))?"1":"0");
 	}
