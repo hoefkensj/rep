@@ -1,8 +1,9 @@
-#pragma once
-#define _GNU_SOURCE
+#ifndef STRUCTSTYPES_H_INCLUDED
+#define STRUCTSTYPES_H_INCLUDED
+
 typedef unsigned int UI32;
 
-typedef struct OPTS{
+typedef struct PARTS {
 	char *r;
 	char *n;
 	char *b;
@@ -11,16 +12,7 @@ typedef struct OPTS{
 	char *j;
 	char *f;
 	char *c;
-}OPTS;
-
-typedef struct ARGS{
-	char *r;
-	char *n;
-}ARGS;
-
-typedef struct PIPE{
-	char *r;
-}PIPE;
+} PARTS;
 
 typedef struct REP{
 	UI32 i;
@@ -45,3 +37,4 @@ typedef struct ERR{
 	UI32 repeat;
 }ERR;
 
+#endif // STRUCTSTYPES_H_INCLUDED

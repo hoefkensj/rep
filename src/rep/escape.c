@@ -1,15 +1,15 @@
-#define _GNU_SOURCE
 #include "headers/escape.h"
 
 static void oct0(char str[], unsigned int *i, unsigned int *j) {
   char O[6] = {[0 ... 5] = '\0'};
   unsigned int o[3];
-  O[0] = str[*i + 1];
+
+
+	O[0] = str[*i + 1];
   O[2] = str[*i + 2];
   O[4] = str[*i + 3];
   if ((O[0] != '\0') & sscanf(&O[0], "%o", &o[0])) {
-    printf("\noct0:0 %i", o[0]);
-    str[(*j)++] = o[0];
+		str[(*j)++] = o[0];
     if (((O[2] != '\0') & sscanf(&O[2], "%o", &o[1]))) {
       str[(*j) - 1] = (o[0] * 8) + o[1];
       if (((O[4] != '\0') & sscanf(&O[4], "%o", &o[2]))) {
@@ -27,7 +27,9 @@ static void oct1(char str[], unsigned int *i, unsigned int *j) {
   char O[6] = {[0 ... 5] = '\0'};
   unsigned int o[3];
   (*i)++;
-  O[0] = str[*i + 1];
+
+
+	O[0] = str[*i + 1];
   O[2] = str[*i + 2];
   O[4] = str[*i + 3];
   if ((O[0] != '\0') & sscanf(&O[0], "%o", &o[0])) {
@@ -138,7 +140,7 @@ static void uni8(char str[], unsigned int *i, unsigned int *j) {
   }   // fi
 } // uni8
 
-char *escape(char *str) {
+unsigned int repl_unescape(char *str) {
   unsigned int lnstr = strlen(str) + 1;
   for (unsigned int i = 0, j = 0; i < lnstr; i++) {
     if (str[i] == '\\') {
@@ -227,5 +229,17 @@ char *escape(char *str) {
       str[j] = '\0';
     } //fi
   } // for
-  return str;
+	return strlen(str);
+}
+
+int esc_main(int argc,char **argv){
+	unsigned int err=0;
+	err = check_flags(argc,argv);
+	if (err!=0) runInfo(err,argc,argv);
+	PARTS *strs=malloc(sizeof(PARTS));
+	err=read_stdin(strs);
+	err=parse(argc,argv,strs,strs);
+	err=repl_unescape(strs->r);
+	printf("%s",strs->r);
+	return 0;
 }

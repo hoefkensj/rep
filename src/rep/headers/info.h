@@ -1,6 +1,7 @@
-#pragma once
-#define _GNU_SOURCE
+#ifndef INFO_H_INCLUDED
+#define INFO_H_INCLUDED
+
 #include "globals.h"
 
 
-void runInfo(int select,int argc,char **argv);
+#endif // INFO_H_INCLUDED

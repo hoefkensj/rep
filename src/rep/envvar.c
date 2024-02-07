@@ -1,8 +1,8 @@
-#define _GNU_SOURCE
 #include "headers/envvar.h"
-char *readVar(char *var){
+
+static char *readVar(char *var){
 	unsigned int sA   = 8 ;
-	char        *val =	malloc( sA );
+	char *val =	malloc( sA );
 	if ( val == NULL ) return NULL;
 
 	if(!getenv(var)){
@@ -20,17 +20,25 @@ char *readVar(char *var){
 	return str;
 }//readEnv
 
-UI32 readEnv(OPTS *envv){
-	char *vars[8]={"REP_REPEAT","REP_NUMBER","REP_BEGIN","REP_PREFIX","REP_SUFFIX","REP_FINAL","REP_JOIN","REP_COLUMNS"};
+UI32 readEnv(PARTS *envv){
 	char **aenv[8]={&(envv->r),&(envv->n),&(envv->b),&(envv->p),&(envv->s),&(envv->f),&(envv->j), &(envv->c)};
 	char *val;
+	char *ENVVAR[8]={
+	"REP_REPEAT",
+	"REP_NUMBER",
+	"REP_BEGIN",
+	"REP_PREFIX",
+	"REP_SUFFIX",
+	"REP_FINAL",
+	"REP_JOIN",
+	"REP_COLUMNS"
+};
 	for(int i=0;i<8;i++){
-		val=readVar(vars[i]);
+		val=readVar(ENVVAR[i]);
 		if (val != NULL){
 			*aenv[i] = val;
-			// printf("%s: %s\n", vars[i],*aenv[i]);
 			Flag(set,E+i);
-		}
-	}
+		}//if
+	}//for
 return 0;
 }

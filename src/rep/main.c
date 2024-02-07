@@ -1,58 +1,67 @@
 #define _GNU_SOURCE
-#include "headers/main.h"
+
 #include "headers/parser.h"
 #include "headers/escape.h"
-#include "headers/info.h"
 #include "headers/pipe.h"
-#include "headers/tools.h"
 #include "headers/envvar.h"
-
+#include "headers/main.h"
 //--98765432109876543210
 //hv-----r-nr---nrcfjspb
-static UI32 compile_strings(){
+static UI32 compile_strings(PARTS *opts,PARTS *args,PARTS *stdn,PARTS *envv,NUM *num){
 	UI32 done = 0;
 	for (int i=0;i<32;i++){
 		if(Flag(get,i)==1){
 			done ++ ;
 			switch(i){
-				case 0:		opts.r = escape(opts.r);break;
-				case 2:		opts.b = escape(opts.b);break;
-				case 3:		opts.p = escape(opts.p);break;
-				case 4:		opts.s = escape(opts.s);break;
-				case 5:		opts.j = escape(opts.j);break;
-				case 6:		opts.f = escape(opts.f);break;
-				case 11:	args.r = escape(args.r);break;
-				case 14:	stdn.r = escape(stdn.r);break;
-				case 16:	envv.r = escape(envv.r);break;
-				case 17:	envv.b = escape(envv.b);break;
-				case 18:	envv.p = escape(envv.p);break;
-				case 19:	envv.s = escape(envv.s);break;
-				case 20:	envv.j = escape(envv.j);break;
-				case 21:	envv.f = escape(envv.f);break;
+				case 0:		repl_unescape(opts->r);break;
+				case 2:		repl_unescape(opts->b);break;
+				case 3:		repl_unescape(opts->p);break;
+				case 4:		repl_unescape(opts->s);break;
+				case 5:		repl_unescape(opts->j);break;
+				case 6:		repl_unescape(opts->f);break;
+				case 11:	repl_unescape(args->r);break;
+				case 14:	repl_unescape(stdn->r);break;
+				case 16:	repl_unescape(envv->r);break;
+				case 17:	repl_unescape(envv->b);break;
+				case 18:	repl_unescape(envv->p);break;
+				case 19:	repl_unescape(envv->s);break;
+				case 20:	repl_unescape(envv->j);break;
+				case 21:	repl_unescape(envv->f);break;
 			}
 		}
 	}
-	num.o=atol(opts.n);
-	num.a=atol(args.n);
-	num.e=atol(envv.n);
+	num->o=atol(opts->n);
+	num->a=atol(args->n);
+	num->e=atol(envv->n);
 	return done;
 }
 
 int main(int argc, char *argv[]) {
-	opts.b="";	opts.p="";	opts.s="";	opts.j="";	opts.f="";	opts.c="";	opts.r="";	opts.n="";	args.n="";	args.r="";	num.a=0;	num.o=0;	num.e=0; num.c=0;
-	envv.b="";	envv.p="";	envv.s="";	envv.j="";	envv.f="";	envv.c="";	envv.r="";	envv.n="";
+	PARTS *popts=malloc(sizeof(PARTS));
+	PARTS *pargs=malloc(sizeof(PARTS));
+	PARTS *penvv=malloc(sizeof(PARTS));
+	PARTS *pstdn=malloc(sizeof(PARTS));
+	NUM *pnum=malloc(sizeof(NUM));
+	PARTS   opts=*popts;
+	PARTS   args=*pargs;
+	PARTS   envv=*penvv;
+	PARTS   stdn=*pstdn;
+	NUM     num=*pnum;
+	// opts.b="";	opts.p="";	opts.s="";	opts.j="";	opts.f="";	opts.c="";	opts.r="";	opts.n="";	args.n="";	args.r="";	num.a=0;	num.o=0;	num.e=0; num.c=0;
+	// envv.b="";	envv.p="";	envv.s="";	envv.j="";	envv.f="";	envv.c="";	envv.r="";	envv.n="";
 
 	err.flags = check_flags(argc,argv);
 	if (err.flags!=0) runInfo(err.flags,argc,argv);
 
-	err.pipe= read_stdin(stdn.r);
-	if (err.pipe>1) runInfo(0b100,argc,argv);
+	err.pipe= read_stdin(pstdn);
+	if (err.pipe==1) Flag(set,I+Repeat);
+	else if (err.pipe==2) runInfo(0b100,argc,argv);
 
 	err.envv= readEnv(&envv);
 
-	err.parse = parse(argc,argv);
+	err.parse = parse(argc,argv,popts,pargs);
 	if (!Flag(get,F+NoEscape)){
-		err.escape =	compile_strings();
+		err.escape =	compile_strings(popts,pargs,pstdn,penvv,pnum);
 	}
 	char *b, *p, *s, *f, *j, *r;
 	UI32 n=1;

@@ -1,4 +1,3 @@
-#define _GNU_SOURCE
 static char *HELP ="\
 USAGE:  %s <rep> <int> [-[o],--[option] <str>]\n\
         prints <rep> , <int> times to output.\n\

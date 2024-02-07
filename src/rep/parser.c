@@ -1,4 +1,3 @@
-#define _GNU_SOURCE
 #include "headers/parser.h"
 
 
@@ -92,30 +91,36 @@ UI32 check_Opts(UI32 argc, char **argv ,UI32 pOpts[8],UI32 pArgs[2]) {
 	return status;
 } //Opts
 
-UI32 parse(UI32 argc, char **argv){
+UI32 parse(UI32 argc, char **argv, PARTS *opts,PARTS *args){
+	PARTS *plopts=malloc(sizeof(PARTS));
+	PARTS *plargs=malloc(sizeof(PARTS));
+	PARTS lopts=*plopts;
+	PARTS largs=*plargs;
+
 	UI32 status=0;
 	UI32 pOpts[8]={[0 ... 7]=0};
 	UI32 pArgs[2]={[0 ... 1]=0};
 
 	status=check_Opts(argc,argv,pOpts,pArgs);
 	// printf("\nASSIGNING...\n");
-
 	for (int i=0;i<15;i++){
 		// printf("opt: %i: status:%i\t",i,STATUS[i]);
 		if(Flag(get,i)==1){
 			switch(i){
-				case 0:		opts.r=argv[pOpts[i]];break;
-				case 1:		opts.n=argv[pOpts[i]];break;
-				case 2:		opts.b=argv[pOpts[i]];break;
-				case 3:		opts.p=argv[pOpts[i]];break;
-				case 4:		opts.s=argv[pOpts[i]];break;
-				case 5:		opts.j=argv[pOpts[i]];break;
-				case 6:		opts.f=argv[pOpts[i]];break;
-				case 7:		opts.c=argv[pOpts[i]];break;
-				case 11:	args.r=argv[pArgs[0]];break;
-				case 12:	args.n=argv[pArgs[1]];break;
+				case 0:		lopts.r=argv[pOpts[i]];break;
+				case 1:		lopts.n=argv[pOpts[i]];break;
+				case 2:		lopts.b=argv[pOpts[i]];break;
+				case 3:		lopts.p=argv[pOpts[i]];break;
+				case 4:		lopts.s=argv[pOpts[i]];break;
+				case 5:		lopts.j=argv[pOpts[i]];break;
+				case 6:		lopts.f=argv[pOpts[i]];break;
+				case 7:		lopts.c=argv[pOpts[i]];break;
+				case 11:	largs.r=argv[pArgs[0]];break;
+				case 12:	largs.n=argv[pArgs[1]];break;
 			}
 		}
 	}
+	opts=plopts;
+	args=plargs;
 	return status;
 }//parse

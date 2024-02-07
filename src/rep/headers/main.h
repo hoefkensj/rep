@@ -1,21 +1,23 @@
-#pragma once
-#define _GNU_SOURCE
+#ifndef MAIN_H_INCLUDED
+#define MAIN_H_INCLUDED
+
 #include "globals.h"
 
 
-OPTS opts;
-OPTS envv;
-ARGS args;
-PIPE stdn;
+PARTS *opts;
+PARTS *envv;
+PARTS *args;
+PARTS *stdn;
 REP rep;
 NUM num;
 ERR err;
-UI32 STATUS=0;
 UI32 MANDATORY=0;
 UI32 debug=DEBUG;
-int main(int argc, char *argv[]);
+
+
 UI32 repeat(UI32 n,char *b,char *p,char *s,char *f,char *j, char *r);
 
 
 
 
+#endif // MAIN_H_INCLUDED
