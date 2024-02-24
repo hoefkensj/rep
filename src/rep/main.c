@@ -63,38 +63,14 @@ int main(int argc, char *argv[]) {
 	if (!Flag(get,F+NoEscape)){
 		err.escape =	compile_strings(popts,pargs,pstdn,penvv,pnum);
 	}
-	char *b, *p, *s, *f, *j, *r;
-	UI32 n=1;
-	if (Flag(get,O+Begin)) b= opts.b ;
-	else if (Flag(get,E+Begin)) b = envv.b;
-	else b="";
+	char *b = Flag(get, O + Begin) ? opts.b : (Flag(get, E + Begin) ? envv.b : "");
+	char *p = Flag(get, O + Prefix) ? opts.p : (Flag(get, E + Prefix) ? envv.p : "");
+	char *s = Flag(get, O + Suffix) ? opts.s : (Flag(get, E + Suffix) ? envv.s : "");
+	char *f = Flag(get, O + Final) ? opts.f : (Flag(get, E + Final) ? envv.f : "");
+	char *j = Flag(get, O + Join) ? opts.j : (Flag(get, E + Join) ? envv.j : "");
+	UI32 n = Flag(get, A + Number) ? num.a : (Flag(get, O + Number) ? num.o : (Flag(get, E + Number) ? num.e : 1));
+	char *r = Flag(get, I + Repeat) ? stdn.r : (Flag(get, A + Repeat) ? args.r : (Flag(get, O + Repeat) ? opts.r : (Flag(get, E + Repeat) ? envv.r : "")));
 
-	if (Flag(get,O+Prefix)) p= opts.p ;
-	else if (Flag(get,E+Prefix)) p = envv.p;
-	else p="";
-
-	if (Flag(get,O+Suffix)) s= opts.s ;
-	else if (Flag(get,E+Suffix)) s = envv.s;
-	else s="";
-
-	if (Flag(get,O+Final)) f= opts.f ;
-	else if (Flag(get,E+Final)) f = envv.f;
-	else f="";
-
-	if (Flag(get,O+Join)) j= opts.j ;
-	else if (Flag(get,E+Join)) j = envv.j;
-	else j="";
-
-	if (Flag(get,A+Number)) n= num.a ;
-	else if (Flag(get,O+Number)) n= num.o ;
-	else if (Flag(get,E+Number)) n = num.e;
-	else n=1;
-
-	if (Flag(get,I+Repeat)) r= stdn.r ;
-	else if (Flag(get,A+Repeat)) r= args.r ;
-	else if (Flag(get,O+Repeat)) r= opts.r ;
-	else if (Flag(get,E+Repeat)) r = envv.r;
-	else r="";
 
 	err.repeat = repeat(n,b,p,s,f,j,r);
 	free(stdn.r);
