@@ -14,6 +14,21 @@ typedef struct PARTS {
 	char *c;
 } PARTS;
 
+typedef struct NUM{
+	UI32 a;
+	UI32 o;
+	UI32 e;
+	UI32 c;
+}NUM;
+
+typedef struct USRIN {
+	PARTS *popts;
+	PARTS *pargs;
+	PARTS *penvv;
+	PARTS *pstdn;
+	NUM   *pnum;
+} USRIN;
+
 typedef struct REP{
 	UI32 i;
 	UI32 a;
@@ -21,12 +36,7 @@ typedef struct REP{
 	UI32 e;
 }REP;
 
-typedef struct NUM{
-	UI32 a;
-	UI32 o;
-	UI32 e;
-	UI32 c;
-}NUM;
+
 
 typedef struct ERR{
 	UI32 flags;

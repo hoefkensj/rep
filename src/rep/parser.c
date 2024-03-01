@@ -1,6 +1,5 @@
 #include "headers/parser.h"
 
-
 static char *FLAG[4][3] = {
 	{"-v", "--ver", "--version"    },
 	{"-h", "-?", "--help",         },
@@ -34,7 +33,6 @@ static UI32 isFlag(UI32 n ,char *arg ){
 		strcmp(arg, FLAG[n][2] )
 	);
 }//isFlag
-
 
 UI32 check_flags(UI32 argc, char **argv){
 	UI32 ret=0;

@@ -7,7 +7,6 @@ DST=build/bin
 SRC=src/rep
 
 
-
 g-unescape:clean-lin-unescape
 	$(CC) $(CFLAGS) -o $(DST)/unescape $(SRC)/unescape_standalone.c  $(SRC)/escape.c $(SRC)/about.c $(SRC)/parser.c $(SRC)/pipe.c $(SRC)/tools.c  $(SRC)/envvar.c
 g-rep:clean-lin-rep
@@ -42,4 +41,10 @@ ztable:z-lin-x64
 install:
 	install build/bin/rep /usr/bin/rep
 	install build/bin/rep /usr/bin/unescape
+
+list-variables:
+	printf '%s\n' $(.VARIABLES)   
+
+list-env:
+	@$(foreach V, $(.VARIABLES), $(info $(V) = $($(V))))
 

@@ -37,31 +37,32 @@ static UI32 compile_strings(PARTS *opts,PARTS *args,PARTS *stdn,PARTS *envv,NUM 
 }
 
 int main(int argc, char *argv[]) {
-	PARTS *popts=malloc(sizeof(PARTS));
-	PARTS *pargs=malloc(sizeof(PARTS));
-	PARTS *penvv=malloc(sizeof(PARTS));
-	PARTS *pstdn=malloc(sizeof(PARTS));
-	NUM *pnum=malloc(sizeof(NUM));
-	PARTS   opts=*popts;
-	PARTS   args=*pargs;
-	PARTS   envv=*penvv;
-	PARTS   stdn=*pstdn;
-	NUM     num=*pnum;
+	USRIN *usrin=malloc(sizeof(PARTS)*4+sizeof(NUM));
+	PARTS   opts=*usrin->popts;
+	PARTS   args=*usrin->pargs;
+	PARTS   envv=*usrin->penvv;
+	PARTS   stdn=*usrin->pstdn;
+	NUM      num=*usrin->pnum;
+	// PARTS *popts=malloc(sizeof(PARTS));
+	// PARTS *pargs=malloc(sizeof(PARTS));
+	// PARTS *penvv=malloc(sizeof(PARTS));
+	// PARTS *pstdn=malloc(sizeof(PARTS));
+	// NUM *pnum=malloc(sizeof(NUM));
 	// opts.b="";	opts.p="";	opts.s="";	opts.j="";	opts.f="";	opts.c="";	opts.r="";	opts.n="";	args.n="";	args.r="";	num.a=0;	num.o=0;	num.e=0; num.c=0;
 	// envv.b="";	envv.p="";	envv.s="";	envv.j="";	envv.f="";	envv.c="";	envv.r="";	envv.n="";
 
 	err.flags = check_flags(argc,argv);
-	if (err.flags!=0) runInfo(err.flags,argc,argv);
+	(err.flags!=0) runInfo(err.flags,argc,argv) ;
 
-	err.pipe= read_stdin(pstdn);
+	err.pipe= read_stdin(&stdn);
 	if (err.pipe==1) Flag(set,I+Repeat);
 	else if (err.pipe==2) runInfo(0b100,argc,argv);
 
 	err.envv= readEnv(&envv);
 
-	err.parse = parse(argc,argv,popts,pargs);
+	err.parse = parse(argc,argv,&opts,&args);
 	if (!Flag(get,F+NoEscape)){
-		err.escape =	compile_strings(popts,pargs,pstdn,penvv,pnum);
+		err.escape =	compile_strings(&opts,&args,&stdn,&envv,&num);
 	}
 	char *b = Flag(get, O + Begin) ? opts.b : (Flag(get, E + Begin) ? envv.b : "");
 	char *p = Flag(get, O + Prefix) ? opts.p : (Flag(get, E + Prefix) ? envv.p : "");
