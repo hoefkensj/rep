@@ -136,9 +136,9 @@ static void uni8(char str[], unsigned int *i, unsigned int *j) {
       str[(*j)++] = 0x80 | ((xval >> 12) & 0x3F);
       str[(*j)++] = 0x80 | ((xval >> 6) & 0x3F);
       str[(*j)++] = 0x80 | (xval & 0x3F);
-    } // fi
-  }   // fi
-} // uni8
+    } // end if
+  }   // end if
+} // end uni8
 
 unsigned int repl_unescape(char *str) {
   unsigned int lnstr = strlen(str) + 1;
