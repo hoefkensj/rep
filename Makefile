@@ -15,7 +15,7 @@ z-rep-lin-x64:clean-lin-rep
 	$(ZIGCC) $(LIN) $(CFLAGS) -o $(DST)/rep $(SRC)/main.c  $(SRC)/about.c  $(SRC)/escape.c  $(SRC)/info.c $(SRC)/parser.c $(SRC)/pipe.c $(SRC)/tools.c  $(SRC)/envvar.c
 z-unescape-lin-x64:clean-lin-unescape
 	$(ZIGCC) $(LIN) $(CFLAGS) -o $(DST)/unescape $(SRC)/escape.c $(SRC)/about.c $(SRC)/info.c $(SRC)/parser.c $(SRC)/pipe.c $(SRC)/tools.c  $(SRC)/envvar.c
-z-win-x61:cleanwin
+z-win-x64:clean-win-rep
 	$(ZIGCC) $(WIN) $(CFLAGS) -g -o $(DST)/rep.exe $(SRC)/main.c  $(SRC)/about.c  $(SRC)/escape.c  $(SRC)/info.c $(SRC)/parser.c $(SRC)/pipe.c $(SRC)/tools.c  $(SRC)/envvar.c
 
 debug:clean-lin
@@ -37,7 +37,7 @@ g-lin-x64:clean-lin  g-unescape g-rep
 
 stable:g-lin-x64
 ztable:z-lin-x64
-
+winx64:z-win-x64
 install:
 	install build/bin/rep /usr/bin/rep
 	install build/bin/rep /usr/bin/unescape

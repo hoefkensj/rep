@@ -12,8 +12,8 @@ static char *readPipe(){
 	while ( (cI = getchar()) != EOF ){
 		//if char counter read == allocated counter(-1 for adding \0) -> rallocate double the size
 		if (sR==(sA-1)){
-			sA=2*sA
-;			pPipe = realloc(pipe,sA);
+			sA=2*sA;
+			pPipe = realloc(pipe,sA);
 			if ( pPipe == NULL ){
 				str=NULL;
 				goto END;
