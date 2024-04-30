@@ -38,6 +38,7 @@ g-lin-x64:clean-lin  g-unescape g-rep
 stable:g-lin-x64
 ztable:z-lin-x64
 winx64:z-win-x64
+linx64:ztable
 install:
 	install build/bin/rep /usr/bin/rep
 	install build/bin/rep /usr/bin/unescape

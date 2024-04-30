@@ -1,4 +1,4 @@
-#define _GNU_SOURCE
+//#define _GNU_SOURCE
 
 #include "headers/parser.h"
 #include "headers/escape.h"
@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
 	// envv.b="";	envv.p="";	envv.s="";	envv.j="";	envv.f="";	envv.c="";	envv.r="";	envv.n="";
 
 	err.flags = check_flags(argc,argv);
-	(err.flags!=0) * runInfo(err.flags,argc,argv) ;
+	if (err.flags!=0)  runInfo(err.flags,argc,argv) ;
 
 	err.pipe= read_stdin(&stdn);
 	if (err.pipe==1) Flag(set,I+Repeat);

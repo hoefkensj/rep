@@ -9,7 +9,7 @@ static char *fmtInfo(char *strInfo ,char *exeName){
 	return bufUse;
 }
 void runInfo(int select,int argc,char **argv){
-//	UI32 debug=0;
+	UI32 debug=0;
 	for (int i=0;i<5;i++){
 		if (select & (1<<i)) {
 			printf("%d",i);
