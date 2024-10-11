@@ -94,21 +94,21 @@ OPTIONS:
 ESCAPES:
   Strings in arguments or options may contain the following escape codes:
   ```
-  \\                       Backslash
-  \\a                      Alarm,Terminal Bell
-  \\b                      Backspace
-  \\f                      FormFeed
+  \                       Backslash
+  \a                      Alarm,Terminal Bell
+  \b                      Backspace
+  \f                      FormFeed
   \\n                      NewLine
-  \\t                      Horizontal TAB
-  \\v                      Vertical TAB
-  \\r                      Carriage Return
-  \\o[0-7]{1,2,3}          Octal value (0-377)
-  \\O[0-7]{1,2,3}          Octal value (0-377)
-  \\[0-7]{1,2,3}           Octal value (0-377)
-  \\x[0-F]{2}              Hexadecimal value (BYTE)
-  \\X[0-F]{2}              Hexadecimal value (BYTE)
-  \\u                      Unicode (0000-FFFF)
-  \\U                      Unicode (00000000-FFFFFFFF)
+  \t                      Horizontal TAB
+  \v                      Vertical TAB
+  \r                      Carriage Return
+  \o[0-7]{1,2,3}          Octal value (0-377)
+  \O[0-7]{1,2,3}          Octal value (0-377)
+  \[0-7]{1,2,3}           Octal value (0-377)
+  \x[0-F]{2}              Hexadecimal value (BYTE)
+  \X[0-F]{2}              Hexadecimal value (BYTE)
+  \u                      Unicode (0000-FFFF)
+  \U                      Unicode (00000000-FFFFFFFF)
 ```
   This includes ANSI escape codes wich can be included using Octal(\\033) or Hexadecimal (\\x1b) escape codes.
   All Arguments support output from a subshell and the program can be run in one.
