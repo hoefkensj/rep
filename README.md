@@ -113,12 +113,3 @@ ESCAPES:
   This includes ANSI escape codes wich can be included using Octal(\\033) or Hexadecimal (\\x1b) escape codes.
   All Arguments support output from a subshell and the program can be run in one.
   This supports outputting to arguments of printf, or to the programs own arguments.
-
-
-";
-
-static char *USE ="\
-USAGE:  %s  <string> <int> [-o,--option <string>] )
-        USE -h or --help for more info
-";
-
