@@ -1,5 +1,5 @@
 # rep
-the missing bash core utility, repeat text (n times) using patterns to prefix join and suffix everything to stdout.
+	the missing bash core utility, repeat text (n times) using patterns to prefix join and suffix everything to stdout.
 ## Features:
 	* support for escapes:
 		| `\a            Alarm,Terminal Bell`         | `\`                Backslash`           |
