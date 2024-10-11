@@ -1,40 +1,58 @@
 # rep
-the missing bash core utility, repeats a given string n times to stdout.
-INSTALLATION :
-LINUX:
-```bash
-wget -c https://github.com/hoefkensj/rep/releases/download/v0.99/rep
-```
+the missing bash core utility, repeat text (n times) using patterns to prefix join and suffix everything to stdout.
+## Features:
+	* support for escapes:
+		| `\a            Alarm,Terminal Bell`         | `\`                Backslash`           |
+		| `\t            Horizontal TAB`              | `\f`               FormFeed`            |
+		| `\v            Vertical TAB`                | `\b`               Backspace`           |
+		| `\x[0-F]{2}    Hexadecimal value (BYTE)`    | `\n`               NewLine`             |
+		| `\X[0-F]{2}    Hexadecimal value (BYTE)`    | `\r`               Carriage Return`     |
+		| `\u            Unicode (0000-FFFF)`         | `\o[0-7]{1,2,3}`   Octal value (0-377)` |
+		| `\U            Unicode (00000000-FFFFFFFF)` | `\O[0-7]{1,2,3}`   Octal value (0-377)` |
+  
+	* setting a start , prefix , join , suffix , final - string using arguments, options or env variables
+	* reading the repeat string from stdin, env argument or option
+	* maximum number of iterations :  `18 199 999 078 727 679`
+ 	* maximum number of output characters:  `Unknown`
 
-WINDOWS:
-```pwsh
-WGET https://github.com/hoefkensj/rep/releases/download/v0.99/rep.exe
-```
+## INSTALLATION :
+### LINUX (binary):
+	```bash
+	wget -c https://github.com/hoefkensj/rep/releases/download/v0.99/rep
+ 	su -c 'mv rep /usr/bin/'
+  	rep --help
+	```
 
-BUILDING FROM SOURCE:
+### WINDOWS (binary):
+	```pwsh
+	WGET https://github.com/hoefkensj/rep/releases/download/v0.99/rep.exe
+	# (as administrator)
+ 	copy rep.exe c:\windows\system32\
+	rep --help
+	 ```
 
-LINUX (requires GCC)
-```
-git clone https://github.com/hoefkensj/rep
-cd rep
-make
-make install
-# and running:
-rep --help
+## BUILDING FROM SOURCE:
 
-```
+### LINUX (requires GCC)
+	```
+	git clone https://github.com/hoefkensj/rep
+	cd rep
+	make
+	make install
+	rep --help
+	```
 
-WINDOWS: (requires the zig compiler : https://ziglang.org/download/)
-```
-git clone https://github.com/hoefkensj/rep
-cd rep
-make win
-cd build/bin/
-# and running:
-rep.exe --help
-```
+### WINDOWS: (requires the zig compiler : https://ziglang.org/download/)
+	```
+	git clone https://github.com/hoefkensj/rep
+	cd rep
+	make win
+	cd build/bin/
+ 	copy rep.exe c:\windows\system32\
+	rep --help
+	```
 
-
+# HELP :
 USAGE:  %s <rep> <int> [-[o],--[option] <str>]
         prints <rep> , <int> times to output.
         NOTE: See exaples for other uses.
@@ -44,14 +62,6 @@ DESCRIPTION:
         with options, the format is : <begin>[[(<prefix<string><suffix>)+(<join>)]*n]<final>
         all strings will be escaped before printing see ESCAPES for more info.
 
-USAGE:  %s <rep> <int> [-[o],--[option] <str>]
-        prints <rep> , <int> times to output.
-        NOTE: See exaples for other uses.
-
-DESCRIPTION:
-        this program wil print a string n times to its output. the string that will be printed can be modified
-        with options, the format is : <begin>[[(<prefix<string><suffix>)+(<join>)]*n]<final>
-        all strings will be escaped before printing see ESCAPES for more info.
 
 ARGS:
 
